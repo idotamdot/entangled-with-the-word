@@ -8,4 +8,6 @@ def main():
 
 # Run the Streamlit app
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8501))  # Change default from 8501
     main()  # Call the main function
+    st.run(host="0.0.0.0", port=port)
