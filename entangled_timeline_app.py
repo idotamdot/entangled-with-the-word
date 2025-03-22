@@ -10,4 +10,4 @@ st.title("Entangled with the Word")
 
 # Optional: lightweight health check support
 if st.experimental_get_query_params().get("ping") == ["true"]:
-    st.write("OK")
+st.write("OK")
