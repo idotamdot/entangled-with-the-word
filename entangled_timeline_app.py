@@ -1,13 +1,13 @@
 import os
 import streamlit as st
 
-# Main function to run the Streamlit app
-def main():
-    st.title("Entangled with the Word")
-    st.write("Welcome to the Quantum Parables timeline!")
+port = int(os.environ.get("PORT", 8000))  # Azure expects port 8000
+st.set_page_config(page_title="Entangled with the Word")
 
-# Run the Streamlit app
+# Your app content here...
+st.title("Entangled with the Word")
+
+# Run the app if using CLI (but Azure handles this via startup command or gunicorn)
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8501))  # Change default from 8501
-    main()  # Call the main function
-    st.run(host="0.0.0.0", port=port)
+    import subprocess
+    subprocess.run(["streamlit", "run", "entangled_timeline_app.py", "--server.port", str(port), "--server.address", "0.0.0.0"])
