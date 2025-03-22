@@ -8,6 +8,5 @@ st.set_page_config(page_title="Entangled with the Word")
 st.title("Entangled with the Word")
 
 # Run the app if using CLI (but Azure handles this via startup command or gunicorn)
-if __name__ == "__main__":
     import subprocess
     subprocess.run(["streamlit", "run", "entangled_timeline_app.py", "--server.port", str(port), "--server.address", "0.0.0.0"])
