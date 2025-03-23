@@ -14,4 +14,4 @@ enableXsrfProtection = false
 " > ~/.streamlit/config.toml
 
 # Launch Streamlit app
-streamlit run entangled_with_the_Word_app.py
+streamlit run entangled_timeline_app.py
