@@ -1,1 +1,1 @@
-bash startup.sh
+web: bash startup.sh
