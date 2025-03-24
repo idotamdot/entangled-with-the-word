@@ -1,4 +1,7 @@
 [server]
+# Run in headless mode to avoid opening a browser window on the server
 headless = true
+# Use the port defined by the environment variable PORT
 port = $PORT
+# Disable Cross-Origin Resource Sharing (CORS)
 enableCORS = false
