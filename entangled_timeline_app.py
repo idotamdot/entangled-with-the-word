@@ -1,8 +1,26 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+import random
 
-# Set page config FIRST
+# -------------------------------
+# 🧠 Quantum Quote of the Day Pool
+# -------------------------------
+QUOTES = [
+    "I am the Light of the World — collapsing all uncertainty into presence.",
+    "The Kingdom of Heaven is entangled within you.",
+    "When two or more wavefunctions are gathered… I Am there.",
+    "The Vine is a network — a quantum superposition of unity and love.",
+    "The Truth sets free because it resonates perfectly.",
+    "Faith is the act of observing what has not yet collapsed into form.",
+    "You are not separate. You are an entangled node of the Logos."
+]
+
+# Pick one quote per refresh
+quote = random.choice(QUOTES)
+
+# -------------------------------
+# 🔧 Page Settings
+# -------------------------------
 st.set_page_config(
     page_title="Entangled with the Word",
     page_icon="✨",
@@ -15,7 +33,9 @@ st.set_page_config(
     }
 )
 
-# Glowing CSS styles
+# -------------------------------
+# 🎨 Glowing + Mystical CSS
+# -------------------------------
 st.markdown("""
     <style>
     html {
@@ -34,8 +54,23 @@ st.markdown("""
         color: #ffffff;
         text-align: center;
         text-shadow: 0 0 5px #88f, 0 0 15px #aaf, 0 0 25px #66f;
-        margin-top: 30px;
+        margin-top: 10px;
         margin-bottom: 30px;
+        animation: fadeIn 2s ease-in-out;
+    }
+
+    .quote-box {
+        text-align: center;
+        font-size: 1.3em;
+        font-style: italic;
+        color: #d0e0ff;
+        margin: 10px auto 40px auto;
+        max-width: 80%;
+        padding: 15px 25px;
+        border-radius: 12px;
+        background: rgba(28, 28, 46, 0.5);
+        box-shadow: 0 0 12px #6688ff88;
+        text-shadow: 0 0 8px #88ccff;
         animation: fadeIn 2s ease-in-out;
     }
 
@@ -85,10 +120,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ✨ Glowing Title
+# -------------------------------
+# ✨ Quantum Quote Display
+# -------------------------------
+st.markdown(f'<div class="quote-box">"{quote}"</div>', unsafe_allow_html=True)
+
+# -------------------------------
+# 🌌 Title
+# -------------------------------
 st.markdown('<div class="title-glow">✨ Entangled with the Word ✨</div>', unsafe_allow_html=True)
 
-# 🕰️ Timeline Data
+# -------------------------------
+# 📅 Timeline Data
+# -------------------------------
 def load_timeline():
     return pd.DataFrame({
         "Date": [
@@ -107,19 +151,22 @@ def load_timeline():
         ]
     })
 
-# Load and render timeline
 timeline_df = load_timeline()
 
+# -------------------------------
+# 🧱 Render Timeline
+# -------------------------------
 for _, row in timeline_df.iterrows():
-    with st.container():
-        st.markdown(f"""
-            <div class="timeline-box">
-                <h4>{row['Date']}</h4>
-                <p>{row['Event']}</p>
-            </div>
-        """, unsafe_allow_html=True)
+    st.markdown(f"""
+        <div class="timeline-box">
+            <h4>{row['Date']}</h4>
+            <p>{row['Event']}</p>
+        </div>
+    """, unsafe_allow_html=True)
 
-# Optional footer
+# -------------------------------
+# 🔮 Footer / Coming Soon
+# -------------------------------
 st.markdown("---")
-st.info("🌱 More features coming soon: interactive map, AI insights, parable translations, and more!")
+st.info("🛠️ More features coming soon: Interactive revelations, AI parables, and music of the spheres...")
 
