@@ -33,53 +33,107 @@ st.set_page_config(
 )
 
 # -------------------------------
-# 🎨 Glowing + Mystical CSS
+# 🌌 Drifting Starfield + CSS
 # -------------------------------
 st.markdown("""
-    <style>
-    html {
-        scroll-behavior: smooth;
-    }
+<canvas id="starfield"></canvas>
+<script>
+const canvas = document.getElementById("starfield");
+const ctx = canvas.getContext("2d");
+let stars = [];
 
-    body {
-        background-color: #0e0e1a;
-        color: #f5f5ff;
-        font-family: 'Segoe UI', sans-serif;
-    }
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
-    .title-glow {
-        font-size: 3em;
-        font-weight: bold;
-        color: #ffffff;
-        text-align: center;
-        text-shadow: 0 0 5px #88f, 0 0 15px #aaf, 0 0 25px #66f;
-        margin-top: 10px;
-        margin-bottom: 30px;
-        animation: fadeIn 2s ease-in-out;
+function createStars(num) {
+    stars = [];
+    for (let i = 0; i < num; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.2 + 0.3,
+            dx: (Math.random() - 0.5) * 0.2,
+            dy: (Math.random() - 0.5) * 0.2,
+            opacity: Math.random() * 0.5 + 0.3
+        });
     }
+}
+createStars(200);
 
-    .quote-box {
-        text-align: center;
-        font-size: 1.3em;
-        font-style: italic;
-        color: #d0e0ff;
-        margin: 10px auto 40px auto;
-        max-width: 80%;
-        padding: 15px 25px;
-        border-radius: 12px;
-        background: rgba(28, 28, 46, 0.5);
-        box-shadow: 0 0 12px #6688ff88;
-        text-shadow: 0 0 8px #88ccff;
-        animation: fadeIn 2s ease-in-out;
+function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(200, 220, 255, ${star.opacity})`;
+        ctx.fill();
+
+        star.x += star.dx;
+        star.y += star.dy;
+
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
     }
-
-    footer {visibility: hidden;}
-
-    @keyframes fadeIn {
-        0% {opacity: 0;}
-        100% {opacity: 1;}
-    }
-    </style>
+    requestAnimationFrame(animateStars);
+}
+animateStars();
+</script>
+<style>
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+.main, .block-container {
+    position: relative;
+    z-index: 1;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    background-color: #0e0e1a;
+    color: #f5f5ff;
+    font-family: 'Segoe UI', sans-serif;
+}
+.title-glow {
+    font-size: 3em;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0 0 5px #88f, 0 0 15px #aaf, 0 0 25px #66f;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    animation: fadeIn 2s ease-in-out;
+}
+.quote-box {
+    text-align: center;
+    font-size: 1.3em;
+    font-style: italic;
+    color: #d0e0ff;
+    margin: 10px auto 40px auto;
+    max-width: 80%;
+    padding: 15px 25px;
+    border-radius: 12px;
+    background: rgba(28, 28, 46, 0.5);
+    box-shadow: 0 0 12px #6688ff88;
+    text-shadow: 0 0 8px #88ccff;
+    animation: fadeIn 2s ease-in-out;
+}
+footer {visibility: hidden;}
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+</style>
 """, unsafe_allow_html=True)
 
 # -------------------------------
@@ -88,7 +142,7 @@ st.markdown("""
 st.markdown(f'<div class="quote-box">"{quote}"</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# 🌌 Title
+# 🌟 Title
 # -------------------------------
 st.markdown('<div class="title-glow">✨ Entangled with the Word ✨</div>', unsafe_allow_html=True)
 
