@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-# This must be the first Streamlit command!
+# Set page config FIRST
 st.set_page_config(
     page_title="Entangled with the Word",
     page_icon="✨",
@@ -15,14 +15,19 @@ st.set_page_config(
     }
 )
 
-# Custom CSS for a glowing, mystical look
-# Custom CSS for a glowing, mystical look with readable text
+# Glowing CSS styles
 st.markdown("""
     <style>
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         background-color: #0e0e1a;
         color: #f5f5ff;
+        font-family: 'Segoe UI', sans-serif;
     }
+
     .title-glow {
         font-size: 3em;
         font-weight: bold;
@@ -31,31 +36,59 @@ st.markdown("""
         text-shadow: 0 0 5px #88f, 0 0 15px #aaf, 0 0 25px #66f;
         margin-top: 30px;
         margin-bottom: 30px;
+        animation: fadeIn 2s ease-in-out;
     }
+
     .timeline-box {
         background-color: #1c1c2e;
         padding: 20px;
         border-radius: 15px;
-        box-shadow: 0 0 25px rgba(120, 120, 255, 0.3);
+        box-shadow: 0 0 25px rgba(120, 120, 255, 0.1);
         margin-bottom: 20px;
+        transition: all 0.4s ease;
+        animation: fadeInUp 1s ease-out;
     }
+
+    .timeline-box:hover {
+        box-shadow: 0 0 35px rgba(140, 140, 255, 0.4);
+        transform: translateY(-4px);
+    }
+
     .timeline-box h4 {
         color: #cce6ff;
         text-shadow: 0 0 4px #88f;
+        margin-bottom: 5px;
     }
+
     .timeline-box p {
         color: #eeeeff;
         text-shadow: 0 0 3px #6699ff;
     }
+
     footer {visibility: hidden;}
+
+    @keyframes fadeIn {
+        0% {opacity: 0;}
+        100% {opacity: 1;}
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
-
-# Glowing Title
+# ✨ Glowing Title
 st.markdown('<div class="title-glow">✨ Entangled with the Word ✨</div>', unsafe_allow_html=True)
 
-# Example Timeline Data
+# 🕰️ Timeline Data
 def load_timeline():
     return pd.DataFrame({
         "Date": [
@@ -74,11 +107,10 @@ def load_timeline():
         ]
     })
 
-# Load data
+# Load and render timeline
 timeline_df = load_timeline()
 
-# Render Timeline
-for i, row in timeline_df.iterrows():
+for _, row in timeline_df.iterrows():
     with st.container():
         st.markdown(f"""
             <div class="timeline-box">
@@ -87,7 +119,7 @@ for i, row in timeline_df.iterrows():
             </div>
         """, unsafe_allow_html=True)
 
-# Optional footer or expansion
+# Optional footer
 st.markdown("---")
-st.info("More features like search, animations, and OpenAI-enhanced content are coming soon!")
+st.info("🌱 More features coming soon: interactive map, AI insights, parable translations, and more!")
 
