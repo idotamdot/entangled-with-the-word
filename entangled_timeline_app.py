@@ -16,6 +16,7 @@ st.set_page_config(
 )
 
 # Custom CSS for a glowing, mystical look
+# Custom CSS for a glowing, mystical look with readable text
 st.markdown("""
     <style>
     body {
@@ -38,9 +39,18 @@ st.markdown("""
         box-shadow: 0 0 25px rgba(120, 120, 255, 0.3);
         margin-bottom: 20px;
     }
+    .timeline-box h4 {
+        color: #cce6ff;
+        text-shadow: 0 0 4px #88f;
+    }
+    .timeline-box p {
+        color: #eeeeff;
+        text-shadow: 0 0 3px #6699ff;
+    }
     footer {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
+
 
 # Glowing Title
 st.markdown('<div class="title-glow">✨ Entangled with the Word ✨</div>', unsafe_allow_html=True)
