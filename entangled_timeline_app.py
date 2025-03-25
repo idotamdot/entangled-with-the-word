@@ -1,49 +1,45 @@
 import os
 import streamlit as st
-st.markdown("""
+st.markdown
+
+st.markdown('<div class="star-title">st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap');
 
-    html, body, [class*="css"]  {
-        font-family: 'Raleway', sans-serif;
-        background: linear-gradient(135deg, #0f0f1c, #1b1b38);
-        color: #f0f8ff;
-    }
-
-    h1, h2, h3 {
-        color: #ffffff;
-        text-shadow: 0 0 8px #8be9fd, 0 0 12px #8be9fd;
-    }
-
-    .glow-box {
-        border: 2px solid #8be9fd;
-        border-radius: 12px;
-        padding: 1.5em;
-        margin-bottom: 2em;
-        background-color: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 20px #8be9fd88;
-    }
-
-    .star-title {
-        font-size: 2.2em;
-        text-align: center;
-        color: #f0f8ff;
-        text-shadow: 0 0 6px #ffffff, 0 0 20px #8be9fd;
-        animation: glow 3s infinite alternate;
-    }
-
-    @keyframes glow {
-        from {
-            text-shadow: 0 0 6px #ffffff, 0 0 20px #8be9fd;
+        .glow-text {
+            font-family: 'Unbounded', cursive;
+            font-size: 3em;
+            color: #fff;
+            text-align: center;
+            text-shadow: 
+                0 0 10px #39c5bb, 
+                0 0 20px #39c5bb, 
+                0 0 30px #66ffe3, 
+                0 0 40px #66ffe3;
+            animation: flicker 2s infinite alternate;
         }
-        to {
-            text-shadow: 0 0 12px #ffffff, 0 0 30px #8be9fd;
+
+        @keyframes flicker {
+            0%   { opacity: 0.8; text-shadow: 0 0 5px #66ffe3; }
+            100% { opacity: 1; text-shadow: 0 0 20px #39c5bb; }
         }
-    }
+
+        .centered-intro {
+            text-align: center;
+            font-size: 1.2em;
+            color: #eee;
+            margin-top: -20px;
+        }
+
+        body {
+            background-color: #0e0e23;
+        }
     </style>
-""", unsafe_allow_html=True)
 
-st.markdown('<div class="star-title">Entangled with the Word</div>', unsafe_allow_html=True)
+    <div class="glow-text">Entangled with the Word</div>
+    <div class="centered-intro">Welcome to the quantum parable timeline.</div>
+""", unsafe_allow_html=True)
+</div>', unsafe_allow_html=True)
 st.markdown('<div class="glow-box">Welcome to the quantum parable timeline. 🌌</div>', unsafe_allow_html=True)
 
 # Azure expects this port (you don't need to use it manually here)
