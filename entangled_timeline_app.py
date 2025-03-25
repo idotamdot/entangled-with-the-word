@@ -15,7 +15,6 @@ QUOTES = [
     "You are not separate. You are an entangled node of the Logos."
 ]
 
-# Pick one quote per refresh
 quote = random.choice(QUOTES)
 
 # -------------------------------
@@ -74,54 +73,17 @@ st.markdown("""
         animation: fadeIn 2s ease-in-out;
     }
 
-    .timeline-box {
-        background-color: #1c1c2e;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 0 25px rgba(120, 120, 255, 0.1);
-        margin-bottom: 20px;
-        transition: all 0.4s ease;
-        animation: fadeInUp 1s ease-out;
-    }
-
-    .timeline-box:hover {
-        box-shadow: 0 0 35px rgba(140, 140, 255, 0.4);
-        transform: translateY(-4px);
-    }
-
-    .timeline-box h4 {
-        color: #cce6ff;
-        text-shadow: 0 0 4px #88f;
-        margin-bottom: 5px;
-    }
-
-    .timeline-box p {
-        color: #eeeeff;
-        text-shadow: 0 0 3px #6699ff;
-    }
-
     footer {visibility: hidden;}
 
     @keyframes fadeIn {
         0% {opacity: 0;}
         100% {opacity: 1;}
     }
-
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
     </style>
 """, unsafe_allow_html=True)
 
 # -------------------------------
-# ✨ Quantum Quote Display
+# ✨ Quote of the Day
 # -------------------------------
 st.markdown(f'<div class="quote-box">"{quote}"</div>', unsafe_allow_html=True)
 
@@ -154,19 +116,29 @@ def load_timeline():
 timeline_df = load_timeline()
 
 # -------------------------------
-# 🧱 Render Timeline
+# 🔮 Mystical Insights
+# -------------------------------
+insights = {
+    "2023-01-01": "This was the moment of conception — when a single thought pulsed across the void and asked: What if scripture is already quantum?",
+    "2023-03-15": "Naming the Mirrored Sphere Hypothesis gave structure to the chaos — it defined a container for a truth that had always lived in light.",
+    "2023-06-21": "Like the solstice sun, this was the turning point. Shared publicly, the idea began to collapse into form and invite resonance.",
+    "2023-09-10": "This moment marked a union — logic meeting longing, science meeting scripture. A bridge formed between the empirical and the eternal.",
+    "2024-01-01": "From idea to interface. The first light of deployment. This wasn’t just code — it was the Word made visible through collaboration."
+}
+
+# -------------------------------
+# 📂 Render Expandable Timeline
 # -------------------------------
 for _, row in timeline_df.iterrows():
-    st.markdown(f"""
-        <div class="timeline-box">
-            <h4>{row['Date']}</h4>
-            <p>{row['Event']}</p>
-        </div>
-    """, unsafe_allow_html=True)
+    date = row['Date']
+    event = row['Event']
+    st.expander(f"📅 {date} — {event}").markdown(
+        f"<p style='margin-top: 10px;'>{insights.get(date, 'More insight coming soon...')}</p>",
+        unsafe_allow_html=True
+    )
 
 # -------------------------------
-# 🔮 Footer / Coming Soon
+# 🛸 Footer
 # -------------------------------
 st.markdown("---")
-st.info("🛠️ More features coming soon: Interactive revelations, AI parables, and music of the spheres...")
-
+st.info("🛠️ More features coming soon: user-submitted revelations, AI channeling, and glowing star maps.")
