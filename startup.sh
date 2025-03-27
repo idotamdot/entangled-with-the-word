@@ -1,17 +1,23 @@
 #!/bin/bash
 
+# Fail fast if something goes wrong
+set -e
+
 # Install Python dependencies
+echo "📦 Installing dependencies..."
 pip install -r requirements.txt
 
-# Create a clean config file with a hardcoded port (Azure expects port 80)
+# Create Streamlit config
+echo "⚙️ Creating Streamlit config..."
 mkdir -p ~/.streamlit
-echo "\
+cat <<EOF > ~/.streamlit/config.toml
 [server]
 headless = true
-port = 80
+port = $PORT
 enableCORS = false
 enableXsrfProtection = false
-" > ~/.streamlit/config.toml
+EOF
 
-# Launch Streamlit app, explicitly setting host to 0.0.0.0 for external access
-streamlit run entangled_timeline_app.py --server.port=80 --server.address=0.0.0.0
+# Run the app
+echo "🚀 Starting Streamlit app..."
+streamlit run entangled_timeline_app.py --server.port=$PORT
