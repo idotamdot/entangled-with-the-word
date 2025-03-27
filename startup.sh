@@ -15,4 +15,3 @@ enableXsrfProtection = false
 
 # Launch Streamlit app, explicitly setting host to 0.0.0.0 for external access
 streamlit run entangled_timeline_app.py --server.port=80 --server.address=0.0.0.0
-
