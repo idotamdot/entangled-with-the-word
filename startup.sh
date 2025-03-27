@@ -1,23 +1,16 @@
 #!/bin/bash
+export PORT=${PORT:-8000}
 
-# Fail fast if something goes wrong
-set -e
-
-# Install Python dependencies
-echo "📦 Installing dependencies..."
-pip install -r requirements.txt
-
-# Create Streamlit config
-echo "⚙️ Creating Streamlit config..."
 mkdir -p ~/.streamlit
-cat <<EOF > ~/.streamlit/config.toml
+cat << EOF > ~/.streamlit/config.toml
 [server]
 headless = true
-port = ${PORT:-8501}
 enableCORS = false
 enableXsrfProtection = false
+port = $PORT
+
+[theme]
+base = "light"
 EOF
 
-# Run the app
-echo "🚀 Starting Streamlit app..."
-streamlit run entangled_timeline_app.py --server.port=${PORT:-8501}
+python -m streamlit run entangled_timeline_app.py
