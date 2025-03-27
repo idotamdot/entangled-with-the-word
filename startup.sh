@@ -13,11 +13,11 @@ mkdir -p ~/.streamlit
 cat <<EOF > ~/.streamlit/config.toml
 [server]
 headless = true
-port = $PORT
+port = ${PORT:-8501}
 enableCORS = false
 enableXsrfProtection = false
 EOF
 
 # Run the app
 echo "🚀 Starting Streamlit app..."
-streamlit run entangled_timeline_app.py --server.port=$PORT
+streamlit run entangled_timeline_app.py --server.port=${PORT:-8501}
