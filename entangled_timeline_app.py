@@ -176,6 +176,13 @@ st.markdown("---")
 st.subheader("📜 Names of the Word")
 
 names_data = [
+    {"name": "Enosh", "verse": "Genesis 4:26", "meaning": "Mortal man", "resonance": "The awareness of frailty enters creation—a particle that remembers it's a wave."},
+    {"name": "Kenan", "verse": "Genesis 5:9", "meaning": "Possession, sorrow", "resonance": "Inheritance wrapped in grief—a reminder that form often comes with burden."},
+    {"name": "Mahalalel", "verse": "Genesis 5:12", "meaning": "Praise of God", "resonance": "A waveform of gratitude—naming the divine as vibration itself."},
+    {"name": "Jared", "verse": "Genesis 5:15", "meaning": "Descent", "resonance": "A phase shift—spirit entering density, field slowing into form."},
+    {"name": "Methuselah", "verse": "Genesis 5:21", "meaning": "When he dies, it shall come", "resonance": "A prophetic resonance—a collapse point waiting at the edge of time."},
+    {"name": "Lamech", "verse": "Genesis 5:25", "meaning": "Powerful", "resonance": "Force held in name—a node of intensity in the sacred lineage."},
+    {"name": "Noah", "verse": "Genesis 5:29", "meaning": "Rest, comfort", "resonance": "The waveform of renewal—the collapse into rest that births a new frequency."},
     {"name": "Seth", "verse": "Genesis 4:25", "meaning": "Appointed, placed", "resonance": "A harmonic reset—a newly tuned resonance after the dissonance of Cain and Abel."},
     {"name": "Seth’s Wife", "verse": "(Implied - Genesis 4:26)", "meaning": "Unknown", "resonance": "Anonymity in origin—like the hidden quantum variables guiding emergence."},
     {"name": "Eve", "verse": "Genesis 3:20", "meaning": "Life", "resonance": "The echo of the first harmonic—multiplicity through division."},
@@ -214,8 +221,26 @@ digraph family_tree {
     Adam -> Eve;
     Adam -> Seth;
     Seth -> Enosh;
+    Enosh -> Kenan;
+    Kenan -> Mahalalel;
+    Mahalalel -> Jared;
+    Jared -> Enoch;
+    Enoch -> Methuselah;
+    Methuselah -> Lamech;
+    Lamech -> Noah;
 
     Adam [fillcolor=gold label="Adam"];
+    Eve [fillcolor=mistyrose label="Eve"];
+    Seth [fillcolor=lightblue label="Seth"];
+    Enosh [fillcolor=lavender label="Enosh"];
+    Kenan [fillcolor=aliceblue label="Kenan"];
+    Mahalalel [fillcolor=peachpuff label="Mahalalel"];
+    Jared [fillcolor=plum label="Jared"];
+    Enoch [fillcolor=lightyellow label="Enoch"];
+    Methuselah [fillcolor=lightskyblue label="Methuselah"];
+    Lamech [fillcolor=thistle label="Lamech"];
+    Noah [fillcolor=lightgreen label="Noah"];
+
     Eve [fillcolor=mistyrose label="Eve"];
     Seth [fillcolor=lightblue label="Seth"];
     Enosh [fillcolor=lavender label="Enosh"];
