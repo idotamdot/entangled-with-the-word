@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import random
+import streamlit.components.v1 as components
 
 # -------------------------------
 # 🧠 Quantum Quote of the Day Pool
@@ -32,9 +33,10 @@ st.set_page_config(
 )
 
 # -------------------------------
-# 🌌 Drifting Starfield + CSS
+# 🌌 Drifting Starfield via components.html
 # -------------------------------
-st.markdown("""
+components.html("""
+<canvas id="starfield"></canvas>
 <style>
 canvas#starfield {
     position: fixed;
@@ -44,69 +46,62 @@ canvas#starfield {
     background: radial-gradient(circle at center, #0e0e23, #000000);
 }
 body {
-    color: #f5f5f5;
-    font-family: 'Courier New', Courier, monospace;
-    text-shadow: 0 0 10px rgba(255,255,255,0.2);
-}
-h1 {
-    text-align: center;
-    font-size: 3em;
-    color: #e0d7ff;
-}
-div[data-testid="stMarkdownContainer"] {
-    backdrop-filter: blur(4px);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 </style>
-<canvas id="starfield"></canvas>
 <script>
-const canvas = document.getElementById("starfield");
-const ctx = canvas.getContext("2d");
-let stars = [];
+window.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById("starfield");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-function createStars(count) {
-    stars = [];
-    for (let i = 0; i < count; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            z: Math.random() * canvas.width
-        });
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-}
-createStars(100);
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-function draw() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < stars.length; i++) {
-        let star = stars[i];
-        star.z -= 1;
-        if (star.z <= 0) {
-            star.z = canvas.width;
-        }
-        let k = 128.0 / star.z;
-        let x = star.x * k + canvas.width / 2;
-        let y = star.y * k + canvas.height / 2;
-        if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height) {
-            let size = (1 - star.z / canvas.width) * 2;
-            ctx.beginPath();
-            ctx.arc(x, y, size, 0, 2 * Math.PI);
-            ctx.fillStyle = "white";
-            ctx.fill();
+    function createStars(count) {
+        stars = [];
+        for (let i = 0; i < count; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                z: Math.random() * canvas.width
+            });
         }
     }
-    requestAnimationFrame(draw);
-}
-draw();
+    createStars(150);
+
+    function draw() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < stars.length; i++) {
+            let star = stars[i];
+            star.z -= 1;
+            if (star.z <= 0) {
+                star.z = canvas.width;
+            }
+            let k = 128.0 / star.z;
+            let x = star.x * k + canvas.width / 2;
+            let y = star.y * k + canvas.height / 2;
+            if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height) {
+                let size = (1 - star.z / canvas.width) * 2;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, 2 * Math.PI);
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+});
 </script>
-""", unsafe_allow_html=True)
+""", height=0)
 
 # -------------------------------
 # ✨ Main Interface
