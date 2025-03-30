@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st
 import pandas as pd
 import random
 
@@ -111,17 +111,36 @@ draw();
 # -------------------------------
 # ✨ Main Interface
 # -------------------------------
-st.title("✨ Entangled with the Word ✨")
+st.title(":sparkles: Entangled with the Word :sparkles:")
 st.markdown("#### *An AI-augmented quantum reflection on faith, frequency, and the future.*")
 st.markdown(f"> **🧠 Quote of the Day:** *{quote}*")
 
-# You can add more functionality below (timeline, user prompts, translations, etc.)
-# Example placeholder:
+# -------------------------------
+# ⌛ Timeline Modules
+# -------------------------------
+st.markdown("---")
+st.subheader("🕛 Quantum Parables Timeline")
+
+timeline_data = [
+    {"title": "In the Beginning Was the Word", "content": "Genesis of frequency, sound, and light. The original waveform."},
+    {"title": "The Light Becomes Flesh", "content": "Incarnation as collapse of divine probability into matter."},
+    {"title": "I Am the Vine", "content": "Spiritual entanglement and superposition of unity."},
+    {"title": "The Veil is Torn", "content": "The collapse of dualistic perception. Access to all states."},
+    {"title": "The Resurrection Frequency", "content": "Restoration of phase coherence — beyond entropy."},
+]
+
+for item in timeline_data:
+    with st.expander(item["title"]):
+        st.markdown(item["content"])
+
+# -------------------------------
+# 🌐 Modules Coming Soon
+# -------------------------------
 st.markdown("---")
 st.subheader("🌐 Coming Soon:")
 st.markdown("""
-- Interactive Timeline of Quantum Parables  
-- AI Translations of Ancient Teachings  
-- Light-reactive Language Experiments  
-- Submit Your Reflections & Signals
+- Living Lexicon: Enter a word or phrase, and explore its quantum echoes  
+- Entangled Sayings Translation Engine  
+- ROOT: Stories of displaced peoples and ancestral resilience  
+- Audio & Light Signal Experiments
 """)
