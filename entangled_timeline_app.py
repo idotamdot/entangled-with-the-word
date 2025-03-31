@@ -274,6 +274,26 @@ digraph family_tree {
 ''')
 
 # -------------------------------
+# 🌟 CSS Animation for Stellar Nodes (Glow + Pulse)
+# -------------------------------
+st.markdown("""
+<style>
+/* Animate Graphviz stars using simulated pulse */
+.node ellipse {
+    animation: pulse 2.5s infinite;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+}
+
+@keyframes pulse {
+    0% { stroke-opacity: 0.2; transform: scale(1); }
+    50% { stroke-opacity: 0.8; transform: scale(1.1); }
+    100% { stroke-opacity: 0.2; transform: scale(1); }
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
 # 🌐 Modules Coming Soon
 # -------------------------------
 st.markdown("---")
