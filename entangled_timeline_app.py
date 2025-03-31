@@ -202,6 +202,16 @@ st.markdown("---")
 st.subheader("📜 Names of the Word")
 
 names_data = [
+    {"name": "Shem", "verse": "Genesis 5:32", "meaning": "Name, renown", "resonance": "The naming resonance—vibration encoded with legacy and meaning."},
+    {"name": "Ham", "verse": "Genesis 5:32", "meaning": "Hot, dark", "resonance": "The intensity of energy—potential misunderstood or misapplied."},
+    {"name": "Japheth", "verse": "Genesis 5:32", "meaning": "Expansion, open", "resonance": "Waveform of widening—growth, dispersion, unfolding of lineages."},
+    {"name": "Nimrod", "verse": "Genesis 10:8", "meaning": "Rebel, strong", "resonance": "Force without coherence—power that moves but resists entanglement."},
+    {"name": "Cush", "verse": "Genesis 10:6", "meaning": "Black, heat", "resonance": "Root of intensity—ancestor to emerging nations, deep frequencies."},
+    {"name": "Mizraim", "verse": "Genesis 10:6", "meaning": "Egypt, double straits", "resonance": "Duality embodied—land between thresholds, boundary of light and shadow."},
+    {"name": "Put", "verse": "Genesis 10:6", "meaning": "Afflicted, bow", "resonance": "Arc under tension—potential direction compressed by pressure."},
+    {"name": "Canaan", "verse": "Genesis 10:6", "meaning": "Lowland, merchant", "resonance": "The receiver of inheritance, terrain of decision and encounter."},
+    {"name": "Arphaxad", "verse": "Genesis 10:22", "meaning": "Boundary healer", "resonance": "Mender of veils—restoring resonance along generational thresholds."},
+    {"name": "Eber", "verse": "Genesis 10:24", "meaning": "One who crosses over", "resonance": "The transiter—frequency that carries the Word across dimensions."},
     {"name": "Enosh", "verse": "Genesis 4:26", "meaning": "Mortal man", "resonance": "The awareness of frailty enters creation—a particle that remembers it's a wave."},
     {"name": "Kenan", "verse": "Genesis 5:9", "meaning": "Possession, sorrow", "resonance": "Inheritance wrapped in grief—a reminder that form often comes with burden."},
     {"name": "Mahalalel", "verse": "Genesis 5:12", "meaning": "Praise of God", "resonance": "A waveform of gratitude—naming the divine as vibration itself."},
@@ -291,6 +301,44 @@ st.markdown("""
     100% { stroke-opacity: 0.2; transform: scale(1); }
 }
 </style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
+# ⚡ Lightning Flash + Chime on Click
+# -------------------------------
+st.markdown("""
+<audio id="chime" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_79675e5dc6.mp3" preload="auto"></audio>
+<div id="flash-effect"></div>
+
+<style>
+#flash-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.4s ease-out;
+}
+</style>
+
+<script>
+document.addEventListener("click", () => {
+    const flash = document.getElementById("flash-effect");
+    const chime = document.getElementById("chime");
+    if (flash && chime) {
+        flash.style.opacity = 1;
+        chime.currentTime = 0;
+        chime.play();
+        setTimeout(() => {
+            flash.style.opacity = 0;
+        }, 100);
+    }
+});
+</script>
 """, unsafe_allow_html=True)
 
 # -------------------------------
