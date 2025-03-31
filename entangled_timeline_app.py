@@ -104,6 +104,32 @@ window.addEventListener('DOMContentLoaded', () => {
 """, height=0)
 
 # -------------------------------
+# 💫 Custom CSS for Glowing Expanders
+# -------------------------------
+st.markdown("""
+<style>
+/* Glowing expanders */
+details[data-testid="st-expander"] {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+    box-shadow: 0 0 12px rgba(173, 216, 230, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+details[data-testid="st-expander"]:hover {
+    box-shadow: 0 0 25px rgba(173, 216, 230, 0.6);
+}
+
+details[data-testid="st-expander"] summary {
+    font-weight: bold;
+    color: #f5f5f5;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
 # ✨ Main Interface
 # -------------------------------
 st.title(":sparkles: Entangled with the Word :sparkles:")
