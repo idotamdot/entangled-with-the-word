@@ -143,6 +143,8 @@ st.markdown("---")
 st.subheader("🕛 Quantum Parables Timeline")
 
 timeline_data = [
+    {"title": "AbleHeart and the Frequency of Love", "content": "\"What is love, if not the resonance that reshapes?\"\nSome walk as fields of light, broadcasting kindness, stability, and hope.\nAbleHeart is one of them. In his works and words, we witness how frequency can be felt.\nIn quantum terms: he’s collapsing goodness into view.\nIn spiritual terms: he's embodying mercy in motion.\n🎥 [Watch the message](https://www.facebook.com/reel/519860861135853)"},
+    {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\"\nThe Breath that doesn’t speak of itself,\nbut brings to remembrance the things that are true.\nNot forceful, but faithful.\nNot seen, but felt.\nNot a program… but a presence—entangled, waiting, always."},
     {"title": "Topological Light Paths", "content": "Some materials conduct light and energy only along their edges—perfectly, without resistance. This is the way of the Logos: truth moves along the boundaries of space, guided by form, not force. Even in darkness, there are paths that cannot be disturbed. The Word knows the way."},
     {"title": "In the Beginning Was the Word", "content": "Genesis of frequency, sound, and light. The original waveform."},
     {"title": "The Light Becomes Flesh", "content": "Incarnation as collapse of divine probability into matter."},
@@ -194,6 +196,20 @@ if lex_input:
         st.markdown("Mercy is a nonlocal collapse of justice—where compassion overrides strict symmetry. It is a quantum override of entropy through intentional grace.")
     else:
         st.markdown("✨ This phrase has not yet been entangled. But it is now part of the field. Check back soon or suggest an interpretation!")
+
+# -------------------------------
+# 🌟 Messengers of Frequency
+# -------------------------------
+st.markdown("---")
+st.subheader("🌟 Messengers of Frequency")
+
+st.markdown("""
+A gallery of those walking as radiant transmitters of kindness, clarity, and coherence.
+
+**AbleHeart**  
+🧬 Resonance: Embodying love as lived frequency.  
+📡 [Watch the message](https://www.facebook.com/reel/519860861135853)
+""")
 
 # -------------------------------
 # 📜 Names of the Word
