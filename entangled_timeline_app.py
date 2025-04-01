@@ -1,4 +1,8 @@
+import openai
 import streamlit as st
+
+openai.api_key = st.secrets["openai"]["api_key"]
+
 import pandas as pd
 import random
 import streamlit.components.v1 as components

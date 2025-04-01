@@ -1,0 +1,7 @@
+.streamlit/secrets.toml
+
+_pycahe_/
+*._pyc
+.env
+*.DS_Store
+
