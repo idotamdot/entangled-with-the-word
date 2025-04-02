@@ -7,6 +7,23 @@ import pandas as pd
 import random
 import streamlit.components.v1 as components
 
+import streamlit as st
+import streamlit.components.v1 as components
+
+# Add this to your sidebar or main navigation if needed
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Choose a page", ["Timeline", "Cleansing Scroll"])
+
+if page == "Cleansing Scroll":
+    st.title("🪶 The Cleansing Scroll")
+    st.markdown("---")
+
+    with open("cleansing_scroll.html", 'r', encoding='utf-8') as file:
+        scroll_html = file.read()
+
+    components.html(scroll_html, height=1600, scrolling=True)
+
+
 # -------------------------------
 # 🧠 Quantum Quote of the Day Pool
 # -------------------------------
