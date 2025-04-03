@@ -43,16 +43,23 @@ if page == "Cleansing Scroll":
     components.html(scroll_html, height=1600, scrolling=True)
 
 elif page == "Timeline":
-     # 🌌 Drifting Starfield
+    # 🧠 Quantum Quote
+    quote = random.choice(QUOTES)
+    st.title(":sparkles: Entangled with the Word :sparkles:")
+    st.markdown("#### *An AI-augmented quantum reflection on faith, frequency, and the future.*")
+    st.markdown(f"> **🧠 Quote of the Day:** *{quote}*")
+
+    # 🌌 Drifting Starfield
+    components.html("""...""", height=0)
+
     # 💫 CSS for Expanders
-    # ✨ Main Interface
+    st.markdown("""<style>...</style>""", unsafe_allow_html=True)
+
     # ⌛ Timeline Modules
-    # 🔤 Living Lexicon
-    # 🌟 Messengers of Frequency
-    # 📜 Names of the Word
-    # 🌌 Stellar Family Tree
-    # ⚡ Lightning Flash
-    # 🌐 Coming Soon
+    st.subheader("🕛 Quantum Parables Timeline")
+    for item in timeline_data:
+        with st.expander(item["title"]):
+            st.markdown(item["content"])
 
 
 # -------------------------------
