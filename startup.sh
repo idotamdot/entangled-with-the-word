@@ -20,5 +20,13 @@ port = $PORT
 base = "light"
 EOF
 
+
+echo "🗝️ Writing secrets to ~/.streamlit/secrets.toml..."
+cat << EOF > ~/.streamlit/secrets.toml
+[openai]
+api_key = "your-openai-api-key-here"
+EOF
+
+
 echo "🚀 Launching app on port $PORT..."
 streamlit run entangled_timeline_app.py --server.port=$PORT
