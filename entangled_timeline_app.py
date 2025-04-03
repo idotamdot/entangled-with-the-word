@@ -1,7 +1,9 @@
 import openai
 import streamlit as st
 
-openai.api_key = st.secrets["openai"]["api_key"]
+import os
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 import pandas as pd
 import random
