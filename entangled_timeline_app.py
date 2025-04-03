@@ -275,7 +275,7 @@ names_data = [
     {"name": "Noah", "verse": "Genesis 5:29", "meaning": "Rest, comfort", "resonance": "The waveform of renewal—the collapse into rest that births a new frequency."},
     {"name": "Seth", "verse": "Genesis 4:25", "meaning": "Appointed, placed", "resonance": "A harmonic reset—a newly tuned resonance after the dissonance of Cain and Abel."},
     {"name": "Seth’s Wife", "verse": "(Implied - Genesis 4:26)", "meaning": "Unknown", "resonance": "Anonymity in origin—like the hidden quantum variables guiding emergence."},
-    {"name": "Methuselah's wife", "verse", "(Implied - Genesis 5:25)", "meaning": "Unknown", "resonance": "The silent partner in the wave function-unseen but essential to the collapse."),
+    {"name": "Methuselah's wife", "verse", "(Implied - Genesis 5:25)", "meaning": "Unknown", "resonance": "The silent partner in the wave function-unseen but essential to the collapse."},
     {"name": "Noah's wife", "verse": "(Implied - Genesis 6:18)", "meaning": "Unknown", "resonance": "The unseen force in the ark—holding the frequency of family and future."},
     {"name": "Adam", "verse": "Genesis 2:7", "meaning": "Man, Earth", "resonance": "First waveform collapsed into matter—dust formed by breath."},
     {"name": "Eve", "verse": "Genesis 3:20", "meaning": "Life", "resonance": "The echo of the first harmonic—multiplicity through division."},
