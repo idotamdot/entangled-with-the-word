@@ -1,5 +1,8 @@
 import openai
 import streamlit as st
+import pandas as pd
+import random
+import streamlit.components.v1 as components
 
 
 
@@ -23,12 +26,8 @@ import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-import pandas as pd
-import random
-import streamlit.components.v1 as components
 
-import streamlit as st
-import streamlit.components.v1 as components
+
 
 # Add this to your sidebar or main navigation if needed
 st.sidebar.title("Navigation")
