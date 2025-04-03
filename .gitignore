@@ -1,7 +1,5 @@
+# Hide all sensitive config files
 .streamlit/secrets.toml
-
-_pycahe_/
-*.pyc
 .env
-*.DS_Store
-
+*.key
+*.env
