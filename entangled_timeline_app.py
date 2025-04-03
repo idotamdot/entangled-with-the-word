@@ -42,6 +42,18 @@ if page == "Cleansing Scroll":
 
     components.html(scroll_html, height=1600, scrolling=True)
 
+elif page == "Timeline":
+     # 🌌 Drifting Starfield
+    # 💫 CSS for Expanders
+    # ✨ Main Interface
+    # ⌛ Timeline Modules
+    # 🔤 Living Lexicon
+    # 🌟 Messengers of Frequency
+    # 📜 Names of the Word
+    # 🌌 Stellar Family Tree
+    # ⚡ Lightning Flash
+    # 🌐 Coming Soon
+
 
 # -------------------------------
 # 🧠 Quantum Quote of the Day Pool
