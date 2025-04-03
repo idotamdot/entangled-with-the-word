@@ -1,6 +1,24 @@
 import openai
 import streamlit as st
 
+
+
+# -------------------------------
+# 🔧 Page Settings
+# -------------------------------
+st.set_page_config(
+    page_title="Entangled with the Word",
+    page_icon="✨",
+    layout="centered",
+    initial_sidebar_state="auto",
+    menu_items={
+        'Get Help': 'mailto:jessica.elizabeth.mcglothern@gmail.com',
+        'Report a bug': 'https://github.com/idotamdot/entangled-with-the-word/issues',
+        'About': "### Entangled with the Word\nAn AI-enhanced timeline of spiritual and scientific entanglement. Built with ❤️ by Jessica McGlothern."
+    }
+)
+
+
 import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -40,20 +58,6 @@ QUOTES = [
 ]
 quote = random.choice(QUOTES)
 
-# -------------------------------
-# 🔧 Page Settings
-# -------------------------------
-st.set_page_config(
-    page_title="Entangled with the Word",
-    page_icon="✨",
-    layout="centered",
-    initial_sidebar_state="auto",
-    menu_items={
-        'Get Help': 'mailto:jessica.elizabeth.mcglothern@gmail.com',
-        'Report a bug': 'https://github.com/idotamdot/entangled-with-the-word/issues',
-        'About': "### Entangled with the Word\nAn AI-enhanced timeline of spiritual and scientific entanglement. Built with ❤️ by Jessica McGlothern."
-    }
-)
 
 # -------------------------------
 # 🌌 Drifting Starfield via components.html
