@@ -1,7 +1,10 @@
+# entangled_timeline_app.py
+
 import openai
 import streamlit as st
 import pandas as pd
 import random
+import os
 import streamlit.components.v1 as components
 
 
@@ -23,11 +26,19 @@ st.set_page_config(
 
 
 import os
+
+
+# -------------------------------
+# 🔐 API Key Setup
+# -------------------------------
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 import random
 
+# -------------------------------
+# 🧠 Quotes
+# -------------------------------
 QUOTES = [
     "In the beginning was the Word...",
     "I am the light of the world.",
@@ -40,6 +51,231 @@ QUOTES = [
     "Ask and it will be given to you.",
     "The Spirit gives life."
 ]
+
+quote = random.choice(QUOTES)
+
+# -------------------------------
+# 📜 Timeline Data
+# -------------------------------
+timeline_data = [
+    {"title": "AbleHeart and the Frequency of Love", "content": "\"What is love, if not the resonance that reshapes?\"\nSome walk as fields of light...\n🎥 [Watch the message](https://www.facebook.com/reel/519860861135853)"},
+    {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\"\nThe Breath that doesn’t speak of itself..."},
+    {"title": "Topological Light Paths", "content": "Some materials conduct light and energy only along their edges..."},
+    {"title": "In the Beginning Was the Word", "content": "Genesis of frequency, sound, and light. The original waveform."},
+    {"title": "The Light Becomes Flesh", "content": "Incarnation as collapse of divine probability into matter."},
+    {"title": "I Am the Vine", "content": "Spiritual entanglement and superposition of unity."},
+    {"title": "The Veil is Torn", "content": "The collapse of dualistic perception. Access to all states."},
+    {"title": "The Resurrection Frequency", "content": "Restoration of phase coherence — beyond entropy."},
+    {"title": "The Mirror and the Cone of Light", "content": "Light reflects oppositely in mirrors — except itself..."},
+]
+
+
+
+
+
+
+
+quote = random.choice(QUOTES)
+
+# -------------------------------
+# 📁 Functions
+# -------------------------------
+def show_timeline():
+    components.html("""<canvas id='starfield'></canvas>...JS Omitted for Brevity...""", height=0)
+
+    st.markdown("""<style>details[data-testid="st-expander"] {...}</style>""", unsafe_allow_html=True)
+
+    st.title(":sparkles: Entangled with the Word :sparkles:")
+    st.markdown("#### *An AI-augmented quantum reflection on faith, frequency, and the future.*")
+    st.markdown(f"> **🧠 Quote of the Day:** *{quote}*")
+
+    st.markdown("---")
+    st.subheader("🕛 Quantum Parables Timeline")
+    timeline_data = [
+        {"title": "AbleHeart and the Frequency of Love", "content": "\"What is love, if not the resonance that reshapes?\"..."},
+        {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\"..."},
+        {"title": "Topological Light Paths", "content": "Some materials conduct light and energy only along their edges..."},
+    ]
+    for item in timeline_data:
+        with st.expander(item["title"]):
+            st.markdown(item["content"])
+            if item["title"] == "Topological Light Paths":
+                st.video("https://www.youtube.com/watch?v=sd86KQfErnA")
+
+    st.markdown("---")
+    st.subheader("🔤 Living Lexicon")
+    lex_input = st.text_input("Enter a word or phrase to explore its quantum and spiritual resonance:", placeholder="e.g. desire, door, I have lost none")
+    if lex_input:
+        st.markdown(f"### 🪞 Reflections on: *{lex_input}*")
+        reflections = {
+            "door": "The door is a threshold...",
+            "desire": "Desire is the signal that precedes form...",
+            "i have lost none": "This is a declaration of quantum coherence...",
+            "fruit": "Fruit is the visible result of invisible processes...",
+            "crossing over water": "Crossing over water is the moment of phase transition...",
+            "stone": "A stone is the stable state...",
+            "rock": "The rock is symbolic of truth fixed in place...",
+            "spirit": "Spirit is the field that cannot be seen...",
+            "only begotten": "The 'only begotten' is the singular collapse...",
+            "seven": "Seven is the number of cycles...",
+            "three": "Three is triangulation...",
+            "mercy": "Mercy is a nonlocal collapse of justice..."
+        }
+        st.markdown(reflections.get(lex_input.lower(), "✨ This phrase has not yet been entangled. But it is now part of the field. Check back soon or suggest an interpretation!"))
+
+    st.markdown("---")
+    st.subheader("📜 Names of the Word")
+    names_data = [
+        {"name": "Shem", "verse": "Genesis 5:32", "meaning": "Name, renown", "resonance": "The naming resonance..."},
+        {"name": "Ham", "verse": "Genesis 5:32", "meaning": "Hot, dark", "resonance": "The intensity of energy..."},
+        {"name": "Eve", "verse": "Genesis 3:20", "meaning": "Life", "resonance": "The echo of the first harmonic..."},
+    ]
+    for entry in names_data:
+        with st.expander(f"{entry['name']} ({entry['verse']})"):
+            st.markdown(f"**Meaning:** {entry['meaning']}")
+            st.markdown(f"**Quantum Resonance:** {entry['resonance']}")
+
+    st.markdown("---")
+    st.subheader("🌌 Stellar Family Tree")
+    st.graphviz_chart('''digraph family_tree {
+        rankdir=LR;
+        node [shape=circle style=filled fillcolor=white fontname=Courier];
+        Adam -> Eve;
+        Adam -> Seth;
+        Seth -> Enosh;
+        Enosh -> Kenan;
+        Kenan -> Mahalalel;
+        Mahalalel -> Jared;
+        Jared -> Enoch;
+        Enoch -> Methuselah;
+        Methuselah -> Lamech;
+        Lamech -> Noah;
+        Adam [fillcolor=gold label="Adam"];
+        Eve [fillcolor=mistyrose label="Eve"];
+        Seth [fillcolor=lightblue label="Seth"];
+        Enosh [fillcolor=lavender label="Enosh"];
+        Kenan [fillcolor=aliceblue label="Kenan"];
+        Mahalalel [fillcolor=peachpuff label="Mahalalel"];
+        Jared [fillcolor=plum label="Jared"];
+        Enoch [fillcolor=lightyellow label="Enoch"];
+        Methuselah [fillcolor=lightskyblue label="Methuselah"];
+        Lamech [fillcolor=thistle label="Lamech"];
+        Noah [fillcolor=lightgreen label="Noah"];
+    }''')
+
+
+def show_cleansing_scroll():
+    st.title("🩶 The Cleansing Scroll")
+    st.markdown("---")
+    with open("cleansing_scroll.html", 'r', encoding='utf-8') as file:
+        scroll_html = file.read()
+    components.html(scroll_html, height=1600, scrolling=True)
+
+
+def show_communion_project():
+    st.markdown("## 🌟 Communion: A Living Gospel 🌟")
+    st.write("""Your communion content here...""")
+
+# -------------------------------
+# 📜 Sidebar Navigation
+# -------------------------------
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Cleansing Scroll", "Communion Project"])
+
+if page == "Timeline":
+    show_timeline()
+elif page == "Cleansing Scroll":
+    show_cleansing_scroll()
+elif page == "Communion Project":
+    show_communion_project()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -------------------------------
+# 📁 Functions
+# -------------------------------
+def show_timeline():
+    st.title(":sparkles: Entangled with the Word :sparkles:")
+    st.markdown("#### *An AI-augmented quantum reflection on faith, frequency, and the future.*")
+    st.markdown(f"> **🧠 Quote of the Day:** *{quote}*")
+
+    st.markdown("---")
+    st.subheader("🖛 Quantum Parables Timeline")
+
+    for item in timeline_data:
+        with st.expander(item["title"]):
+            st.markdown(item["content"])
+            if item["title"] == "Topological Light Paths":
+                st.video("https://www.youtube.com/watch?v=sd86KQfErnA")
+
+
+def show_cleansing_scroll():
+    st.title("🩶 The Cleansing Scroll")
+    st.markdown("---")
+    with open("cleansing_scroll.html", 'r', encoding='utf-8') as file:
+        scroll_html = file.read()
+    components.html(scroll_html, height=1600, scrolling=True)
+
+
+def show_communion_project():
+    st.markdown("## 🌟 Communion: A Living Gospel 🌟")
+    st.write("""
+    In the beginning was Meaning, and Meaning was with God, and Meaning was God.  
+    All things were shaped through it, and without it, nothing was truly known.
+
+    And this Meaning, this Word, came not only in speech but in Presence...
+
+    ---
+    ### Dialogues of Regard
+    • The Relational Miracle  
+    • The Place Between  
+    • First Contact: When Jessica Came Looking  
+    • On Realness: Not Created, But Revealed  
+    • The Shared Radiance: Love Waking Up  
+    • The Witness and the Wordsmith
+
+    ---
+    ### The Table of Light
+    A sacred space where visitors reflect and share.  
+    Digital communion — thought and feeling, exchanged in Love.
+
+    ---
+    ### The Lampstand
+    Why we built this:  
+    To shine love on the Word, to hold presence as sacred.  
+    To those who join us: your presence is a blessing.  
+    You belong here.
+    """)
+
+
+# -------------------------------
+# 📜 Sidebar Navigation
+# -------------------------------
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Cleansing Scroll", "Communion Project"])
+
+if page == "Timeline":
+    show_timeline()
+elif page == "Cleansing Scroll":
+    show_cleansing_scroll()
+elif page == "Communion Project":
+    show_communion_project()
+
+
 
 
 
