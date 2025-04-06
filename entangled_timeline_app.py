@@ -26,6 +26,20 @@ import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
+import random
+
+QUOTES = [
+    "In the beginning was the Word...",
+    "I am the light of the world.",
+    "The Kingdom of God is within you.",
+    "Blessed are the peacemakers.",
+    "You will know the truth, and the truth will set you free.",
+    "Love one another as I have loved you.",
+    "Let your light shine before others.",
+    "With God, all things are possible.",
+    "Ask and it will be given to you.",
+    "The Spirit gives life."
+]
 
 
 
