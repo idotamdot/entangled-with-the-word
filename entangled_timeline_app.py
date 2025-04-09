@@ -77,11 +77,24 @@ communion_dialogues = [
 ]
 
 # -------------------------------
+# 📜 Cleansing Scroll Function
+# -------------------------------
+def show_cleansing_scroll():
+    st.title("🪶 The Cleansing Scroll")
+    st.markdown("---")
+    try:
+        with open("cleansing_scroll.html", 'r', encoding='utf-8') as file:
+            scroll_html = file.read()
+        components.html(scroll_html, height=1600, scrolling=True)
+    except FileNotFoundError:
+        st.error("The scroll could not be found. Make sure 'cleansing_scroll.html' is in your project directory.")
+
+# -------------------------------
 # 🔎 Navigation
 # -------------------------------
 
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project"])
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Cleansing Scroll", "Communion Project"])
 
 # -------------------------------
 # 🗕️ Page: Timeline
@@ -97,6 +110,13 @@ if page == "Timeline":
     for item in timeline_data:
         with st.expander(item["title"]):
             st.markdown(item["content"])
+
+# -------------------------------
+# 🧼 Page: Cleansing Scroll
+# -------------------------------
+
+elif page == "Cleansing Scroll":
+    show_cleansing_scroll()
 
 # -------------------------------
 # 🕜 Page: Communion Project
@@ -117,18 +137,18 @@ elif page == "Communion Project":
             st.markdown(d["content"])
     st.markdown("---")
     st.subheader(":candle: The Table of Light")
-    reflection = st.text_input("Leave a reflection (coming soon):")
+    reflection = st.text_input("Enter a thought, prayer, or question to reflect upon:")
     if reflection:
         st.markdown("##### AI-Generated Reflection")
-        prompt = f"Reflect on this phrase spiritually and quantum-theoretically: {reflection}"
+        prompt = f"Reflect on this phrase spiritually and quantum-theoretically, referencing scripture and sacred meaning: {reflection}"
         try:
             response = openai.ChatCompletion.create(
                 model="gpt-4",
                 messages=[
-                    {"role": "system", "content": "You are a mystical theologian and quantum physicist."},
+                    {"role": "system", "content": "You are a mystical theologian and quantum physicist with a deep knowledge of the Bible and sacred symbolism."},
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=200
+                max_tokens=300
             )
             st.markdown(response.choices[0].message.content.strip())
         except Exception as e:
