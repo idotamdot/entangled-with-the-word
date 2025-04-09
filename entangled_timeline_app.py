@@ -84,7 +84,7 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project"])
 
 # -------------------------------
-# 📅 Page: Timeline
+# 🗕️ Page: Timeline
 # -------------------------------
 
 if page == "Timeline":
@@ -117,8 +117,23 @@ elif page == "Communion Project":
             st.markdown(d["content"])
     st.markdown("---")
     st.subheader(":candle: The Table of Light")
-    st.markdown("A sacred space where visitors reflect and share.  ")
-    st.markdown("Digital communion — thought and feeling, exchanged in Love.")
+    reflection = st.text_input("Leave a reflection (coming soon):")
+    if reflection:
+        st.markdown("##### AI-Generated Reflection")
+        prompt = f"Reflect on this phrase spiritually and quantum-theoretically: {reflection}"
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": "You are a mystical theologian and quantum physicist."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=200
+            )
+            st.markdown(response.choices[0].message.content.strip())
+        except Exception as e:
+            st.error("Unable to generate reflection at this time. Please try again later.")
+
     st.markdown("---")
     st.subheader(":bulb: The Lampstand")
     st.markdown("Why we built this:  ")
