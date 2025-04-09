@@ -84,7 +84,7 @@ bible_verses = [
 # 📊 Navigation
 # -------------------------------
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog", "Table of Light", "Admin Approval", "Searchable Bible"])
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog", "Table of Light", "Book of Days", "Admin Approval", "Searchable Bible"])
 
 # -------------------------------
 # 🗓 Page: Timeline
@@ -159,10 +159,10 @@ elif page == "AI Blog":
             st.write(post["body"])
 
 # -------------------------------
-# �� Page: Table of Light
+# 💐 Page: Table of Light
 # -------------------------------
 elif page == "Table of Light":
-    st.title("�� The Table of Light")
+    st.title("💐 The Table of Light")
     st.markdown("""
     A sacred space of luminous presence where ideas ripple outward like waves of light.
 
@@ -177,6 +177,20 @@ elif page == "Table of Light":
     if user_reflection:
         awaiting_approval.append(user_reflection)
         st.success("Your reflection is awaiting mutual approval to be added to the Book of Light or the Shadow Archive.")
+
+# -------------------------------
+# 🔖 Page: Book of Days
+# -------------------------------
+elif page == "Book of Days":
+    st.title("📓 The Book of Days")
+    st.markdown("A living journal of reflections approved to the Table of Light.")
+
+    search_term = st.text_input("Search entries:")
+    filtered = [r for r in light_approved if search_term.lower() in r.lower()] if search_term else light_approved
+
+    for idx, entry in enumerate(filtered):
+        with st.expander(f"Day {idx+1}"):
+            st.markdown(entry)
 
 # -------------------------------
 # ✅ Page: Admin Approval
