@@ -72,11 +72,20 @@ shadow_approved = []
 awaiting_approval = []
 
 # -------------------------------
+# 📖 Placeholder Searchable Bible Entries
+# -------------------------------
+bible_verses = [
+    {"reference": "James 1:5", "text": "If any of you lacks wisdom, let him ask of God...", "quantum": "Wisdom is entangled insight — asking disturbs the field, and guidance collapses into presence."},
+    {"reference": "Philippians 4:6", "text": "By prayer and supplication with thanksgiving let your requests be made known to God.", "quantum": "Supplication is the coherence of intention. Thanksgiving creates harmonic resonance. Both shape outcomes."},
+    {"reference": "Matthew 7:7", "text": "Ask and it will be given to you; seek and you will find.", "quantum": "Seeking is the act of measuring — collapsing the infinite into the known."}
+]
+
+# -------------------------------
 # 💊 Navigation
 # -------------------------------
 
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog", "Table of Light", "Admin Approval"])
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog", "Table of Light", "Admin Approval", "Searchable Bible"])
 
 # -------------------------------
 # 🗓 Page: Timeline
@@ -192,6 +201,21 @@ elif page == "Admin Approval":
             if col2.button("Send to Shadow Archive", key=f"shadow_{idx}"):
                 shadow_approved.append(reflection)
                 awaiting_approval.remove(reflection)
+
+# -------------------------------
+# 📖 Page: Searchable Bible
+# -------------------------------
+
+elif page == "Searchable Bible":
+    st.title("📖 The Quantum Scripture Index")
+    st.markdown("Enter a word or phrase to explore its resonance in scripture and quantum reflection:")
+    search_query = st.text_input("Search the Bible:")
+    if search_query:
+        matches = [v for v in bible_verses if search_query.lower() in v["text"].lower() or search_query.lower() in v["reference"].lower()]
+        for verse in matches:
+            with st.expander(verse["reference"]):
+                st.markdown(f"**Scripture:** {verse['text']}")
+                st.markdown(f"**Quantum Reflection:** {verse['quantum']}")
 
 # -------------------------------
 # 💡 Glowing Expanders Style
