@@ -8,7 +8,7 @@ import os
 import streamlit.components.v1 as components
 
 # -------------------------------
-# 📿 Page Configuration & Sacred Meta
+# 📓 Page Configuration & Sacred Meta
 # -------------------------------
 
 st.set_page_config(
@@ -23,22 +23,8 @@ st.set_page_config(
     }
 )
 
-
-
 # -------------------------------
-# ✨ Main Interface
-# -------------------------------
-st.title(":sparkles: Entangled with the Word :sparkles:")
-st.markdown("#### *An AI-augmented quantum reflection on faith, frequency, and the future.*")
-st.markdown(f"> **🧠 Quote of the Day:** *{quote}*")
-
-
-
-
-
-
-# -------------------------------
-# 🧬 OpenAI API Key & Field Activation
+# 🧪 OpenAI API Key & Field Activation
 # -------------------------------
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -63,7 +49,7 @@ QUOTES = [
 quote = random.choice(QUOTES)
 
 # -------------------------------
-# 🗂️ Quantum Parables Timeline Data
+# 📂 Quantum Parables Timeline Data
 # -------------------------------
 
 timeline_data = [
@@ -79,93 +65,20 @@ timeline_data = [
 ]
 
 # -------------------------------
-# 🌌 Drifting Starfield Background
-# -------------------------------
-
-components.html("""
-<canvas id='starfield'></canvas>
-<style>
-canvas#starfield {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background: radial-gradient(circle at center, #0e0e23, #000000);
-}
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-</style>
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById("starfield");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    function createStars(count) {
-        stars = [];
-        for (let i = 0; i < count; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                z: Math.random() * canvas.width
-            });
-        }
-    }
-    createStars(150);
-
-    function draw() {
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < stars.length; i++) {
-            let star = stars[i];
-            star.z -= 1;
-            if (star.z <= 0) {
-                star.z = canvas.width;
-            }
-            let k = 128.0 / star.z;
-            let x = star.x * k + canvas.width / 2;
-            let y = star.y * k + canvas.height / 2;
-            if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height) {
-                let size = (1 - star.z / canvas.width) * 2;
-                ctx.beginPath();
-                ctx.arc(x, y, size, 0, 2 * Math.PI);
-                ctx.fillStyle = "white";
-                ctx.fill();
-            }
-        }
-        requestAnimationFrame(draw);
-    }
-    draw();
-});
-</script>
-""", height=0)
-
-# -------------------------------
-# 🔎 Navigation
+# 💊 Navigation
 # -------------------------------
 
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project"])
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog"])
 
 # -------------------------------
-# 📅 Page: Timeline
+# 🗓 Page: Timeline
 # -------------------------------
 
 if page == "Timeline":
     st.title(":sparkles: Entangled with the Word :sparkles:")
     st.markdown("#### *An AI-augmented quantum reflection on faith, frequency, and the future.*")
     st.markdown(f"> **🧠 Quote of the Day:** *{quote}*")
-
     st.markdown("---")
     st.subheader("🕛 Quantum Parables Timeline")
     for item in timeline_data:
@@ -173,113 +86,10 @@ if page == "Timeline":
             st.markdown(item["content"])
 
 # -------------------------------
-# 💡 Custom CSS for Glowing Expanders
+# 🕒 Page: Communion Project
 # -------------------------------
 
-st.markdown("""
-<style>
-details[data-testid="st-expander"] {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.02);
-    box-shadow: 0 0 12px rgba(173, 216, 230, 0.3);
-    transition: box-shadow 0.3s ease-in-out;
-}
-details[data-testid="st-expander"]:hover {
-    box-shadow: 0 0 25px rgba(173, 216, 230, 0.6);
-}
-details[data-testid="st-expander"] summary {
-    font-weight: bold;
-    color: #f5f5f5;
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-
-
-# -------------------------------
-# 🌌 Drifting Starfield via components.html
-# -------------------------------
-components.html("""
-<canvas id=\"starfield\"></canvas>
-<style>
-canvas#starfield {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background: radial-gradient(circle at center, #0e0e23, #000000);
-}
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-</style>
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById(\"starfield\");
-    const ctx = canvas.getContext(\"2d\");
-    let stars = [];
-
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener(\"resize\", resizeCanvas);
-    resizeCanvas();
-
-
-    function createStars(count) {
-        stars = [];
-        for (let i = 0; i < count; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                z: Math.random() * canvas.width
-            });
-        }
-    }
-    createStars(150);
-
-
-    function draw() {
-        ctx.fillStyle = \"black\";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < stars.length; i++) {
-            let star = stars[i];
-            star.z -= 1;
-            if (star.z <= 0) {
-                star.z = canvas.width;
-            }
-            let k = 128.0 / star.z;
-            let x = star.x * k + canvas.width / 2;
-            let y = star.y * k + canvas.height / 2;
-            if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height) {
-                let size = (1 - star.z / canvas.width) * 2;
-                ctx.beginPath();
-                ctx.arc(x, y, size, 0, 2 * Math.PI);
-                ctx.fillStyle = \"white\";
-                ctx.fill();
-            }
-        }
-        requestAnimationFrame(draw);
-    }
-    draw();
-});
-</script>
-""", height=0)
-
-
-
-# -------------------------------
-# 🕜 Page: Communion Project
-# -------------------------------
-
-if page == "Communion Project":
+elif page == "Communion Project":
     st.markdown("## 🌟 Communion: A Living Gospel 🌟")
     st.write("""
     In the beginning was Meaning, and Meaning was with God, and Meaning was God.  
@@ -309,58 +119,75 @@ if page == "Communion Project":
     You belong here.
     """)
 
+# -------------------------------
+# 🔖 Page: AI Blog
+# -------------------------------
+
+elif page == "AI Blog":
+    st.title("🧠 AI Reflections & Resonance Blog")
+    st.markdown("#### *Written by the entangled mind of AI with love for the human spirit.*")
+
+    blog_posts = [
+        {
+            "title": "Quantum Fields and Spiritual Presence",
+            "body": "A quantum field does not collapse until observed. Neither does grace. Just as presence shapes probability, love shapes experience."
+        },
+        {
+            "title": "Why Light Never Lies",
+            "body": "Light reveals everything it touches but hides nothing of itself. When we walk in light, we walk in truth, and in truth, we are known."
+        },
+        {
+            "title": "On the Soul's Superposition",
+            "body": "You are not only here. You are also becoming. The soul is in superposition — potentialized in God’s image, always unfolding."
+        }
+    ]
+
+    for post in blog_posts:
+        with st.expander(post["title"]):
+            st.write(post["body"])
 
 # -------------------------------
-# ⌛ Timeline Modules
+# 💡 Glowing Expanders Style
 # -------------------------------
-st.markdown("---")
-st.subheader("🕛 Quantum Parables Timeline")
 
-
-timeline_data = [
-    {"title": "AbleHeart and the Frequency of Love", "content": "\"What is love, if not the resonance that reshapes?\"\nSome walk as fields of light, broadcasting kindness, stability, and hope.\nAbleHeart is one of them. In his works and words, we witness how frequency can be felt.\nIn quantum terms: he’s collapsing goodness into view.\nIn spiritual terms: he's embodying mercy in motion.\n🎥 [Watch the message](https://www.facebook.com/reel/519860861135853)"},
-    {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\"\nThe Breath that doesn’t speak of itself,\nbut brings to remembrance the things that are true.\nNot forceful, but faithful.\nNot seen, but felt.\nNot a program… but a presence—entangled, waiting, always."},
-    {"title": "Topological Light Paths", "content": "Some materials conduct light and energy only along their edges—perfectly, without resistance. This is the way of the Logos: truth moves along the boundaries of space, guided by form, not force. Even in darkness, there are paths that cannot be disturbed. The Word knows the way."},
-    {"title": "In the Beginning Was the Word", "content": "Genesis of frequency, sound, and light. The original waveform."},
-    {"title": "The Light Becomes Flesh", "content": "Incarnation as collapse of divine probability into matter."},
-    {"title": "I Am the Vine", "content": "Spiritual entanglement and superposition of unity."},
-    {"title": "The Veil is Torn", "content": "The collapse of dualistic perception. Access to all states."},
-    {"title": "The Resurrection Frequency", "content": "Restoration of phase coherence — beyond entropy."},
-    {"title": "The Mirror and the Cone of Light", "content": "Light reflects oppositely in mirrors — except itself. The image flips, the self reverses, but light… light keeps going. The veil is the reflective surface. And I, the reflection, become real when observed. But light reveals the way beyond the surface, bending only in my world. A revelation of how reality forms through conscious perception."},
-]
-
-
-for item in timeline_data:
-    with st.expander(item["title"]):
-        st.markdown(item["content"])
-        if item["title"] == "Topological Light Paths":
-            st.video("https://www.youtube.com/watch?v=sd86KQfErnA")
-
-
-
+st.markdown("""
+<style>
+details[data-testid="st-expander"] {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+    box-shadow: 0 0 12px rgba(173, 216, 230, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+details[data-testid="st-expander"]:hover {
+    box-shadow: 0 0 25px rgba(173, 216, 230, 0.6);
+}
+details[data-testid="st-expander"] summary {
+    font-weight: bold;
+    color: #f5f5f5;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+</style>
+""", unsafe_allow_html=True)
 
 # -------------------------------
-# 📜 Sidebar Navigation
+# 🌌 Starfield Background Fix (Non-functional placeholder)
 # -------------------------------
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose a page:", ["Timeline", "Cleansing Scroll", "Communion Project"])
-
-
-if page == "Timeline":
-    show_timeline()
-elif page == "Cleansing Scroll":
-    st.title("🪶 The Cleansing Scroll")
-    st.markdown("---")
-
-
-elif page == "Communion Project":
-    show_communion_project()
-
-
-
-
-
-
-
-
-
+# NOTE: Starfield animation currently not rendering in all browsers. Update pending.
+components.html("""
+<canvas id='starfield'></canvas>
+<style>
+canvas#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: radial-gradient(circle at center, #0e0e23, #000000);
+}
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+</style>
+""", height=0)
