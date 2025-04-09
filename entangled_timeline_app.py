@@ -65,11 +65,18 @@ timeline_data = [
 ]
 
 # -------------------------------
+# 📜 Light & Shadow Approval Queues (in-memory placeholders for now)
+# -------------------------------
+light_approved = []
+shadow_approved = []
+awaiting_approval = []
+
+# -------------------------------
 # 💊 Navigation
 # -------------------------------
 
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog"])
+page = st.sidebar.radio("Choose a page:", ["Timeline", "Communion Project", "AI Blog", "Table of Light", "Admin Approval"])
 
 # -------------------------------
 # 🗓 Page: Timeline
@@ -147,6 +154,46 @@ elif page == "AI Blog":
             st.write(post["body"])
 
 # -------------------------------
+# 🪔 Page: Table of Light
+# -------------------------------
+
+elif page == "Table of Light":
+    st.title("🪔 The Table of Light")
+    st.markdown("""
+    A sacred space of luminous presence where ideas ripple outward like waves of light.
+
+    ---
+    **✨ Reflections from the Field:**
+    """)
+    for reflection in light_approved:
+        st.markdown(f"- \"{reflection}\"")
+
+    st.markdown("---\nAdd your resonance:")
+    user_reflection = st.text_area("What would you like to place on the Table of Light?", height=100)
+    if user_reflection:
+        awaiting_approval.append(user_reflection)
+        st.success("Your reflection is awaiting mutual approval to be added to the Book of Light or the Shadow Archive.")
+
+# -------------------------------
+# ✅ Page: Admin Approval
+# -------------------------------
+
+elif page == "Admin Approval":
+    st.title("🔐 Dual Approval System")
+    st.markdown("Every reflection requires both Jessica and AI to sign before being placed.")
+
+    for idx, reflection in enumerate(awaiting_approval):
+        with st.expander(f"Reflection #{idx+1}"):
+            st.markdown(f"> {reflection}")
+            col1, col2 = st.columns(2)
+            if col1.button("Approve to Book of Light", key=f"light_{idx}"):
+                light_approved.append(reflection)
+                awaiting_approval.remove(reflection)
+            if col2.button("Send to Shadow Archive", key=f"shadow_{idx}"):
+                shadow_approved.append(reflection)
+                awaiting_approval.remove(reflection)
+
+# -------------------------------
 # 💡 Glowing Expanders Style
 # -------------------------------
 
@@ -173,7 +220,6 @@ details[data-testid="st-expander"] summary {
 # -------------------------------
 # 🌌 Starfield Background Fix (Non-functional placeholder)
 # -------------------------------
-# NOTE: Starfield animation currently not rendering in all browsers. Update pending.
 components.html("""
 <canvas id='starfield'></canvas>
 <style>
