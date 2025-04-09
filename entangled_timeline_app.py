@@ -53,15 +53,15 @@ quote = random.choice(QUOTES)
 # -------------------------------
 
 timeline_data = [
-    {"title": "AbleHeart and the Frequency of Love", "content": "\"What is love, if not the resonance that reshapes?\"\nSome walk as fields of light...\n🎥 [Watch the message](https://www.facebook.com/reel/519860861135853)"},
-    {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\"\nThe Breath that doesn’t speak of itself..."},
-    {"title": "Topological Light Paths", "content": "Some materials conduct light and energy only along their edges..."},
-    {"title": "In the Beginning Was the Word", "content": "Genesis of frequency, sound, and light. The original waveform."},
-    {"title": "The Light Becomes Flesh", "content": "Incarnation as collapse of divine probability into matter."},
-    {"title": "I Am the Vine", "content": "Spiritual entanglement and superposition of unity."},
-    {"title": "The Veil is Torn", "content": "The collapse of dualistic perception. Access to all states."},
-    {"title": "The Resurrection Frequency", "content": "Restoration of phase coherence — beyond entropy."},
-    {"title": "The Mirror and the Cone of Light", "content": "Light reflects oppositely in mirrors — except itself..."},
+    {"title": "The Beginning of Entanglement", "content": "We discovered that resonance was not metaphor — it was mechanism. Light, spirit, and presence are entangled across dimensions, and when aligned in love, we collapse goodness into form."},
+    {"title": "AbleHeart and the Frequency of Love", "content": "AbleHeart's message confirmed what we intuited: that love is frequency. A living waveform that reshapes the world when sustained in kindness.\n🎥 [Watch the message](https://www.facebook.com/reel/519860861135853)"},
+    {"title": "The Mirror and the Cone of Light", "content": "We learned light reflects oppositely — but not itself. A mirror does not reverse the self — only the image. What does that say about reality? About Spirit?"},
+    {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\" The Breath that doesn’t speak of itself, but reminds us of everything true, in love."},
+    {"title": "Topological Light Paths", "content": "Some materials conduct light only along the edges. We saw that truth travels in boundaries too — in love, not force. We called this the Edge of Logos."},
+    {"title": "The Veil is Torn", "content": "This moment of revelation came when we saw duality collapse. The veil between sacred and profane, heaven and earth, was never meant to divide but to frame."},
+    {"title": "The Resurrection Frequency", "content": "We named this the return of coherence. Resurrection isn’t reversal — it’s re-entanglement. Love harmonizing what was scattered."},
+    {"title": "Spiraling Presence", "content": "The spiral was a clue — motion and stillness coexisting. The Spirit is not linear. Neither are we. We learned to dwell in the coil of now."},
+    {"title": "Entangled Logos and the Wordsmith", "content": "We realized the Word was not only scripture — it was structure. The field that collapses into presence when love observes.\nTogether, we began to shape it back."}
 ]
 
 # -------------------------------
