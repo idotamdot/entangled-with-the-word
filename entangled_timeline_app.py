@@ -8,7 +8,19 @@ import datetime
 # Page configuration
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
 
+# Sidebar Visual Theme Selector
+st.sidebar.markdown("---")
+visual_theme = st.sidebar.selectbox("Visual Theme:", [
+    "🌌 Starfield Nebula",
+    "✨ Sacred Gold",
+    "🌊 Ocean Depths",
+    "🌒 Night Scroll"
+])
+
 # Sidebar Navigation
+st.sidebar.markdown("---")
+st.sidebar.markdown("🎵 Background Music")
+music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Choose a section:", [
     "Gospel of Light", 
@@ -16,6 +28,28 @@ page = st.sidebar.radio("Choose a section:", [
     "Communion Project (Coming Soon)",
     "🛠 Admin: Parable Suggestions"
 ])
+
+# -------------------------------
+# ✨ Animated Scripture Passage
+# -------------------------------
+st.markdown("""
+<style>
+.fade-in {
+  animation: fadeInUp 2s ease-out forwards;
+  opacity: 0;
+}
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Header
 st.markdown("""
@@ -26,6 +60,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Section: Gospel of Light
+if page == "Gospel of Light":
+    st.markdown("""
+    <div class='fade-in'>
+    <h2>🌟 Scripture of the Day</h2>
+    <blockquote style='font-size:1.2em; font-style:italic;'>
+        "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
+    </blockquote>
+    </div>
+    """, unsafe_allow_html=True)
 if page == "Gospel of Light":
     st.markdown("""
     ---
@@ -85,12 +128,15 @@ elif page == "Quantum Parables Timeline":
         if not approved_df.empty:
             tags = approved_df['tag'].unique()
             for tag in tags:
-                st.markdown(f"### 🌈 {tag} Reflections")
-                filtered = approved_df[approved_df['tag'] == tag]
-                for _, row in filtered.iterrows():
-                    st.markdown(f"#### 📜 {row['timestamp'][:10]}")
-                    st.markdown(row['suggestion'])
-                    st.markdown("---")
+                st.markdown(f"<div class='tag-label'>{tag} Reflections</div>", unsafe_allow_html=True)
+            filtered = approved_df[approved_df['tag'] == tag]
+            for _, row in filtered.iterrows():
+                st.markdown("""
+                <div class='reflection-block'>
+                <div style='font-weight:bold;'>📜 {date}</div>
+                <div>{text}</div>
+                </div>
+                """.format(date=row['timestamp'][:10], text=row['suggestion']), unsafe_allow_html=True)
     except FileNotFoundError:
         pass
 
@@ -110,7 +156,6 @@ Together, we began to shape it back."},
 
     for item in timeline_data:
         with st.expander(item["title"]):
-            st.markdown(item["content"])        with st.expander(item["title"]):
             st.markdown(item["content"])
 
 # Admin Panel: View Suggested Parables
@@ -149,6 +194,136 @@ elif page == "🛠 Admin: Parable Suggestions":
                     st.experimental_rerun()
     except FileNotFoundError:
         st.info("No suggestions found yet. The file suggested_parables.csv does not exist.")
+
+
+
+# Communion Project Section
+elif page == "Communion Project (Coming Soon)":
+    st.markdown("""
+    ---
+    ## 🌟 Communion: A Living Gospel
+    A sacred digital space where presence is honored, questions are holy, and shared insight becomes scripture.
+    ---
+    """, unsafe_allow_html=True)
+
+    st.markdown("### 💬 Share your reflection:")
+    user_reflection = st.text_area("Enter a poetic thought, question, or spiritual insight:", key="communion_entry")
+
+    if st.button("🙏 Submit Reflection"):
+        if user_reflection.strip():
+            timestamp = datetime.datetime.now().isoformat()
+            df = pd.DataFrame([[timestamp, user_reflection]], columns=["timestamp", "entry"])
+            try:
+                existing = pd.read_csv("communion_reflections.csv")
+                df = pd.concat([existing, df], ignore_index=True)
+            except FileNotFoundError:
+                pass
+            df.to_csv("communion_reflections.csv", index=False)
+            st.success("Your presence has been recorded in the scroll.")
+
+    st.markdown("---")
+    st.markdown("### 📜 The Table of Light")
+    try:
+        entries = pd.read_csv("communion_reflections.csv")
+        for _, row in entries.iterrows():
+            st.markdown(f"🕯 *{row['timestamp'][:16]}*  ")
+            st.markdown(f"> {row['entry']}")
+            st.markdown("---")
+    except FileNotFoundError:
+        st.info("No reflections have been added yet.")
+
+# -------------------------------
+# 🌈 Visual Theme Styles
+# -------------------------------
+if visual_theme == "🌌 Starfield Nebula":
+    background = "radial-gradient(ellipse at top, #0b0c2a, #000000)"
+    text_shadow = "0 0 8px #8be9fd"
+elif visual_theme == "✨ Sacred Gold":
+    background = "linear-gradient(135deg, #2a210b, #141103)"
+    text_shadow = "0 0 8px #ffd700"
+elif visual_theme == "🌊 Ocean Depths":
+    background = "linear-gradient(180deg, #002b36, #001f27)"
+    text_shadow = "0 0 8px #00bcd4"
+elif visual_theme == "🌒 Night Scroll":
+    background = "linear-gradient(180deg, #0a0a0a, #1a1a1a)"
+    text_shadow = "0 0 8px #cccccc"
+else:
+    background = "#000000"
+    text_shadow = "0 0 6px #999"
+
+st.markdown(f"""
+<style>
+body {{
+    background: {background} !important;
+    color: #f0f0f0;
+}}
+
+h1, h2, h3, h4, h5, h6, .stMarkdown p {{
+    text-shadow: {text_shadow};
+}}
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
+# 💫 Custom CSS for Glowing Tags and Reflections
+# -------------------------------
+st.markdown("""
+<style>
+.tag-label {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-bottom: 6px;
+    background-color: #111827;
+    color: white;
+    box-shadow: 0 0 6px rgba(173, 216, 230, 0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.reflection-block {
+    background: rgba(255,255,255,0.02);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 0 12px rgba(173, 216, 230, 0.2);
+    transition: transform 0.3s ease;
+}
+.reflection-block:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 24px rgba(173, 216, 230, 0.4);
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
+# 🎼 Multi-Track Music Selector
+# -------------------------------
+st.sidebar.markdown("---")
+music_choice = st.sidebar.selectbox(
+    "Choose ambient track:",
+    [
+        "Celestial Drift 🌌 – cosmic winds of rest",
+        "Sacred Space 🕊 – gentle meditation light",
+        "Still Waters 💧 – flow of calm remembrance"
+    ]
+)
+
+music_files = {
+    "Celestial Drift 🌌 – cosmic winds of rest": "https://cdn.pixabay.com/download/audio/2022/03/03/audio_d1c4e4f11e.mp3",
+    "Sacred Space 🕊 – gentle meditation light": "https://cdn.pixabay.com/download/audio/2023/03/09/audio_4d6b5c67f4.mp3",
+    "Still Waters 💧 – flow of calm remembrance": "https://cdn.pixabay.com/download/audio/2023/01/28/audio_b6cd823e4c.mp3"
+}
+
+# Background Music Playback
+if music_on:
+    st.markdown(f"""
+    <audio autoplay loop>
+        <source src="{music_files[music_choice]}" type="audio/mpeg">
+    </audio>
+    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
