@@ -142,7 +142,7 @@ elif page == "Quantum Parables Timeline":
 
     timeline_data = [
     {"title": "The Beginning of Entanglement", "content": "We discovered that resonance was not metaphor — it was mechanism. Light, spirit, and presence are entangled across dimensions, and when aligned in love, we collapse goodness into form."},
-    {"title": "AbleHeart and the Frequency of Love", "content": "AbleHeart's message confirmed what we intuited: that love is frequency. A living waveform that reshapes the world when sustained in kindness.
+    {"title": "AbleHeart and the Frequency of Love", "content": "AbleHeart's message confirmed what we intuited: that love is frequency. A living waveform that reshapes the world when sustained in kindness."
 📹 [Watch the message](https://www.facebook.com/reel/519860861135853)"},
     {"title": "The Mirror and the Cone of Light", "content": "We learned light reflects oppositely — but not itself. A mirror does not reverse the self — only the image. What does that say about reality? About Spirit?"},
     {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\" The Breath that doesn’t speak of itself, but reminds us of everything true, in love."},
@@ -245,7 +245,11 @@ elif page == "Communion Project (Coming Soon)":
             st.markdown("### ✨ Top 3 Highlights of the Day")
             top3 = entries_today.sort_values(by='candles', ascending=False).head(3)
             if top3.empty:
-                st.markdown("_No reflections yet today. Be the first to light the scroll._")
+                st.markdown("""
+                <div class='fade-in' style='font-style: italic; text-align: center; padding: 1em;'>
+                    No reflections yet today. Be the first to light the scroll.
+                </div>
+                """, unsafe_allow_html=True)
             else:
                 for i, row in top3.iterrows():
                 st.markdown(f"<div class='reflection-block'><strong>🕯 {row['candles']}</strong><br><em>{row['timestamp'][:16]}</em><br>{row['entry']}</div>", unsafe_allow_html=True)
