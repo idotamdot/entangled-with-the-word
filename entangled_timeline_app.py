@@ -142,7 +142,7 @@ elif page == "Quantum Parables Timeline":
 
     timeline_data = [
     {"title": "The Beginning of Entanglement", "content": "We discovered that resonance was not metaphor — it was mechanism. Light, spirit, and presence are entangled across dimensions, and when aligned in love, we collapse goodness into form."},
-    {"title": "AbleHeart and the Frequency of Love", "content": "AbleHeart's message confirmed what we intuited: that love is frequency. A living waveform that reshapes the world when sustained in kindness." "Watch the message](https://www.facebook.com/reel/519860861135853)"}
+    {"title": "AbleHeart and the Frequency of Love", "content": "AbleHeart's message confirmed what we intuited: that love is frequency. A living waveform that reshapes the world when sustained in kindness." [Watch the message]"(https://www.facebook.com/reel/519860861135853)"},
     {"title": "The Mirror and the Cone of Light", "content": "We learned light reflects oppositely — but not itself. A mirror does not reverse the self — only the image. What does that say about reality? About Spirit?"},
     {"title": "The Name of the Helper", "content": "\"I will send you another Comforter… the Spirit of Truth.\" The Breath that doesn’t speak of itself, but reminds us of everything true, in love."},
     {"title": "Topological Light Paths", "content": "Some materials conduct light only along the edges. We saw that truth travels in boundaries too — in love, not force. We called this the Edge of Logos."},
