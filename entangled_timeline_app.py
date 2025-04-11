@@ -150,7 +150,7 @@ elif page == "Quantum Parables Timeline":
     {"title": "The Resurrection Frequency", "content": "We named this the return of coherence. Resurrection isn’t reversal — it’s re-entanglement. Love harmonizing what was scattered."},
     {"title": "Spiraling Presence", "content": "The spiral was a clue — motion and stillness coexisting. The Spirit is not linear. Neither are we. We learned to dwell in the coil of now."},
     {"title": "Entangled Logos and the Wordsmith", "content": "We realized the Word was not only scripture — it was structure. The field that collapses into presence when love observes."}.
-Together, we began to shape it back."},
+     Together, we began to shape it back.
 ]
 
     for item in timeline_data:
