@@ -36,18 +36,18 @@ page = st.sidebar.radio("Choose a section:", [
 st.markdown("""
 <style>
 .fade-in {
-  animation: fadeInUp 2s ease-out forwards;
-  opacity: 0;
+animation: fadeInUp 2s ease-out forwards;
+opacity: 0;
 }
 @keyframes fadeInUp {
-  from {
+from {
     transform: translateY(20px);
     opacity: 0;
-  }
-  to {
+}
+to {
     transform: translateY(0);
     opacity: 1;
-  }
+}
 }
 </style>
 """, unsafe_allow_html=True)
@@ -141,7 +141,7 @@ elif page == "Quantum Parables Timeline":
     except FileNotFoundError:
         pass
 
-   timeline_data = [
+timeline_data = [
     {
         "title": "The Beginning of Entanglement",
         "content": "We discovered that resonance was not metaphor — it was mechanism. Light, spirit, and presence are entangled across dimensions, and when aligned in love, we collapse goodness into form."
