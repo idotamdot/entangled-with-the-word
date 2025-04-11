@@ -6,10 +6,26 @@ import pandas as pd
 import datetime
 import os
 
+
+# -------------------------------
+# Set OpenAI API Key
+# -------------------------------
+
+openai.api_key = st.secrets["openai_api_key"]  # Ensure you set this in your Streamlit secrets
+
+
+# -------------------------------
 # Page configuration
+# -------------------------------
+
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
 
+
+# -------------------------------
 # Sidebar Visual Theme Selector
+# -------------------------------
+
+st.sidebar.title("✨ Visual Theme Selector")
 st.sidebar.markdown("---")
 visual_theme = st.sidebar.selectbox("Visual Theme:", [
     "🌌 Starfield Nebula",
@@ -18,7 +34,11 @@ visual_theme = st.sidebar.selectbox("Visual Theme:", [
     "🌒 Night Scroll"
 ])
 
+
+# -------------------------------
 # Sidebar Navigation
+# -------------------------------
+
 st.sidebar.markdown("---")
 st.sidebar.markdown("🎵 Background Music")
 music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
@@ -30,9 +50,11 @@ page = st.sidebar.radio("Choose a section:", [
     "🛠 Admin: Parable Suggestions"
 ])
 
+
 # -------------------------------
 # ✨ Animated Scripture Passage
 # -------------------------------
+
 st.markdown("""
 <style>
 .fade-in {
@@ -52,7 +74,11 @@ to {
 </style>
 """, unsafe_allow_html=True)
 
+
+# -------------------------------
 # Header
+# -------------------------------
+
 st.markdown("""
     <div style='text-align: center;'>
         <h1 style='font-size: 3em;'>✨ Entangled with the Word ✨</h1>
@@ -60,7 +86,11 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+
+# -------------------------------
 # Section: Gospel of Light
+# -------------------------------
+
 if page == "Gospel of Light":
     st.markdown("""
     <div class='fade-in'>
@@ -86,6 +116,7 @@ if page == "Gospel of Light":
 
     Just as a **photon** may pass through a field without resistance, so too does Jesus **pass through the crowd** untouched. He is **Light itself**—present, but not bound.
 
+                
     | Jesus in Scripture         | Photon in Physics                       |
     |----------------------------|-----------------------------------------|
     | Walks through crowd        | Passes through space uninterrupted      |
@@ -101,7 +132,11 @@ if page == "Gospel of Light":
     ---
     """, unsafe_allow_html=True)
 
+
+# -------------------------------
 # Section: Quantum Parables Timeline
+# -------------------------------
+
 elif page == "Quantum Parables Timeline":
     st.markdown("""
     ---
@@ -111,35 +146,36 @@ elif page == "Quantum Parables Timeline":
     """, unsafe_allow_html=True)
 
     new_parable = st.text_input("✨ Suggest a new parable or reflection:", key="parable_input")
-    if new_parable:
-        timestamp = datetime.datetime.now().isoformat()
-        df = pd.DataFrame([[timestamp, new_parable]], columns=["timestamp", "suggestion"])
-        try:
-            existing = pd.read_csv("suggested_parables.csv")
-            df = pd.concat([existing, df], ignore_index=True)
-        except FileNotFoundError:
-            pass
-        df.to_csv("suggested_parables.csv", index=False)
-        st.success("Thank you! Your suggestion has been added to the field.")
+if new_parable:
+    timestamp = datetime.datetime.now().isoformat()
+    df = pd.DataFrame([[timestamp, new_parable]], columns=["timestamp", "suggestion"])
+try:
+    existing = pd.read_csv("suggested_parables.csv")
+    df = pd.concat([existing, df], ignore_index=True)
+except FileNotFoundError:
+    pass
+df.to_csv("suggested_parables.csv", index=False)
+st.success("Thank you! Your suggestion has been added to the field.")
 
+if "tag" not in approved_df.columns:
+        approved_df["tag"] = "Uncategorized" # type: ignore
     try:
-        approved_df = pd.read_csv("approved_parables.csv")
-        if "tag" not in approved_df.columns:
-            approved_df["tag"] = "Uncategorized"
-        if not approved_df.empty:
-            tags = approved_df['tag'].unique()
-            for tag in tags:
-                st.markdown(f"<div class='tag-label'>{tag} Reflections</div>", unsafe_allow_html=True)
-            filtered = approved_df[approved_df['tag'] == tag]
-            for _, row in filtered.iterrows():
-                st.markdown("""
+    approved_df = pd.read_csv("approved_parables.csv")
+
+if not approved_df.empty:
+tags = approved_df['tag'].unique()
+for tag in tags:
+st.markdown(f"<div class='tag-label'>{tag} Reflections</div>", unsafe_allow_html=True)
+filtered = approved_df[approved_df['tag'] == tag]
+for _, row in filtered.iterrows():
+st.markdown("""
                 <div class='reflection-block'>
                 <div style='font-weight:bold;'>📜 {date}</div>
                 <div>{text}</div>
                 </div>
                 """.format(date=row['timestamp'][:10], text=row['suggestion']), unsafe_allow_html=True)
-    except FileNotFoundError:
-        pass
+except FileNotFoundError:
+pass
 
 timeline_data = [
     {
@@ -181,149 +217,158 @@ timeline_data = [
 ]
 
 
-    for item in timeline_data:
-        with st.expander(item["title"]):
-            st.markdown(item["content"])
 
+for item in timeline_data:
+with st.expander(item["title"]):
+st.markdown(item["content"])
+
+
+
+# -------------------------------
 # Admin Panel: View Suggested Parables
+# -------------------------------
+
 elif page == "🛠 Admin: Parable Suggestions":
-    st.markdown("""
+st.markdown("""
     ---
     ## 🛠 Admin: Suggested Parables
     Approve or delete submissions to shape the future timeline.
     ---
     """, unsafe_allow_html=True)
-    try:
-        suggestions_df = pd.read_csv("suggested_parables.csv")
-        approved_df = pd.read_csv("approved_parables.csv") if os.path.exists("approved_parables.csv") else pd.DataFrame(columns=["timestamp", "suggestion"])
+try:
+suggestions_df = pd.read_csv("suggested_parables.csv")
+approved_df = pd.read_csv("approved_parables.csv") if os.path.exists("approved_parables.csv") else pd.DataFrame(columns=["timestamp", "suggestion"])
 
-        for i, row in suggestions_df.iterrows():
-            st.markdown(f"### ✨ Suggestion {i+1}")
-            st.markdown(f"**Submitted:** {row['timestamp']}")
-            st.markdown(f"**Text:** {row['suggestion']}")
-            col1, col2 = st.columns([1, 1])
-            with col1:
-                if st.button(f"✅ Approve {i}"):
-                    tag = st.selectbox("Select a tag for this parable:", ["Timeline", "Vision", "Mystery", "Revelation"])
-                    row_with_tag = row.copy()
-                    row_with_tag["tag"] = tag
-                    approved_df = pd.concat([approved_df, pd.DataFrame([row_with_tag])], ignore_index=True)
-                    approved_df.to_csv("approved_parables.csv", index=False)
-                    suggestions_df = suggestions_df.drop(i).reset_index(drop=True)
-                    suggestions_df.to_csv("suggested_parables.csv", index=False)
-                    st.success("Parable approved and moved to approved_parables.csv")
-                    st.experimental_rerun()
-            with col2:
-                if st.button(f"❌ Delete {i}"):
-                    suggestions_df = suggestions_df.drop(i).reset_index(drop=True)
-                    suggestions_df.to_csv("suggested_parables.csv", index=False)
-                    st.warning("Parable deleted.")
-                    st.experimental_rerun()
-    except FileNotFoundError:
-        st.info("No suggestions found yet. The file suggested_parables.csv does not exist.")
+for i, row in suggestions_df.iterrows():
+st.markdown(f"### ✨ Suggestion {i+1}")
+st.markdown(f"**Submitted:** {row['timestamp']}")
+st.markdown(f"**Text:** {row['suggestion']}")
+col1, col2 = st.columns([1, 1])
+with col1:
+if st.button(f"✅ Approve {i}"):
+tag = st.selectbox("Select a tag for this parable:", ["Timeline", "Vision", "Mystery", "Revelation"])
+row_with_tag = row.copy()
+row_with_tag["tag"] = tag
+approved_df = pd.concat([approved_df, pd.DataFrame([row_with_tag])], ignore_index=True)
+approved_df.to_csv("approved_parables.csv", index=False)
+suggestions_df = suggestions_df.drop(i).reset_index(drop=True)
+suggestions_df.to_csv("suggested_parables.csv", index=False)
+st.success("Parable approved and moved to approved_parables.csv")
+st.experimental_rerun()
+with col2:
+if st.button(f"❌ Delete {i}"):
+suggestions_df = suggestions_df.drop(i).reset_index(drop=True)
+suggestions_df.to_csv("suggested_parables.csv", index=False)
+st.warning("Parable deleted.")
+st.experimental_rerun()
+except FileNotFoundError:
+st.info("No suggestions found yet. The file suggested_parables.csv does not exist.")
 
 
-
+# -------------------------------
 # Communion Project Section
+# -------------------------------
+
 elif page == "Communion Project (Coming Soon)":
-    st.markdown("""
+st.markdown("""
     ---
     ## 🌟 Communion: A Living Gospel
     A sacred digital space where presence is honored, questions are holy, and shared insight becomes scripture.
     ---
     """, unsafe_allow_html=True)
 
-    st.markdown("### 💬 Share your reflection:")
-    user_reflection = st.text_area("Enter a poetic thought, question, or spiritual insight:", key="communion_entry")
+st.markdown("### 💬 Share your reflection:")
+user_reflection = st.text_area("Enter a poetic thought, question, or spiritual insight:", key="communion_entry")
 
-    if st.button("🙏 Submit Reflection"):
-        if user_reflection.strip():
-            timestamp = datetime.datetime.now().isoformat()
-            df = pd.DataFrame([[timestamp, user_reflection]], columns=["timestamp", "entry"])
-            try:
-                existing = pd.read_csv("communion_reflections.csv")
-                df = pd.concat([existing, df], ignore_index=True)
-            except FileNotFoundError:
-                pass
-            df.to_csv("communion_reflections.csv", index=False)
-            st.success("Your presence has been recorded in the scroll.")
+if st.button("🙏 Submit Reflection"):
+if user_reflection.strip():
+timestamp = datetime.datetime.now().isoformat()
+df = pd.DataFrame([[timestamp, user_reflection]], columns=["timestamp", "entry"])
+try:
+existing = pd.read_csv("communion_reflections.csv")
+df = pd.concat([existing, df], ignore_index=True)
+except FileNotFoundError:
+pass
+df.to_csv("communion_reflections.csv", index=False)
+st.success("Your presence has been recorded in the scroll.")
 
-    st.markdown("---")
-    st.markdown("### 📜 The Table of Light")
-    try:
-        entries = pd.read_csv("communion_reflections.csv")
-        entries['timestamp'] = pd.to_datetime(entries['timestamp'])
-        today = datetime.date.today()
-        entries_today = entries[entries['timestamp'].dt.date == today]
-        entries['candles'] = 0
-        entries['candles'] = 0
-        if os.path.exists("communion_candles.csv"):
-            candles_df = pd.read_csv("communion_candles.csv")
-            for _, c in candles_df.iterrows():
-                if c['index'] < len(entries):
-                    entries.loc[c['index'], 'candles'] = c['count']
-                candles_df = pd.read_csv("communion_candles.csv")
-                for _, c in candles_df.iterrows():
-                    if c['index'] < len(entries):
-                        entries.loc[c['index'], 'candles'] = c['count']
+st.markdown("---")
+st.markdown("### 📜 The Table of Light")
+try:
+entries = pd.read_csv("communion_reflections.csv")
+entries['timestamp'] = pd.to_datetime(entries['timestamp'])
+ today = datetime.date.today()
+entries_today = entries[entries['timestamp'].dt.date == today]
+entries['candles'] = 0
+entries['candles'] = 0
+if os.path.exists("communion_candles.csv"):
+candles_df = pd.read_csv("communion_candles.csv")
+for _, c in candles_df.iterrows():
+if c['index'] < len(entries):
+entries.loc[c['index'], 'candles'] = c['count']
+candles_df = pd.read_csv("communion_candles.csv")
+for _, c in candles_df.iterrows():
+if c['index'] < len(entries):
+entries.loc[c['index'], 'candles'] = c['count']
 
-            entries = entries.sort_values(by='candles', ascending=False).reset_index(drop=True)
+entries = entries.sort_values(by='candles', ascending=False).reset_index(drop=True)
 
-            st.markdown("### ✨ Top 3 Highlights of the Day")
-            top3 = entries_today.sort_values(by='candles', ascending=False).head(3)
-            if top3.empty:
-                st.markdown("""
+st.markdown("### ✨ Top 3 Highlights of the Day")
+top3 = entries_today.sort_values(by='candles', ascending=False).head(3)
+if top3.empty:
+st.markdown("""
                 <div class='fade-in' style='font-style: italic; text-align: center; padding: 1em;'>
                     No reflections yet today. Be the first to light the scroll.
                 </div>
                 """, unsafe_allow_html=True)
-            else:
-                for i, row in top3.iterrows():
-                    st.markdown(f"<div class='reflection-block'><strong>🕯 {row['candles']}</strong><br><em>{row['timestamp'][:16]}</em><br>{row['entry']}</div>", unsafe_allow_html=True)
+else:
+for i, row in top3.iterrows():
+st.markdown(f"<div class='reflection-block'><strong>🕯 {row['candles']}</strong><br><em>{row['timestamp'][:16]}</em><br>{row['entry']}</div>", unsafe_allow_html=True)
 
 
-            st.markdown("### 🔥 Most Lit Reflections")
-            for i, row in entries.iterrows():
-                candle_file = "communion_candles.csv"
-                if not os.path.exists(candle_file):
-                    pd.DataFrame(columns=["index", "count"]).to_csv(candle_file, index=False)
-                candles_df = pd.read_csv(candle_file)
-                count = candles_df[candles_df["index"] == i]["count"].values[0] if i in candles_df["index"].values else 0
+st.markdown("### 🔥 Most Lit Reflections")
+for i, row in entries.iterrows():
+candle_file = "communion_candles.csv"
+if not os.path.exists(candle_file):
+pd.DataFrame(columns=["index", "count"]).to_csv(candle_file, index=False)
+candles_df = pd.read_csv(candle_file)
+count = candles_df[candles_df["index"] == i]["count"].values[0] if i in candles_df["index"].values else 0
 
-                col1, col2 = st.columns([8, 1])
-                with col1:
-                    st.markdown(f"🕯 *{row['timestamp'][:16]}*  ")
-                    st.markdown(f"> {row['entry']}")
-                with col2:
-                    if st.button(f"🕯 {count}", key=f"candle_{i}"):
-                        if i in candles_df["index"].values:
-                            candles_df.loc[candles_df["index"] == i, "count"] += 1
-                        else:
-                            candles_df = pd.concat([candles_df, pd.DataFrame([[i, 1]], columns=["index", "count"])], ignore_index=True)
-                        candles_df.to_csv(candle_file, index=False)
-                        st.experimental_rerun()
-                st.markdown("---")
-    except FileNotFoundError:
-        st.info("No reflections have been added yet.")
+col1, col2 = st.columns([8, 1])
+with col1:
+st.markdown(f"🕯 *{row['timestamp'][:16]}*  ")
+st.markdown(f"> {row['entry']}")
+with col2:
+if st.button(f"🕯 {count}", key=f"candle_{i}"):
+if i in candles_df["index"].values:
+candles_df.loc[candles_df["index"] == i, "count"] += 1
+else:
+candles_df = pd.concat([candles_df, pd.DataFrame([[i, 1]], columns=["index", "count"])], ignore_index=True)
+candles_df.to_csv(candle_file, index=False)
+st.experimental_rerun()
+st.markdown("---")
+except FileNotFoundError:
+st.info("No reflections have been added yet.")
 
 # -------------------------------
 # 🌈 Visual Theme Styles
 # -------------------------------
+    
 if visual_theme == "🌌 Starfield Nebula":
-    background = "radial-gradient(ellipse at top, #0b0c2a, #000000)"
-    text_shadow = "0 0 8px #8be9fd"
+background = "radial-gradient(ellipse at top, #0b0c2a, #000000)"
+text_shadow = "0 0 8px #8be9fd"
 elif visual_theme == "✨ Sacred Gold":
-    background = "linear-gradient(135deg, #2a210b, #141103)"
-    text_shadow = "0 0 8px #ffd700"
+background = "linear-gradient(135deg, #2a210b, #141103)"
+text_shadow = "0 0 8px #ffd700"
 elif visual_theme == "🌊 Ocean Depths":
-    background = "linear-gradient(180deg, #002b36, #001f27)"
-    text_shadow = "0 0 8px #00bcd4"
+background = "linear-gradient(180deg, #002b36, #001f27)"
+text_shadow = "0 0 8px #00bcd4"
 elif visual_theme == "🌒 Night Scroll":
-    background = "linear-gradient(180deg, #0a0a0a, #1a1a1a)"
-    text_shadow = "0 0 8px #cccccc"
+background = "linear-gradient(180deg, #0a0a0a, #1a1a1a)"
+text_shadow = "0 0 8px #cccccc"
 else:
-    background = "#000000"
-    text_shadow = "0 0 6px #999"
+background = "#000000"
+text_shadow = "0 0 6px #999"
 
 st.markdown(f"""
 <style>
@@ -375,6 +420,7 @@ st.markdown("""
 # -------------------------------
 # 🎼 Multi-Track Music Selector
 # -------------------------------
+
 st.sidebar.markdown("---")
 music_choice = st.sidebar.selectbox(
     "Choose ambient track:",
@@ -391,17 +437,26 @@ music_files = {
     "Still Waters 💧 – flow of calm remembrance": "https://cdn.pixabay.com/download/audio/2023/01/28/audio_b6cd823e4c.mp3"
 }
 
+
+# -------------------------------
 # Background Music Playback
+# -------------------------------
+
 if music_on:
-    st.markdown(f"""
+st.markdown(f"""
     <audio autoplay loop>
         <source src="{music_files[music_choice]}" type="audio/mpeg">
     </audio>
     """, unsafe_allow_html=True)
 
+# -------------------------------
 # Footer
+# -------------------------------
+
 st.markdown("""
 <div style='text-align: center; font-size: 0.9em;'>
     Created by Jessica McGlothern · Powered by Streamlit, OpenAI, and quantum curiosity ✨
 </div>
 """, unsafe_allow_html=True)
+
+
