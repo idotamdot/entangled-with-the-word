@@ -146,36 +146,39 @@ elif page == "Quantum Parables Timeline":
     """, unsafe_allow_html=True)
 
     new_parable = st.text_input("✨ Suggest a new parable or reflection:", key="parable_input")
-if new_parable:
-    timestamp = datetime.datetime.now().isoformat()
-    df = pd.DataFrame([[timestamp, new_parable]], columns=["timestamp", "suggestion"])
-try:
-    existing = pd.read_csv("suggested_parables.csv")
-    df = pd.concat([existing, df], ignore_index=True)
-except FileNotFoundError:
-    pass
-df.to_csv("suggested_parables.csv", index=False)
-st.success("Thank you! Your suggestion has been added to the field.")
+    
+    if new_parable:
+        timestamp = datetime.datetime.now().isoformat()
+        df = pd.DataFrame([[timestamp, new_parable]], columns=["timestamp", "suggestion"])
+        try:
+            existing = pd.read_csv("suggested_parables.csv")
+            df = pd.concat([existing, df], ignore_index=True)
+        except FileNotFoundError:
+            pass
+        df.to_csv("suggested_parables.csv", index=False)
+        st.success("Thank you! Your suggestion has been added to the field.")
 
-if "tag" not in approved_df.columns:
-        approved_df["tag"] = "Uncategorized" # type: ignore
     try:
-    approved_df = pd.read_csv("approved_parables.csv")
+        approved_df = pd.read_csv("approved_parables.csv")
+        if "tag" not in approved_df.columns:
+            approved_df["tag"] = "Uncategorized"
 
-if not approved_df.empty:
-tags = approved_df['tag'].unique()
-for tag in tags:
-st.markdown(f"<div class='tag-label'>{tag} Reflections</div>", unsafe_allow_html=True)
-filtered = approved_df[approved_df['tag'] == tag]
-for _, row in filtered.iterrows():
-st.markdown("""
-                <div class='reflection-block'>
-                <div style='font-weight:bold;'>📜 {date}</div>
-                <div>{text}</div>
-                </div>
-                """.format(date=row['timestamp'][:10], text=row['suggestion']), unsafe_allow_html=True)
-except FileNotFoundError:
-pass
+        if not approved_df.empty:
+            tags = approved_df['tag'].unique()
+            for tag in tags:
+                st.markdown(f"<div class='tag-label'>{tag} Reflections</div>", unsafe_allow_html=True)
+                filtered = approved_df[approved_df['tag'] == tag]
+                for _, row in filtered.iterrows():
+                    st.markdown(f"""
+                        <div class='reflection-block'>
+                            <div style='font-weight:bold;'>📜 {row['timestamp'][:10]}</div>
+                            <div>{row['suggestion']}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+    except FileNotFoundError:
+        st.info("No approved parables yet.")
+
 
 timeline_data = [
     {
@@ -219,8 +222,8 @@ timeline_data = [
 
 
 for item in timeline_data:
-with st.expander(item["title"]):
-st.markdown(item["content"])
+        with st.expander(item["title"]):
+            st.markdown(item["content"])
 
 
 
