@@ -21,6 +21,12 @@ if not openai.api_key:
 # -------------------------------
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
 
+# -------------------------------
+# 🎨 Load External CSS Stylesheet
+# -------------------------------
+with open("style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 
 # -------------------------------
 # Sidebar Visual Theme Selector
@@ -344,6 +350,9 @@ h1, h2, h3, h4, h5, h6, .stMarkdown p {{
 # -------------------------------
 # 💫 Custom CSS for Glowing Tags and Reflections
 # -------------------------------
+
+with open("style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 st.markdown("""
 <style>
 /* Tag Styles */
