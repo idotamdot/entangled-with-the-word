@@ -9,9 +9,8 @@ import os
 
 # -------------------------------
 # Set OpenAI API Key
-# -------------------------------  
-# # Ensure this is set in your Streamlit Cloud or locally
-openai.api_key = st.secrets.get("openai_api_key", os.getenv("OPENAI_API_KEY", ""))
+# -------------------------------
+openai.api_key = st.secrets["OPENAI_API_KEY"]  # Ensure this is set in your Streamlit Cloud or locally
 
 if not openai.api_key:
     st.error("🚨 OpenAI API key not found. Please check your Streamlit secrets.")
