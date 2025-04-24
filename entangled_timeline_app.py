@@ -5,10 +5,10 @@ import streamlit as st
 import pandas as pd
 import datetime
 import os
-# from pathlib import Path # Removed, was not used
+# from pathlib import Path # Removed, was not used# from pathlib import Path # Removed, was not used
 
 # -------------------------------
-# Set OpenAI API Key (Optional - currently unused in code)
+# Set OpenAI API Key (Optional - currently unused in code) (Optional - currently unused in code)
 # -------------------------------
 # Ensure this is set in your Streamlit Cloud secrets or environment variables
 # openai.api_key = st.secrets.get("openai_api_key")
@@ -21,6 +21,15 @@ import os
 # Page configuration
 # -------------------------------
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
+
+# -------------------------------
+# 🎨 Load External CSS Stylesheet (Load only once)
+# -------------------------------
+try:
+    with open("style.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+except FileNotFoundError:
+    st.warning("⚠️ style.css not found. Using default styles.")
 
 
 #--------------------------------
@@ -673,35 +682,24 @@ if music_files:
     elif music_on:
         st.sidebar.warning("Selected music track not found.")
 
- 
-#-------------------------------
+# -------------------------------
 # Footer
 # -------------------------------
-st.markdown(
-    """
-    <style>
-    .footer {
-        text-align: center;
-        font-size: 0.9em;
-        margin-top: 50px; /* Increased margin */
-        padding-bottom: 20px; /* Add padding at the bottom */
-        color: #bbb; /* Slightly lighter grey */
-        text-shadow: 0 0 6px rgba(173, 216, 230, 0.5);
-    }
-    </style>
-    <div class="footer">
-        Created with curiosity · Powered by Streamlit & Python ✨
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<style>
+.footer {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 50px; /* Increased margin */
+    padding-bottom: 20px; /* Add padding at the bottom */
+    color: #bbb; /* Slightly lighter grey */
+    text-shadow: 0 0 6px rgba(173, 216, 230, 0.5);
+}
+</style>
+<div class="footer">
+    Created with curiosity · Powered by Streamlit & Python ✨
+</div>
+""", unsafe_allow_html=True)
 
-# Optional: Fixed position footer (if you want a separate one)
-# st.markdown(
-#     """
-#     <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f0f2f6; color: gray; text-align: center; padding: 5px;">
-#         Created with curiosity · Powered by Streamlit & Python ✨ (Fixed)
-#     </div>
-#     """,
-#     unsafe_allow_html=True,
-# )
+
+
