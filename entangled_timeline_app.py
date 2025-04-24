@@ -190,3 +190,455 @@ elif page == "Quantum Parables Timeline":
     except FileNotFoundError:
         st.info("No approved parables file found. Submit suggestions or approve them in the Admin panel.")
     except pd.errors.EmptyDataError:
+        st.info("The approved parables file is empty.")
+    except Exception as e:
+        st.error(f"An error occurred loading approved parables: {e}")
+
+
+    # --- Suggest New Parable ---
+    st.markdown("---")
+    with st.form("parable_suggestion_form", clear_on_submit=True):
+        new_parable = st.text_input("✨ Suggest a new parable or reflection:", key="parable_input")
+        submitted = st.form_submit_button("Suggest Parable")
+        if submitted and new_parable:
+            timestamp = datetime.datetime.now().isoformat()
+            new_data = pd.DataFrame([[timestamp, new_parable]], columns=["timestamp", "suggestion"])
+            try:
+                # Use 'a' mode and header=False if file exists, otherwise write with header
+                if os.path.exists("suggested_parables.csv"):
+                    new_data.to_csv("suggested_parables.csv", mode='a', header=False, index=False)
+                else:
+                    new_data.to_csv("suggested_parables.csv", index=False)
+                st.success("Thank you! Your suggestion has been added to the field for review.")
+            except Exception as e:
+                st.error(f"Failed to save suggestion: {e}")
+
+# -------------------------------
+# Communion Project Section (Integrated Code)
+# -------------------------------
+elif page == "Communion Project": # Matched updated name
+    st.markdown("""
+    ---
+    ## 🌟 Communion: A Living Gospel
+    A sacred digital space where presence is honored, questions are holy, and shared insight becomes scripture.
+    ---
+    """, unsafe_allow_html=True)
+
+    # --- Submit Reflection ---
+    st.markdown("### 💬 Share your reflection:")
+    with st.form("communion_form", clear_on_submit=True):
+        user_reflection = st.text_area("Enter a poetic thought, question, or spiritual insight:", key="communion_entry")
+        submit_reflection = st.form_submit_button("🙏 Submit Reflection")
+
+        if submit_reflection and user_reflection.strip():
+            timestamp = datetime.datetime.now().isoformat()
+            df_new = pd.DataFrame([[timestamp, user_reflection]], columns=["timestamp", "entry"])
+            try:
+                 # Use 'a' mode and header=False if file exists, otherwise write with header
+                if os.path.exists("communion_reflections.csv"):
+                    df_new.to_csv("communion_reflections.csv", mode='a', header=False, index=False)
+                else:
+                    df_new.to_csv("communion_reflections.csv", index=False)
+                st.success("Your presence has been recorded in the scroll.")
+                # No rerun needed here, form clears and success message shows. Data loads below.
+            except Exception as e:
+                 st.error(f"Error saving reflection: {e}")
+
+    st.markdown("---")
+    st.markdown("### 📜 The Table of Light")
+
+    # --- Display Reflections & Candles ---
+    communion_file = "communion_reflections.csv"
+    candle_file = "communion_candles.csv"
+
+    try:
+        # Load reflections
+        entries = pd.read_csv(communion_file)
+        entries['timestamp'] = pd.to_datetime(entries['timestamp'])
+        # IMPORTANT: Reset index AFTER loading to ensure indices match row numbers (0, 1, 2...)
+        # This is crucial if the CSV wasn't saved with a standard index.
+        entries = entries.reset_index(drop=True)
+        entries['id'] = entries.index # Use index as a temporary ID for candle association
+
+        # Load candle counts
+        if os.path.exists(candle_file):
+            try:
+                candles_df = pd.read_csv(candle_file)
+                # Ensure columns are correct type
+                candles_df['entry_index'] = candles_df['entry_index'].astype(int)
+                candles_df['count'] = candles_df['count'].astype(int)
+            except (FileNotFoundError, pd.errors.EmptyDataError):
+                candles_df = pd.DataFrame(columns=["entry_index", "count"])
+            except Exception as e:
+                 st.warning(f"Could not load candle data: {e}")
+                 candles_df = pd.DataFrame(columns=["entry_index", "count"])
+        else:
+            candles_df = pd.DataFrame(columns=["entry_index", "count"])
+
+        # Merge candle counts into entries DataFrame
+        # Convert candles_df index column name for clarity
+        candles_df = candles_df.rename(columns={'entry_index': 'id'})
+        entries = pd.merge(entries, candles_df, on='id', how='left')
+        entries['count'] = entries['count'].fillna(0).astype(int) # Fill NaN for entries with no candles yet
+
+        # --- Highlights of the Day ---
+        st.markdown("### ✨ Top 3 Highlights of the Day")
+        today = datetime.date.today()
+        entries_today = entries[entries['timestamp'].dt.date == today].copy() # Use .copy() to avoid SettingWithCopyWarning
+        # Sort today's entries by candle count
+        entries_today = entries_today.sort_values(by='count', ascending=False)
+        top3 = entries_today.head(3)
+
+        if top3.empty:
+            st.markdown("""
+                <div class='fade-in' style='font-style: italic; text-align: center; padding: 1em;'>
+                    No reflections yet today. Be the first to light the scroll.
+                </div>
+            """, unsafe_allow_html=True)
+        else:
+            for _, row in top3.iterrows():
+                 # Display with timestamp, candle count, and entry text
+                 st.markdown(f"""
+                     <div class='reflection-block'>
+                     <strong>🕯️ {row['count']}</strong> | <em>{row['timestamp'].strftime('%Y-%m-%d %H:%M')}</em><br>
+                     {row['entry']}
+                     </div>
+                 """, unsafe_allow_html=True)
+
+        st.markdown("---")
+        st.markdown("### 🔥 All Reflections (Sorted by Light)")
+
+        # Sort all entries by candle count for the main display
+        entries_sorted = entries.sort_values(by='count', ascending=False)
+
+        if entries_sorted.empty:
+            st.info("No reflections have been added yet.")
+        else:
+            # Iterate through sorted entries to display them
+            for i, row in entries_sorted.iterrows():
+                entry_index = row['id'] # Get the original index (now stored in 'id')
+                count = row['count']
+
+                col1, col2 = st.columns([8, 1])
+                with col1:
+                    st.markdown(f"🕯️ *{row['timestamp'].strftime('%Y-%m-%d %H:%M')}*")
+                    st.markdown(f"> {row['entry']}")
+                with col2:
+                    # Use the original index (entry_index) for the button key and data update
+                    if st.button(f"🕯️ {count}", key=f"candle_{entry_index}"):
+                        # Update the count in the candles_df
+                        if entry_index in candles_df["id"].values:
+                             candles_df.loc[candles_df["id"] == entry_index, "count"] += 1
+                        else:
+                            # Add new entry to candles_df if it wasn't there
+                            new_candle_row = pd.DataFrame([[entry_index, 1]], columns=["id", "count"])
+                            candles_df = pd.concat([candles_df, new_candle_row], ignore_index=True)
+
+                        # Save the updated candle counts
+                        try:
+                            # Save back with the correct column name
+                            candles_df.rename(columns={'id': 'entry_index'}).to_csv(candle_file, index=False)
+                            st.rerun() # Rerun to update the display with the new count
+                        except Exception as e:
+                            st.error(f"Failed to save candle count: {e}")
+                st.markdown("---") # Separator between entries
+
+    except FileNotFoundError:
+        st.info("No reflections file (communion_reflections.csv) found yet. Submit one above!")
+    except pd.errors.EmptyDataError:
+         st.info("The reflections file is empty.")
+    except Exception as e:
+        st.error(f"An error occurred loading communion reflections: {e}")
+        st.error("Please ensure 'communion_reflections.csv' and 'communion_candles.csv' are formatted correctly.")
+
+
+# -------------------------------
+# Admin Panel: View Suggested Parables
+# -------------------------------
+elif page == "🛠 Admin: Parable Suggestions":
+    st.markdown("""
+    ---
+    ## 🛠 Admin: Suggested Parables
+    Approve or delete submissions to shape the future timeline.
+    ---
+    """, unsafe_allow_html=True)
+
+    suggestions_file = "suggested_parables.csv"
+    approved_file = "approved_parables.csv"
+
+    try:
+        # Load suggestions
+        suggestions_df = pd.read_csv(suggestions_file)
+
+        # Load approved or create empty DataFrame if not exists
+        if os.path.exists(approved_file):
+            try:
+                 approved_df = pd.read_csv(approved_file)
+                 # Ensure required columns exist in approved_df
+                 if "timestamp" not in approved_df.columns: approved_df["timestamp"] = None
+                 if "suggestion" not in approved_df.columns: approved_df["suggestion"] = None
+                 if "tag" not in approved_df.columns: approved_df["tag"] = None
+
+            except pd.errors.EmptyDataError:
+                 approved_df = pd.DataFrame(columns=["timestamp", "suggestion", "tag"])
+            except Exception as e:
+                 st.error(f"Error loading {approved_file}: {e}")
+                 st.stop() # Stop if approved file is corrupt
+        else:
+            approved_df = pd.DataFrame(columns=["timestamp", "suggestion", "tag"])
+
+        if suggestions_df.empty:
+            st.info("No suggestions pending approval.")
+        else:
+             st.info(f"Found {len(suggestions_df)} suggestion(s) for review.")
+             # Display suggestions one by one
+             for i, row in suggestions_df.iterrows():
+                 st.markdown("---")
+                 st.markdown(f"### ✨ Suggestion #{i+1}")
+                 st.markdown(f"**Submitted:** {row['timestamp']}")
+                 st.markdown(f"**Text:**")
+                 st.markdown(f"> {row['suggestion']}") # Blockquote suggestion text
+
+                 col1, col2, col3 = st.columns([2, 1, 1]) # Make space for tag selector
+
+                 with col1:
+                      # CORRECTED LOGIC: Selectbox appears BEFORE the button
+                      tag_options = ["Timeline", "Vision", "Mystery", "Revelation", "Uncategorized"]
+                      # Default tag can be the first option or "Uncategorized"
+                      selected_tag = st.selectbox(
+                          "Assign a tag:",
+                          options=tag_options,
+                          index=tag_options.index("Uncategorized"), # Default selection
+                          key=f"tag_{i}" # Unique key for each selectbox
+                      )
+
+                 with col2:
+                      # Approve Button
+                      if st.button(f"✅ Approve #{i+1}", key=f"approve_{i}"):
+                          # Prepare the row to be added to approved_df
+                          row_to_approve = row.copy()
+                          row_to_approve["tag"] = selected_tag # Use the selected tag
+
+                          # Append to approved DataFrame (ensure columns match)
+                          approved_df = pd.concat([approved_df, pd.DataFrame([row_to_approve])], ignore_index=True)
+
+                          # Remove from suggestions DataFrame
+                          suggestions_df = suggestions_df.drop(i) # Keep original index for now
+
+                          # Save both files
+                          try:
+                              approved_df.to_csv(approved_file, index=False)
+                              # If suggestions is empty, save empty file, else save remaining
+                              if suggestions_df.empty:
+                                  # Create an empty file or overwrite with header only
+                                  pd.DataFrame(columns=suggestions_df.columns).to_csv(suggestions_file, index=False)
+                              else:
+                                  suggestions_df.to_csv(suggestions_file, index=False)
+
+                              st.success(f"Suggestion #{i+1} approved with tag '{selected_tag}'!")
+                              st.rerun() # Use st.rerun()
+                          except Exception as e:
+                              st.error(f"Error saving files after approval: {e}")
+
+
+                 with col3:
+                      # Delete Button
+                      if st.button(f"❌ Delete #{i+1}", key=f"delete_{i}"):
+                          # Remove from suggestions DataFrame
+                          suggestions_df = suggestions_df.drop(i) # Drop by index
+
+                           # Save the updated suggestions file
+                          try:
+                               # If suggestions is empty, save empty file, else save remaining
+                              if suggestions_df.empty:
+                                  pd.DataFrame(columns=suggestions_df.columns).to_csv(suggestions_file, index=False)
+                              else:
+                                  suggestions_df.to_csv(suggestions_file, index=False)
+
+                              st.warning(f"Suggestion #{i+1} deleted.")
+                              st.rerun() # Use st.rerun()
+                          except Exception as e:
+                              st.error(f"Error saving {suggestions_file} after deletion: {e}")
+
+
+    except FileNotFoundError:
+        st.info(f"No suggestions file ({suggestions_file}) found yet.")
+    except pd.errors.EmptyDataError:
+         st.info("The suggestions file is currently empty.")
+    except Exception as e:
+        st.error(f"An error occurred loading suggestions: {e}")
+
+
+# -------------------------------
+# 🌈 Visual Theme Styles Application
+# -------------------------------
+# Define defaults first
+background = "#000000" # Default background
+text_shadow = "0 0 6px #999" # Default shadow
+
+if visual_theme == "🌌 Starfield Nebula":
+    background = "radial-gradient(ellipse at top, #0b0c2a, #000000)"
+    text_shadow = "0 0 8px #8be9fd" # Light blue glow
+
+elif visual_theme == "✨ Sacred Gold":
+    background = "linear-gradient(135deg, #2a210b, #141103)" # Dark gold/brown gradient
+    text_shadow = "0 0 8px #ffd700" # Gold glow
+
+elif visual_theme == "🌊 Ocean Depths":
+    background = "linear-gradient(180deg, #002b36, #001f27)" # Dark teal gradient
+    text_shadow = "0 0 8px #26a69a" # Teal glow (adjusted from cyan)
+
+elif visual_theme == "🌒 Night Scroll":
+    background = "linear-gradient(180deg, #1a1a1a, #0a0a0a)" # Dark grey gradient
+    text_shadow = "0 0 8px #cccccc" # White/light grey glow
+
+# Apply the selected styles using CSS
+st.markdown(f"""
+<style>
+/* Apply to the main app container for better compatibility */
+.stApp {{
+    background: {background};
+    color: #f0f0f0; /* Base text color */
+}}
+
+/* Target headers and paragraphs more specifically */
+h1, h2, h3, h4, h5, h6, .stMarkdown p, blockquote, .stTextInput > div > div > input, .stTextArea > label, .stTextArea > div > textarea {{
+    text-shadow: {text_shadow};
+    color: #f0f0f0; /* Ensure text color is consistent */
+}}
+
+/* Ensure buttons and other elements inherit or have appropriate contrast */
+.stButton > button {{
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 6px rgba(173, 216, 230, 0.4); /* Example shadow */
+}}
+.stRadio > label, .stSelectbox > label, .stCheckbox > label {{
+     text-shadow: {text_shadow}; /* Apply shadow to labels */
+}}
+
+/* Style Streamlit's expander header */
+.stExpander > div > details > summary {{
+     text-shadow: {text_shadow};
+}}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# -------------------------------
+# 💫 Custom CSS for Glowing Tags and Reflections (Loaded via style.css or here)
+# -------------------------------
+# This section assumes styles are either in style.css OR defined here.
+# If style.css contains these, this block can be simplified or removed.
+st.markdown("""
+<style>
+/* Tag Styles */
+.tag-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-right: 6px;
+    background-color: #111827; /* Dark blue-grey */
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(173, 216, 230, 0.7); /* Light blue glow */
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+.tag-label:hover {
+    background-color: #1f2937; /* Slightly lighter blue-grey */
+    box-shadow: 0 0 12px rgba(173, 216, 230, 0.9); /* Brighter glow on hover */
+}
+
+/* Reflection Block */
+.reflection-block {
+    background: rgba(255,255,255,0.03); /* Very subtle background */
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px 0;
+    border: 1px solid rgba(255,255,255,0.07); /* Faint border */
+    box-shadow: 0 0 12px rgba(173, 216, 230, 0.3); /* Subtle glow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.reflection-block:hover {
+    transform: scale(1.015); /* Slight scale up on hover */
+    box-shadow: 0 0 24px rgba(173, 216, 230, 0.5); /* More prominent glow */
+}
+
+/* Optional scroll glow for entire page */
+body::-webkit-scrollbar {
+     width: 8px;
+}
+body::-webkit-scrollbar-track {
+     background: rgba(0, 0, 0, 0.1);
+}
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(173, 216, 230, 0.3); /* Scrollbar color matches glow */
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 10px rgba(173, 216, 230, 0.4); /* Glow on scrollbar */
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+# -------------------------------
+# 🎼 Multi-Track Music Selector
+# -------------------------------
+# Define music files dictionary (ensure URLs are valid and accessible)
+music_files = {
+    "Celestial Drift 🌌 – cosmic winds of rest": "https://cdn.pixabay.com/download/audio/2022/03/03/audio_d1c4e4f11e.mp3",
+    "Sacred Space 🕊 – gentle meditation light": "https://cdn.pixabay.com/download/audio/2023/03/09/audio_4d6b5c67f4.mp3",
+    "Still Waters 💧 – flow of calm remembrance": "https://cdn.pixabay.com/download/audio/2023/01/28/audio_b6cd823e4c.mp3"
+}
+
+# Display music selector only if there are tracks defined
+if music_files:
+    st.sidebar.markdown("---")
+    music_choice = st.sidebar.selectbox(
+        "🎼 Choose ambient track:",
+        options=list(music_files.keys()) # Use keys from the dictionary as options
+    )
+
+    # -------------------------------
+    # 🔊 Background Music Playback
+    # -------------------------------
+    if music_on and music_choice in music_files:
+        # Ensure the selected choice is valid before trying to play
+        audio_url = music_files[music_choice]
+        st.markdown(f"""
+        <audio id="background-audio" autoplay loop>
+            <source src="{audio_url}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <script>
+          // Optional: Control volume (e.g., set to 50%)
+          var audio = document.getElementById("background-audio");
+          audio.volume = 0.5;
+        </script>
+        """, unsafe_allow_html=True)
+    elif music_on:
+        st.sidebar.warning("Selected music track not found.")
+
+# -------------------------------
+# Footer
+# -------------------------------
+st.markdown("""
+<style>
+.footer {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 50px; /* Increased margin */
+    padding-bottom: 20px; /* Add padding at the bottom */
+    color: #bbb; /* Slightly lighter grey */
+    text-shadow: 0 0 6px rgba(173, 216, 230, 0.5);
+}
+</style>
+<div class="footer">
+    Created with curiosity · Powered by Streamlit & Python ✨
+</div>
+""", unsafe_allow_html=True)
+        st.info("No approved parables file found. Submit suggestions or approve them in the Admin panel.")
+    except pd.errors.EmptyDataError:
