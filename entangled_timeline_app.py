@@ -640,5 +640,7 @@ st.markdown("""
     Created with curiosity · Powered by Streamlit & Python ✨
 </div>
 """, unsafe_allow_html=True)
+       except FileNotFoundError:
         st.info("No approved parables file found. Submit suggestions or approve them in the Admin panel.")
     except pd.errors.EmptyDataError:
+        st.warning("⚠️ The approved_parables.csv file exists but is empty.")
