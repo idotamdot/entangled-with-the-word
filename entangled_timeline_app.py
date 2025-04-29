@@ -22,6 +22,17 @@ import os
 # -------------------------------
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
 
+
+# Header
+st.markdown("""
+    <div style='text-align: center;'>
+        <h1 style='font-size: 3em;'>✨ Entangled with the Word ✨</h1>
+        <p style='font-size: 1.2em;'>A quantum-spiritual reflection on perception, scripture, and light.</p>
+    </div>
+""", unsafe_allow_html=True)
+
+
+
 # -------------------------------
 # 🎨 Load External CSS Stylesheet (Load only once)
 # -------------------------------
