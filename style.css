@@ -1,3 +1,5 @@
+/* style.css */
+
 /* ✨ Custom Expander Box Style */
 div.streamlit-expanderHeader {
     background-color: rgba(255, 255, 255, 0.05);
@@ -14,73 +16,24 @@ details[open] > summary {
     box-shadow: 0 0 25px rgba(255, 255, 255, 0.3) !important;
 }
 
-.stApp::before {
-    content: "";
+/* --- Removed .stApp::before and .stApp > * rules that caused scrolling issues --- */
+
+/* Apply fixed background image to the main app container */
+/* NOTE: Background properties here (like background-image) might be overridden
+   by the dynamic theme styles applied in the Python script's <style> tag.
+   You may need to integrate this background into your theme logic in Python
+   or remove the background overrides from the Python themes if you prefer this static background. */
+.stApp {
     background-image: url("https://raw.githubusercontent.com/idotamdot/entangled-with-the-word/main/images/starry-sky.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    z-index: 0;
-    opacity: 0.3;
-    pointer-events: none;
+    background-attachment: fixed; /* This makes the background fixed without breaking scroll */
+    /* Opacity needs to be handled differently if required,
+       as 'opacity' would affect all content within .stApp */
 }
 
-.stApp > * {
-    position: relative;
-    z-index: 1;
-}
 
 /* Tag Styles */
 .tag-label {
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 0.85em;
-    font-weight: bold;
-    margin-bottom: 8px;
-    margin-right: 6px;
-    background-color: #111827; /* Dark blue-grey */
-    color: #ffffff;
-    box-shadow: 0 0 8px rgba(173, 216, 230, 0.7); /* Light blue glow */
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: all 0.3s ease;
-}
-.tag-label:hover {
-    background-color: #1f2937;
-    box-shadow: 0 0 12px rgba(173, 216, 230, 0.9);
-}
-
-/* Reflection Block */
-.reflection-block {
-    background: rgba(255,255,255,0.03);
-    border-radius: 12px;
-    padding: 18px;
-    margin: 20px 0;
-    border: 1px solid rgba(255,255,255,0.07);
-    box-shadow: 0 0 12px rgba(173, 216, 230, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.reflection-block:hover {
-    transform: scale(1.015);
-    box-shadow: 0 0 24px rgba(173, 216, 230, 0.5);
-}
-
-/* Optional scroll glow */
-body::-webkit-scrollbar {
-    width: 8px;
-}
-body::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-}
-body::-webkit-scrollbar-thumb {
-    background-color: rgba(173, 216, 230, 0.3);
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 10px rgba(173, 216, 230, 0.4);
-}
-
