@@ -23,7 +23,9 @@ import os
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
 
 
+#--------------------------------
 # Header
+#--------------------------------
 st.markdown("""
     <div style='text-align: center;'>
         <h1 style='font-size: 3em;'>✨ Entangled with the Word ✨</h1>
@@ -31,6 +33,44 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+
+#---------------------------------
+# Inject custom CSS
+#---------------------------------
+st.markdown("""
+    <style>
+    /* ✨ Custom Expander Box Style */
+    div.streamlit-expanderHeader {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #f0f0f0;
+        font-size: 1.2rem;
+        border: 1px solid #ffffff20;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 0 15px rgba(173, 216, 230, 0.4);
+        backdrop-filter: blur(6px);
+    }
+
+    details[open] > summary {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.3) !important;
+    }
+
+    /* 🌌 Starry Background */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://i.ibb.co/0j1yZ9k/stars-bg.gif") repeat;
+        background-size: cover;
+        opacity: 0.1;
+        z-index: -1;
+        pointer-events: none;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 
 # -------------------------------
