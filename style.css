@@ -17,7 +17,7 @@ details[open] > summary {
 /* 🌌 Starry Background Behind App */
 .stApp::before {
     content: "";
-    background-image: url("https://i.ibb.co/0j1yZ9k/stars-bg.gif");
+    background-image: url("https://picsum.photos/id/1063/1920/1080");
     background-repeat: repeat;
     background-size: cover;
     position: fixed;
