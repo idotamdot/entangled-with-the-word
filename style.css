@@ -14,9 +14,18 @@ details[open] > summary {
     box-shadow: 0 0 25px rgba(255, 255, 255, 0.3) !important;
 }
 
-/* 🌌 Starry Background for Streamlit App Container */
-.stApp {
+/* 🌌 Starry Background Layer */
+.stApp::before {
+    content: "";
     background: url("https://i.ibb.co/0j1yZ9k/stars-bg.gif") repeat;
     background-size: cover;
-    opacity: 0.15;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    opacity: 0.2;
+    pointer-events: none;
 }
+
