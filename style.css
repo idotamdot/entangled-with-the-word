@@ -14,10 +14,9 @@ details[open] > summary {
     box-shadow: 0 0 25px rgba(255, 255, 255, 0.3) !important;
 }
 
-/* 🌌 Starry Background Behind App */
 .stApp::before {
     content: "";
-    background-image: url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-image: url("https://raw.githubusercontent.com/idotamdot/entangled-with-the-word/main/images/starry-sky.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -31,7 +30,6 @@ details[open] > summary {
     pointer-events: none;
 }
 
-/* Keep content above background */
 .stApp > * {
     position: relative;
     z-index: 1;
