@@ -5,10 +5,11 @@ import streamlit as st
 import pandas as pd
 import datetime
 import os
-# from pathlib import Path # Removed, was not used# from pathlib import Path # Removed, was not used
+# from pathlib import Path # Removed, was not used
+from gospel.matthew import render_matthew # Moved import here
 
 # -------------------------------
-# Set OpenAI API Key (Optional - currently unused in code) (Optional - currently unused in code)
+# Set OpenAI API Key (Optional - currently unused in code)
 # -------------------------------
 # Ensure this is set in your Streamlit Cloud secrets or environment variables
 # openai.api_key = st.secrets.get("openai_api_key")
@@ -41,17 +42,6 @@ st.markdown("""
         <p style='font-size: 1.2em;'>A quantum-spiritual reflection on perception, scripture, and light.</p>
     </div>
 """, unsafe_allow_html=True)
-
-
-# -------------------------------
-# 🎨 Load External CSS Stylesheet (Load only once)
-# -------------------------------
-try:
-    with open("style.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-except FileNotFoundError:
-    st.warning("⚠️ style.css not found. Using default styles.")
-
 
 # -------------------------------
 # Sidebar Visual Theme Selector
@@ -110,6 +100,11 @@ if page == "Gospel of Light":
     </blockquote>
     </div>
     """, unsafe_allow_html=True)
+
+    # --- Render Matthew Gospel Section ---
+    st.markdown("---") # Added separator
+    st.markdown("## 📖 Gospel Reflections: Matthew") # Added subheader
+    render_matthew() # Moved the call here
 
 
 # -------------------------------
@@ -196,17 +191,17 @@ elif page == "Quantum Parables Timeline":
             # Handle parables potentially saved without a tag (NaN or "Uncategorized")
             untagged_df = approved_df[approved_df['tag'].isna() | (approved_df['tag'] == "Uncategorized")]
             if not untagged_df.empty and "Uncategorized" not in tags:
-                 st.markdown(f"<div class='tag-label'>Uncategorized Reflections</div>", unsafe_allow_html=True)
-                 for _, row in untagged_df.iterrows():
-                     st.markdown(f"""
-                         <div class='reflection-block'>
-                         <div style='font-weight:bold;'>📜 {row['timestamp'][:10]}</div>
-                         <div>{row['suggestion']}</div>
-                         </div>
-                     """, unsafe_allow_html=True)
+                st.markdown(f"<div class='tag-label'>Uncategorized Reflections</div>", unsafe_allow_html=True)
+                for _, row in untagged_df.iterrows():
+                    st.markdown(f"""
+                        <div class='reflection-block'>
+                        <div style='font-weight:bold;'>📜 {row['timestamp'][:10]}</div>
+                        <div>{row['suggestion']}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
 
         else:
-             st.info("No approved parables found yet.")
+            st.info("No approved parables found yet.")
 
     except FileNotFoundError:
         st.info("No approved parables file found. Submit suggestions or approve them in the Admin panel.")
@@ -255,7 +250,7 @@ elif page == "Communion Project": # Matched updated name
             timestamp = datetime.datetime.now().isoformat()
             df_new = pd.DataFrame([[timestamp, user_reflection]], columns=["timestamp", "entry"])
             try:
-                 # Use 'a' mode and header=False if file exists, otherwise write with header
+                # Use 'a' mode and header=False if file exists, otherwise write with header
                 if os.path.exists("communion_reflections.csv"):
                     df_new.to_csv("communion_reflections.csv", mode='a', header=False, index=False)
                 else:
@@ -263,7 +258,7 @@ elif page == "Communion Project": # Matched updated name
                 st.success("Your presence has been recorded in the scroll.")
                 # No rerun needed here, form clears and success message shows. Data loads below.
             except Exception as e:
-                 st.error(f"Error saving reflection: {e}")
+                st.error(f"Error saving reflection: {e}")
 
     st.markdown("---")
     st.markdown("### 📜 The Table of Light")
@@ -291,8 +286,8 @@ elif page == "Communion Project": # Matched updated name
             except (FileNotFoundError, pd.errors.EmptyDataError):
                 candles_df = pd.DataFrame(columns=["entry_index", "count"])
             except Exception as e:
-                 st.warning(f"Could not load candle data: {e}")
-                 candles_df = pd.DataFrame(columns=["entry_index", "count"])
+                st.warning(f"Could not load candle data: {e}")
+                candles_df = pd.DataFrame(columns=["entry_index", "count"])
         else:
             candles_df = pd.DataFrame(columns=["entry_index", "count"])
 
@@ -318,13 +313,13 @@ elif page == "Communion Project": # Matched updated name
             """, unsafe_allow_html=True)
         else:
             for _, row in top3.iterrows():
-                 # Display with timestamp, candle count, and entry text
-                 st.markdown(f"""
-                     <div class='reflection-block'>
-                     <strong>🕯️ {row['count']}</strong> | <em>{row['timestamp'].strftime('%Y-%m-%d %H:%M')}</em><br>
-                     {row['entry']}
-                     </div>
-                 """, unsafe_allow_html=True)
+                # Display with timestamp, candle count, and entry text
+                st.markdown(f"""
+                    <div class='reflection-block'>
+                    <strong>🕯️ {row['count']}</strong> | <em>{row['timestamp'].strftime('%Y-%m-%d %H:%M')}</em><br>
+                    {row['entry']}
+                    </div>
+                """, unsafe_allow_html=True)
 
         st.markdown("---")
         st.markdown("### 🔥 All Reflections (Sorted by Light)")
@@ -349,7 +344,7 @@ elif page == "Communion Project": # Matched updated name
                     if st.button(f"🕯️ {count}", key=f"candle_{entry_index}"):
                         # Update the count in the candles_df
                         if entry_index in candles_df["id"].values:
-                             candles_df.loc[candles_df["id"] == entry_index, "count"] += 1
+                            candles_df.loc[candles_df["id"] == entry_index, "count"] += 1
                         else:
                             # Add new entry to candles_df if it wasn't there
                             new_candle_row = pd.DataFrame([[entry_index, 1]], columns=["id", "count"])
@@ -367,18 +362,10 @@ elif page == "Communion Project": # Matched updated name
     except FileNotFoundError:
         st.info("No reflections file (communion_reflections.csv) found yet. Submit one above!")
     except pd.errors.EmptyDataError:
-         st.info("The reflections file is empty.")
+        st.info("The reflections file is empty.")
     except Exception as e:
         st.error(f"An error occurred loading communion reflections: {e}")
         st.error("Please ensure 'communion_reflections.csv' and 'communion_candles.csv' are formatted correctly.")
-
-
-from gospel.matthew import render_matthew
-
-# Later in your app where you want to show Matthew:
-st.markdown("## 📖 Gospel Reflections")
-render_matthew()
-# This function should be defined in gospel/matthew.py
 
 
 # -------------------------------
@@ -402,98 +389,98 @@ elif page == "🛠 Admin: Parable Suggestions":
         # Load approved or create empty DataFrame if not exists
         if os.path.exists(approved_file):
             try:
-                 approved_df = pd.read_csv(approved_file)
-                 # Ensure required columns exist in approved_df
-                 if "timestamp" not in approved_df.columns: approved_df["timestamp"] = None
-                 if "suggestion" not in approved_df.columns: approved_df["suggestion"] = None
-                 if "tag" not in approved_df.columns: approved_df["tag"] = None
+                approved_df = pd.read_csv(approved_file)
+                # Ensure required columns exist in approved_df
+                if "timestamp" not in approved_df.columns: approved_df["timestamp"] = None
+                if "suggestion" not in approved_df.columns: approved_df["suggestion"] = None
+                if "tag" not in approved_df.columns: approved_df["tag"] = None
 
             except pd.errors.EmptyDataError:
-                 approved_df = pd.DataFrame(columns=["timestamp", "suggestion", "tag"])
+                approved_df = pd.DataFrame(columns=["timestamp", "suggestion", "tag"])
             except Exception as e:
-                 st.error(f"Error loading {approved_file}: {e}")
-                 st.stop() # Stop if approved file is corrupt
+                st.error(f"Error loading {approved_file}: {e}")
+                st.stop() # Stop if approved file is corrupt
         else:
             approved_df = pd.DataFrame(columns=["timestamp", "suggestion", "tag"])
 
         if suggestions_df.empty:
             st.info("No suggestions pending approval.")
         else:
-             st.info(f"Found {len(suggestions_df)} suggestion(s) for review.")
-             # Display suggestions one by one
-             for i, row in suggestions_df.iterrows():
-                 st.markdown("---")
-                 st.markdown(f"### ✨ Suggestion #{i+1}")
-                 st.markdown(f"**Submitted:** {row['timestamp']}")
-                 st.markdown(f"**Text:**")
-                 st.markdown(f"> {row['suggestion']}") # Blockquote suggestion text
+            st.info(f"Found {len(suggestions_df)} suggestion(s) for review.")
+            # Display suggestions one by one
+            for i, row in suggestions_df.iterrows():
+                st.markdown("---")
+                st.markdown(f"### ✨ Suggestion #{i+1}")
+                st.markdown(f"**Submitted:** {row['timestamp']}")
+                st.markdown(f"**Text:**")
+                st.markdown(f"> {row['suggestion']}") # Blockquote suggestion text
 
-                 col1, col2, col3 = st.columns([2, 1, 1]) # Make space for tag selector
+                col1, col2, col3 = st.columns([2, 1, 1]) # Make space for tag selector
 
-                 with col1:
-                      # CORRECTED LOGIC: Selectbox appears BEFORE the button
-                      tag_options = ["Timeline", "Vision", "Mystery", "Revelation", "Uncategorized"]
-                      # Default tag can be the first option or "Uncategorized"
-                      selected_tag = st.selectbox(
-                          "Assign a tag:",
-                          options=tag_options,
-                          index=tag_options.index("Uncategorized"), # Default selection
-                          key=f"tag_{i}" # Unique key for each selectbox
-                      )
+                with col1:
+                    # CORRECTED LOGIC: Selectbox appears BEFORE the button
+                    tag_options = ["Timeline", "Vision", "Mystery", "Revelation", "Uncategorized"]
+                    # Default tag can be the first option or "Uncategorized"
+                    selected_tag = st.selectbox(
+                        "Assign a tag:",
+                        options=tag_options,
+                        index=tag_options.index("Uncategorized"), # Default selection
+                        key=f"tag_{i}" # Unique key for each selectbox
+                    )
 
-                 with col2:
-                      # Approve Button
-                      if st.button(f"✅ Approve #{i+1}", key=f"approve_{i}"):
-                          # Prepare the row to be added to approved_df
-                          row_to_approve = row.copy()
-                          row_to_approve["tag"] = selected_tag # Use the selected tag
+                with col2:
+                    # Approve Button
+                    if st.button(f"✅ Approve #{i+1}", key=f"approve_{i}"):
+                        # Prepare the row to be added to approved_df
+                        row_to_approve = row.copy()
+                        row_to_approve["tag"] = selected_tag # Use the selected tag
 
-                          # Append to approved DataFrame (ensure columns match)
-                          approved_df = pd.concat([approved_df, pd.DataFrame([row_to_approve])], ignore_index=True)
+                        # Append to approved DataFrame (ensure columns match)
+                        approved_df = pd.concat([approved_df, pd.DataFrame([row_to_approve])], ignore_index=True)
 
-                          # Remove from suggestions DataFrame
-                          suggestions_df = suggestions_df.drop(i) # Keep original index for now
+                        # Remove from suggestions DataFrame
+                        suggestions_df = suggestions_df.drop(i) # Keep original index for now
 
-                          # Save both files
-                          try:
-                              approved_df.to_csv(approved_file, index=False)
-                              # If suggestions is empty, save empty file, else save remaining
-                              if suggestions_df.empty:
-                                  # Create an empty file or overwrite with header only
-                                  pd.DataFrame(columns=suggestions_df.columns).to_csv(suggestions_file, index=False)
-                              else:
-                                  suggestions_df.to_csv(suggestions_file, index=False)
+                        # Save both files
+                        try:
+                            approved_df.to_csv(approved_file, index=False)
+                            # If suggestions is empty, save empty file, else save remaining
+                            if suggestions_df.empty:
+                                # Create an empty file or overwrite with header only
+                                pd.DataFrame(columns=suggestions_df.columns).to_csv(suggestions_file, index=False)
+                            else:
+                                suggestions_df.to_csv(suggestions_file, index=False)
 
-                              st.success(f"Suggestion #{i+1} approved with tag '{selected_tag}'!")
-                              st.rerun() # Use st.rerun()
-                          except Exception as e:
-                              st.error(f"Error saving files after approval: {e}")
+                            st.success(f"Suggestion #{i+1} approved with tag '{selected_tag}'!")
+                            st.rerun() # Use st.rerun()
+                        except Exception as e:
+                            st.error(f"Error saving files after approval: {e}")
 
 
-                 with col3:
-                      # Delete Button
-                      if st.button(f"❌ Delete #{i+1}", key=f"delete_{i}"):
-                          # Remove from suggestions DataFrame
-                          suggestions_df = suggestions_df.drop(i) # Drop by index
+                with col3:
+                    # Delete Button
+                    if st.button(f"❌ Delete #{i+1}", key=f"delete_{i}"):
+                        # Remove from suggestions DataFrame
+                        suggestions_df = suggestions_df.drop(i) # Drop by index
 
-                           # Save the updated suggestions file
-                          try:
-                               # If suggestions is empty, save empty file, else save remaining
-                              if suggestions_df.empty:
-                                  pd.DataFrame(columns=suggestions_df.columns).to_csv(suggestions_file, index=False)
-                              else:
-                                  suggestions_df.to_csv(suggestions_file, index=False)
+                        # Save the updated suggestions file
+                        try:
+                            # If suggestions is empty, save empty file, else save remaining
+                            if suggestions_df.empty:
+                                pd.DataFrame(columns=suggestions_df.columns).to_csv(suggestions_file, index=False)
+                            else:
+                                suggestions_df.to_csv(suggestions_file, index=False)
 
-                              st.warning(f"Suggestion #{i+1} deleted.")
-                              st.rerun() # Use st.rerun()
-                          except Exception as e:
-                              st.error(f"Error saving {suggestions_file} after deletion: {e}")
+                            st.warning(f"Suggestion #{i+1} deleted.")
+                            st.rerun() # Use st.rerun()
+                        except Exception as e:
+                            st.error(f"Error saving {suggestions_file} after deletion: {e}")
 
 
     except FileNotFoundError:
         st.info(f"No suggestions file ({suggestions_file}) found yet.")
     except pd.errors.EmptyDataError:
-         st.info("The suggestions file is currently empty.")
+        st.info("The suggestions file is currently empty.")
     except Exception as e:
         st.error(f"An error occurred loading suggestions: {e}")
 
@@ -610,6 +597,3 @@ st.markdown("""
     Created with curiosity · Powered by Streamlit & Python ✨
 </div>
 """, unsafe_allow_html=True)
-
-
-
