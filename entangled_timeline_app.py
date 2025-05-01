@@ -373,6 +373,14 @@ elif page == "Communion Project": # Matched updated name
         st.error("Please ensure 'communion_reflections.csv' and 'communion_candles.csv' are formatted correctly.")
 
 
+from gospel.matthew import render_matthew
+
+# Later in your app where you want to show Matthew:
+st.markdown("## 📖 Gospel Reflections")
+render_matthew()
+# This function should be defined in gospel/matthew.py
+
+
 # -------------------------------
 # Admin Panel: View Suggested Parables
 # -------------------------------
