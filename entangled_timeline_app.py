@@ -555,65 +555,6 @@ h1, h2, h3, h4, h5, h6, .stMarkdown p, blockquote, .stTextInput > div > div > in
 
 
 # -------------------------------
-# 💫 Custom CSS for Glowing Tags and Reflections (Loaded via style.css or here)
-# -------------------------------
-# This section assumes styles are either in style.css OR defined here.
-# If style.css contains these, this block can be simplified or removed.
-st.markdown("""
-<style>
-/* Tag Styles */
-.tag-label {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 0.85em;
-    font-weight: bold;
-    margin-bottom: 8px;
-    margin-right: 6px;
-    background-color: #111827; /* Dark blue-grey */
-    color: #ffffff;
-    box-shadow: 0 0 8px rgba(173, 216, 230, 0.7); /* Light blue glow */
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: all 0.3s ease;
-}
-.tag-label:hover {
-    background-color: #1f2937; /* Slightly lighter blue-grey */
-    box-shadow: 0 0 12px rgba(173, 216, 230, 0.9); /* Brighter glow on hover */
-}
-
-/* Reflection Block */
-.reflection-block {
-    background: rgba(255,255,255,0.03); /* Very subtle background */
-    border-radius: 12px;
-    padding: 18px;
-    margin: 20px 0;
-    border: 1px solid rgba(255,255,255,0.07); /* Faint border */
-    box-shadow: 0 0 12px rgba(173, 216, 230, 0.3); /* Subtle glow */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.reflection-block:hover {
-    transform: scale(1.015); /* Slight scale up on hover */
-    box-shadow: 0 0 24px rgba(173, 216, 230, 0.5); /* More prominent glow */
-}
-
-/* Optional scroll glow for entire page */
-body::-webkit-scrollbar {
-     width: 8px;
-}
-body::-webkit-scrollbar-track {
-     background: rgba(0, 0, 0, 0.1);
-}
-body::-webkit-scrollbar-thumb {
-    background-color: rgba(173, 216, 230, 0.3); /* Scrollbar color matches glow */
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 10px rgba(173, 216, 230, 0.4); /* Glow on scrollbar */
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-# -------------------------------
 # 🎼 Multi-Track Music Selector
 # -------------------------------
 # Define music files dictionary (ensure URLs are valid and accessible)
