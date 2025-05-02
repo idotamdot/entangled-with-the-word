@@ -33,7 +33,54 @@ details[open] > summary {
        as 'opacity' would affect all content within .stApp */
 }
 
+/* 🔮 Glowing Timeline Card */
+.timeline-card {
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(173, 216, 230, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.timeline-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 30px rgba(173, 216, 230, 0.5);
+}
+.timeline-card h3 {
+    margin-top: 0;
+    color: #e0f7ff;
+}
+.timeline-card p {
+    color: #cbd5e1;
+    font-size: 1.05em;
+}
+
+
 
 /* Tag Styles */
 .tag-label {
     display: inline-block;
+
+/* 🔮 Glowing Timeline Card */
+.timeline-card {
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(173, 216, 230, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.timeline-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 30px rgba(173, 216, 230, 0.5);
+}
+.timeline-card h3 {
+    margin-top: 0;
+    color: #e0f7ff;
+}
+.timeline-card p {
+    color: #cbd5e1;
+    font-size: 1.05em;
+}

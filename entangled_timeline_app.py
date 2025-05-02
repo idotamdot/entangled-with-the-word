@@ -71,6 +71,46 @@ page = st.sidebar.radio("Choose a section:", [
 ])
 
 
+#---------------------------------
+# 🌌 Quantum-Gospel Timeline Events
+#----------------------------------
+timeline_events = [
+    {
+        "date": "30 AD (est.)",
+        "event": "🌿 The Quantum Beatitudes",
+        "scripture": "Matthew 5:1–12",
+        "reflection": (
+            "Jesus outlines a paradoxical blueprint of divine entanglement: the poor are rich, "
+            "the mourners are blessed, and the meek inherit. These states echo quantum inversions—"
+            "superpositions where spiritual resonance overrides material appearance.\n\n"
+            "Each Beatitude is a frequency: mercy restores coherence, purity clears the lens, "
+            "peacemaking resolves wave interference. This is not law, but resonance—a divine protocol "
+            "to harmonize with the Kingdom."
+        )
+    },
+    # ⬇ Add more entries here as we grow
+]
+
+
+#--------------------------------
+# 🗓️  Display Timeline Events
+#---------------------------------
+st.markdown("## ✨ Gospel Timeline")
+st.markdown("Here we trace entangled teachings through time:")
+
+for entry in timeline_events:
+    st.markdown(f"""
+    <div class="timeline-card">
+        <h3>{entry['event']}</h3>
+        <p><strong>📖 Scripture:</strong> {entry['scripture']}</p>
+        <p><strong>🗓️ Date:</strong> {entry['date']}</p>
+        <p>{entry['reflection'].replace('\n', '<br>')}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+
+
 # -------------------------------
 # ✨ Animated Scripture Passage Style
 # -------------------------------
