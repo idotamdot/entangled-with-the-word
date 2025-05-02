@@ -1,7 +1,7 @@
 # entangled_timeline_app.py
 
 import streamlit as st
-# import openai # Uncomment if/when you use OpenAI functionality
+#import openai # Uncomment if/when you use OpenAI functionality
 import pandas as pd
 import datetime
 import os
@@ -18,10 +18,12 @@ from gospel.matthew import render_matthew # Moved import here
 #     st.error("🚨 OpenAI API key not found. Please check your Streamlit secrets or environment variables.")
 #     st.stop() # Stop execution if the key is essential and not found
 
+
 # -------------------------------
 # Page configuration
 # -------------------------------
 st.set_page_config(page_title="Entangled with the Word", layout="wide")
+
 
 # -------------------------------
 # 🎨 Load External CSS Stylesheet (Load only once)
@@ -43,6 +45,8 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+
+
 # -------------------------------
 # Sidebar Visual Theme Selector
 # -------------------------------
@@ -55,6 +59,7 @@ visual_theme = st.sidebar.selectbox("Visual Theme:", [
     "🌒 Night Scroll"
 ])
 
+
 # -------------------------------
 # Sidebar Navigation
 # -------------------------------
@@ -66,14 +71,12 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Choose a section:", [
     "Gospel of Light",
     "Quantum Parables Timeline",
-    "Communion Project", # Renamed slightly for brevity
+    "Communion Project", 
     "🛠 Admin: Parable Suggestions"
 ])
+     
 
-
-#---------------------------------
 # 🌌 Quantum-Gospel Timeline Events
-#----------------------------------
 timeline_events = [
     {
         "date": "30 AD (est.)",
@@ -92,25 +95,6 @@ timeline_events = [
 ]
 
 
-#--------------------------------
-# 🗓️  Display Timeline Events
-#---------------------------------
-st.markdown("## ✨ Gospel Timeline")
-st.markdown("Here we trace entangled teachings through time:")
-
-for entry in timeline_events:
-    st.markdown(f"""
-    <div class="timeline-card">
-        <h3>{entry['event']}</h3>
-        <p><strong>📖 Scripture:</strong> {entry['scripture']}</p>
-        <p><strong>🗓️ Date:</strong> {entry['date']}</p>
-        <p>{entry['reflection'].replace('\n', '<br>')}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-
-
-
 # -------------------------------
 # ✨ Animated Scripture Passage Style
 # -------------------------------
@@ -126,6 +110,7 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # -------------------------------
@@ -151,7 +136,19 @@ if page == "Gospel of Light":
 # Section: Quantum Parables Timeline
 # -------------------------------
 elif page == "Quantum Parables Timeline":
-    st.markdown("""
+    st.markdown("#✨ Gospel Timeline#")
+    st.markdown("Here we trace entangled teachings through time, revealing the quantum nature of love and light:")
+
+
+    for entry in timeline_events:
+        st.markdown(f"""
+        <div class="timeline-card">
+            <h3>{entry['event']}</h3>
+            <p><strong>📖 Scripture:</strong> {entry['scripture']}</p>
+            <p><strong>🗓️ Date:</strong> {entry['date']}</p>
+            <p>{entry['reflection'].replace('\n', '<br>')}</p>
+        </div>
+        """, unsafe_allow_html=True)
     ---
     ## ⏳ Quantum Parables Timeline
     *A scrollable stream of entangled revelations—past, present, and parallel.*
