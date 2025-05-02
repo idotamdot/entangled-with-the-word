@@ -61,26 +61,20 @@ details[open] > summary {
 /* Tag Styles */
 .tag-label {
     display: inline-block;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-right: 6px;
+    background-color: #111827;
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(173, 216, 230, 0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+.tag-label:hover {
+    background-color: #1f2937;
+    box-shadow: 0 0 12px rgba(173, 216, 230, 0.9);
+}
 
-/* 🔮 Glowing Timeline Card */
-.timeline-card {
-    background-color: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(173, 216, 230, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.timeline-card:hover {
-    transform: scale(1.01);
-    box-shadow: 0 0 30px rgba(173, 216, 230, 0.5);
-}
-.timeline-card h3 {
-    margin-top: 0;
-    color: #e0f7ff;
-}
-.timeline-card p {
-    color: #cbd5e1;
-    font-size: 1.05em;
-}
