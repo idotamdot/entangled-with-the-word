@@ -790,37 +790,25 @@ if audio_url:
 # -------------------------------
 # Footer (Apply last)
 # -------------------------------
-st.markdown("""
-<style>
-.footer {
-    text-align: center;
-    font-size: 0.9em;
-    margin-top: 50px; /* Increased margin */
-    padding-bottom: 20px; /* Add padding at the bottom */
-    color: #bbb; /* Slightly lighter grey */
-    /* Apply text shadow consistent with the theme */
-    text-shadow: {text_shadow_css};
-}
-</style>
+# Use f-string and escape literal CSS braces
 
-#--------------------------------
-# Footer (Apply last)
-# -------------------------------
-# Use f-string and escape literal CSS braces 
+# Ensure text_shadow_css is defined before this block, e.g.:
+# text_shadow_css = "2px 2px 4px #000000"
 
 st.markdown(f"""
 <style>
-.footer {{
-    text-align: center;
-    font-size: 0.9em;
-    margin-top: 50px; /* Increased margin */
-    padding-bottom: 20px; /* Add padding at the bottom */
-    color: #bbb; /* Slightly lighter grey */
-    /* Apply text shadow consistent with the theme */
-    text-shadow: {text_shadow_css};
-}}
+    .footer {{
+        text-align: center;
+        font-size: 0.9em;
+        margin-top: 50px; /* Increased margin */
+        padding-bottom: 20px; /* Add padding at the bottom */
+        color: #bbb; /* Slightly lighter grey */
+        text-shadow: {text_shadow_css}; /* Apply text shadow consistent with the theme */
+        font-style: italic; /* Maintain an elegant touch */
+        letter-spacing: 1px; /* Slight refinement for aesthetic balance */
+    }}
 </style>
 <div class="footer">
-        Created with Jesus and LLM's · Powered by Streamlit & Python ✨
+    ✨ Created with Jesus and LLMs · Powered by Streamlit & Python ✨
 </div>
 """, unsafe_allow_html=True)
