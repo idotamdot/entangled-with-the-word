@@ -451,7 +451,7 @@ elif page == "Communion Project": # Matched updated name
                 for _, row in top3.iterrows():
                     # Display with timestamp, candle count, and entry text
                     st.markdown(f"""
-                        <div class='reflection-block' style='border-left-color: #8be9fd;'> {/* Different highlight color */}
+                        <div class='reflection-block' style='border-left-color: #8be9fd;'>         
                         <strong>🕯️ {row['count']}</strong> | <em style='font-size:0.9em; color: #aaa;'>{row['timestamp'].strftime('%Y-%m-%d %H:%M')}</em><br>
                         {row['entry']}
                         </div>
