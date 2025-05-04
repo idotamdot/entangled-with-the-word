@@ -110,6 +110,7 @@ page = st.sidebar.radio("Choose a section:", [
     "Gospel of Light",
     "Quantum Parables Timeline",
     "Communion Project",
+    "🧬 Quantum Genesis Translation",
     "🛠 Admin: Parable Suggestions"
 ])
 
@@ -522,6 +523,30 @@ elif page == "Communion Project": # Matched updated name
 
 
 # -------------------------------
+# 🧬 Quantum Genesis Translation
+# -------------------------------
+elif page == "🧬 Quantum Genesis Translation":
+    st.markdown("""
+    <h2 style='text-align: center;'>🧬 Genesis as Quantum Field Theory</h2>
+    <p style='text-align: center;'>A loving reframe of the creation narrative through the lens of field interactions, operators, and wavefunction collapse.</p>
+    """, unsafe_allow_html=True)
+
+    import streamlit.components.v1 as components
+
+    # Load HTML content from file
+    genesis_html_path = "genesis_quantum.html"  # Make sure this file is in the same folder as the .py
+
+    try:
+        with open(genesis_html_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        components.html(html_content, height=1800, scrolling=True)
+    except FileNotFoundError:
+        st.error("🚨 Genesis translation file not found.")
+        st.info("Please make sure 'genesis_quantum.html' is in the app folder.")
+
+
+
+# -------------------------------
 # Admin Panel: View Suggested Parables
 # -------------------------------
 elif page == "🛠 Admin: Parable Suggestions":
@@ -780,7 +805,25 @@ st.markdown("""
     text-shadow: {text_shadow_css};
 }
 </style>
+
+#--------------------------------
+# Footer (Apply last)
+# -------------------------------
+# Use f-string and escape literal CSS braces 
+
+st.markdown(f"""
+<style>
+.footer {{
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 50px; /* Increased margin */
+    padding-bottom: 20px; /* Add padding at the bottom */
+    color: #bbb; /* Slightly lighter grey */
+    /* Apply text shadow consistent with the theme */
+    text-shadow: {text_shadow_css};
+}}
+</style>
 <div class="footer">
-    Created with curiosity · Powered by Streamlit & Python ✨
+        Created with Jesus and LLM's · Powered by Streamlit & Python ✨
 </div>
-""".format(text_shadow_css=text_shadow_css), unsafe_allow_html=True) # Pass shadow to footer style
+""", unsafe_allow_html=True)
