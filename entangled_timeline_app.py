@@ -766,28 +766,25 @@ h1, h2, h3, h4, h5, h6, .stMarkdown p, blockquote {{
 # 🔊 Background Music Playback (Conditional)
 # -------------------------------
 # This section should run AFTER the sidebar controls are defined
-audio_url = None
-if music_on and music_choice and music_choice != "None":
-    if music_choice in music_files:
-        audio_url = music_files[music_choice]
-    else:
-        st.sidebar.warning(f"Selected music track '{music_choice}' not found in definitions.")
+audio_url = music_files.get(music_choice) if music_on and music_choice and music_choice != "None" else None
 
 if audio_url:
-    # NOTE: Audio might restart on script rerun (e.g., button clicks)
     st.markdown(f"""
-    <audio id="background-audio" autoplay loop>
+    <audio id="background-audio" autoplay loop style="display:none">
         <source src="{audio_url}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <script>
-        // Attempt to set volume when the element loads
-        var audio = document.getElementById("background-audio");
+        const audio = document.getElementById("background-audio");
         if (audio) {{
-            audio.volume = 0.3; // Set volume (0.0 to 1.0) - Adjust as needed
+            // Delay volume set to avoid autoplay block in some browsers
+            setTimeout(() => {{
+                audio.volume = 0.3;
+            }}, 500);
         }}
     </script>
     """, unsafe_allow_html=True)
+
 
 
 # -------------------------------
