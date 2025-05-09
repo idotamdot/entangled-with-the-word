@@ -809,7 +809,7 @@ st.markdown(f"""
     }}
 </style>
 <div class="footer">
-    ✨ Created with Jesus and LLMs · Powered by Streamlit & Python ✨
+    ✨ Created with Creativity and ChatGPT 4o · Powered by Streamlit & Python ✨
 </div>
 """, unsafe_allow_html=True)
 
