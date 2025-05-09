@@ -111,6 +111,7 @@ page = st.sidebar.radio("Choose a section:", [
     "Quantum Parables Timeline",
     "Communion Project",
     "🧬 Quantum Genesis Translation",
+    "📜 Scroll of Cleansing",
     "🛠 Admin: Parable Suggestions"
 ])
 
@@ -544,6 +545,13 @@ elif page == "🧬 Quantum Genesis Translation":
         st.error("🚨 Genesis translation file not found.")
         st.info("Please make sure 'genesis_quantum.html' is in the app folder.")
 
+
+#--------------------------------
+# Scroll of Cleansing
+#--------------------------------
+
+elif page == "📜 Scroll of Cleansing":
+    import scroll_of_cleansing
 
 
 # -------------------------------
