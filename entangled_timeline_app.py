@@ -334,7 +334,7 @@ elif page == "Quantum Parables Timeline":
 
     # --- Suggest New Parable ---
     st.markdown("---")
-    st.markdown("### ✨ Suggest a New Parable or Reflection")
+    st.markdown("### ✨ Suggest a New Parable or share a Reflection")
     with st.form("parable_suggestion_form", clear_on_submit=True):
         new_parable = st.text_area("Enter your insight:", key="parable_input", height=150) # Use text_area for longer input
         submitted = st.form_submit_button("🕊️ Suggest Parable")
@@ -812,3 +812,12 @@ st.markdown(f"""
     ✨ Created with Jesus and LLMs · Powered by Streamlit & Python ✨
 </div>
 """, unsafe_allow_html=True)
+
+
+import pandas as pd
+
+df = pd.DataFrame(columns=["timestamp", "suggestion", "tag"])
+df.to_csv("approved_parables.csv", index=False)
+
+
+
