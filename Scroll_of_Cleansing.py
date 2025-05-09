@@ -6,22 +6,32 @@ import streamlit as st
 
 st.markdown("""
 <style>
+@keyframes unscroll {
+    from { max-height: 0; opacity: 0; }
+    to { max-height: 80vh; opacity: 1; }
+}
+
 .scroll-box {
-    background: rgba(255, 255, 255, 0.05);
+    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png'),
+                radial-gradient(circle at top center, rgba(255,245,230,0.08), rgba(0,0,0,0.2));
     padding: 2rem;
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 0 30px rgba(255,255,255,0.1);
+    border-radius: 18px;
+    border: 2px solid rgba(255,255,255,0.25);
+    box-shadow: 0 0 24px rgba(255, 220, 190, 0.2), 0 0 60px rgba(255, 200, 160, 0.05);
     font-family: 'Georgia', serif;
     font-size: 1.1rem;
-    color: #f0f0f0;
+    color: #fef9f0;
     max-height: 80vh;
     overflow-y: auto;
     margin-top: 2rem;
-    line-height: 1.8;
+    line-height: 1.85;
+    animation: unscroll 2s ease-out forwards;
+    backdrop-filter: blur(4px);
 }
+
 h2, h3 {
-    color: #ffe3c3;
+    color: #ffebd6;
+    text-shadow: 0 0 5px rgba(255, 200, 150, 0.4);
 }
 </style>
 
