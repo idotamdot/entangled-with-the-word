@@ -21,7 +21,7 @@ def get_hebrews_data():
 
 def render_hebrews():
     st.markdown("""
-        <h2 style='color: #5D3FD3;'>🪐 The Book of Hebrews</h2>
+        <h2 class='hebrews-title' style='color: #5D3FD3;'>🪐 The Book of Hebrews</h2>
         <p style='font-size: 16px;'>The bridge between the old and the eternal. Where the unseen becomes assurance; where priesthood and divinity meet in timeless entanglement. Enter the mystery of the cosmic covenant.</p>
         <hr style='border: 1px solid #5D3FD3;'>
     """, unsafe_allow_html=True)
