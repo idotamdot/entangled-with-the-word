@@ -19,11 +19,15 @@ def get_hebrews_data():
         {"chapter": 13, "title": "Concluding Exhortations", "summary": "Encouragements to live with love, hospitality, and faithfulness. Jesus Christ is the same yesterday, today, and forever.", "quantum_reflection": "A universal constant: an invariant field within an evolving multiverse."}
     ]
 
+
+
 def render_hebrews():
     st.markdown("""
-        <h2 class='hebrews-title' style='color: #5D3FD3;'>🪐 The Book of Hebrews</h2>
-        <p style='font-size: 16px;'>The bridge between the old and the eternal. Where the unseen becomes assurance; where priesthood and divinity meet in timeless entanglement. Enter the mystery of the cosmic covenant.</p>
-        <hr style='border: 1px solid #5D3FD3;'>
+        <div class="hebrews-background">
+            <h2 class='hebrews-title' style='color: #5D3FD3;'>🪐 The Book of Hebrews</h2>
+            <p style='font-size: 16px;'>The bridge between the old and the eternal. Where the unseen becomes assurance; where priesthood and divinity meet in timeless entanglement. Enter the mystery of the cosmic covenant.</p>
+            <hr style='border: 1px solid #5D3FD3;'>
+        </div>
     """, unsafe_allow_html=True)
 
     hebrews_data = get_hebrews_data()
@@ -32,3 +36,7 @@ def render_hebrews():
         with st.expander(f"📜 Hebrews {chapter['chapter']}: {chapter['title']}"):
             st.markdown(f"**Summary:** {chapter['summary']}")
             st.markdown(f"💎 **Quantum Reflection:** {chapter['quantum_reflection']}")
+
+
+
+
