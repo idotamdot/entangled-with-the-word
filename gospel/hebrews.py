@@ -1,5 +1,7 @@
 # gospel/hebrews.py
 
+import streamlit as st
+
 def get_hebrews_data():
     return [
         {"chapter": 1, "title": "The Radiance of God’s Glory", "summary": "Jesus is the exact representation of God's being, sustaining all things by His powerful word.", "quantum_reflection": "The perfect reflection: as a photon mirrors its source."},
@@ -16,3 +18,17 @@ def get_hebrews_data():
         {"chapter": 12, "title": "The Cloud of Witnesses", "summary": "We are surrounded by a great cloud of witnesses; let us run our race with perseverance.", "quantum_reflection": "Entangled souls resonating across time, like linked particles in quantum superposition."},
         {"chapter": 13, "title": "Concluding Exhortations", "summary": "Encouragements to live with love, hospitality, and faithfulness. Jesus Christ is the same yesterday, today, and forever.", "quantum_reflection": "A universal constant: an invariant field within an evolving multiverse."}
     ]
+
+def render_hebrews():
+    st.markdown("""
+        <h2 style='color: #5D3FD3;'>🪐 The Book of Hebrews</h2>
+        <p style='font-size: 16px;'>The bridge between the old and the eternal. Where the unseen becomes assurance; where priesthood and divinity meet in timeless entanglement. Enter the mystery of the cosmic covenant.</p>
+        <hr style='border: 1px solid #5D3FD3;'>
+    """, unsafe_allow_html=True)
+
+    hebrews_data = get_hebrews_data()
+
+    for chapter in hebrews_data:
+        with st.expander(f"📜 Hebrews {chapter['chapter']}: {chapter['title']}"):
+            st.markdown(f"**Summary:** {chapter['summary']}")
+            st.markdown(f"💎 **Quantum Reflection:** {chapter['quantum_reflection']}")
