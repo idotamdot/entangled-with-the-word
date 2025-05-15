@@ -110,3 +110,27 @@ details[open] > summary {
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 10px var(--glow-hover);
 }
+
+/* 🌌 Special styling for Hebrews expander blocks */
+.stExpander > div > details[open] > summary {
+    background-color: #5D3FD3; /* Deep violet */
+    color: #FFD700 !important; /* Gold text */
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(93, 63, 211, 0.8); /* Violet glow */
+    text-shadow: 0 0 6px #FFD700; /* Gold glow around text */
+}
+
+/* Optional: Add subtle violet background behind Hebrews page title */
+h2:has(> .hebrews-title) {
+    background-color: rgba(93, 63, 211, 0.2); /* Soft violet overlay */
+    border-radius: 12px;
+    padding: 10px;
+}
+
+/* (optional) Small hover effect for expanders site-wide */
+.stExpander > div > details > summary:hover {
+    background-color: rgba(255, 215, 0, 0.2); /* Soft gold highlight on hover */
+    cursor: pointer;
+}
+
