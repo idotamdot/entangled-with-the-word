@@ -1,8 +1,17 @@
+/*
+    Custom Streamlit Styling Sheet
+    -----------------------------
+    This CSS aims to create a unique, glowing, nebula-themed interface for a Streamlit application.
+    Remember that when heavily customizing a framework like Streamlit:
+    - Selectors might need updates if Streamlit's internal HTML structure changes in future versions.
+    - Test across different browsers for consistent appearance, especially for newer CSS features or vendor-prefixed properties.
+    - Prioritize accessibility (color contrast, focus states, readability).
+*/
 
 /* ✨ Expander Header Custom Style */
 div.streamlit-expanderHeader {
     background-color: rgba(255, 255, 255, 0.05);
-    color: var(--text-color, #f0f0f0);
+    color: var(--text-color, #f0f0f0); /* Fallback color added for safety */
     font-size: 1.2rem;
     border: 1px solid #ffffff20;
     border-radius: 12px;
@@ -13,11 +22,13 @@ div.streamlit-expanderHeader {
 
 /* Open Expander Glow Effect */
 details[open] > summary {
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3) !important; /* !important may be used to ensure override of Streamlit's default styles */
 }
 
 /* 🌌 Base App Container */
 .stApp {
+    /* Suggestion: Consider hosting this image locally within your app's assets or on a CDN
+       for better reliability, performance, and to avoid potential issues with direct linking from cloud storage. */
     background-image: url("https://1drv.ms/i/c/66fdd70f49202ef3/Eb7uPaZsu4JJq5JqQaDs1wgBUqiti1mAOVS3OrVLKTiIdQ?e=LMXSwe");
     background-repeat: no-repeat;
     background-size: cover;
@@ -27,6 +38,12 @@ details[open] > summary {
     --shadow-color: 0 0 8px #8be9fd;
     --glow-light: rgba(173, 216, 230, 0.5);
     --glow-hover: rgba(173, 216, 230, 0.8);
+
+    /* Firefox Scrollbar Styling (applied to the main app container) */
+    /* Note: Firefox offers less customization for scrollbars than WebKit.
+       This provides basic theming for Firefox. */
+    scrollbar-width: thin; /* Options: auto, thin, none */
+    scrollbar-color: rgba(173, 216, 230, 0.4) transparent; /* thumb color, track color (transparent track to match WebKit style) */
 }
 
 /* 🔮 Glowing Timeline Card */
@@ -37,100 +54,4 @@ details[open] > summary {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 0 20px var(--glow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.timeline-card:hover {
-    transform: scale(1.01);
-    box-shadow: 0 0 30px var(--glow-hover);
-}
-.timeline-card h3 {
-    margin-top: 0;
-    color: var(--text-color);
-}
-.timeline-card p {
-    color: #cbd5e1;
-    font-size: 1.05em;
-}
-
-/* 🌱 Tag Labels */
-.tag-label {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 0.85em;
-    font-weight: bold;
-    margin-bottom: 8px;
-    margin-right: 6px;
-    background-color: #111827;
-    color: #ffffff;
-    box-shadow: 0 0 8px var(--glow-light);
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: all 0.3s ease;
-}
-.tag-label:hover {
-    background-color: #1f2937;
-    box-shadow: 0 0 12px var(--glow-hover);
-}
-
-/* 📜 Reflection Block */
-.reflection-block {
-    border-left: 3px solid #ffd700;
-    background-color: rgba(255, 255, 255, 0.03);
-    border-radius: 6px;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-/* 🌐 Scrollbar Enhancements */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(173, 216, 230, 0.4);
-    border-radius: 8px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(173, 216, 230, 0.8);
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* 🧘 Optional: Button Enhancements */
-.stButton > button {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.08);
-    color: var(--text-color);
-    box-shadow: 0 0 6px var(--glow-light);
-    text-shadow: var(--shadow-color);
-    transition: all 0.3s ease;
-}
-.stButton > button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 10px var(--glow-hover);
-}
-
-/* 🌌 Special styling for Hebrews expander blocks */
-.stExpander > div > details[open] > summary {
-    background-color: #5D3FD3; /* Deep violet */
-    color: #FFD700 !important; /* Gold text */
-    font-weight: bold;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(93, 63, 211, 0.8); /* Violet glow */
-    text-shadow: 0 0 6px #FFD700; /* Gold glow around text */
-}
-
-/* Optional: Add subtle violet background behind Hebrews page title */
-h2:has(> .hebrews-title) {
-    background-color: rgba(93, 63, 211, 0.2); /* Soft violet overlay */
-    border-radius: 12px;
-    padding: 10px;
-}
-
-/* (optional) Small hover effect for expanders site-wide */
-.stExpander > div > details > summary:hover {
-    background-color: rgba(255, 215, 0, 0.2); /* Soft gold highlight on hover */
-    cursor: pointer;
-}
-
+    transition: transform 0.3s ease, box-shadow 0.3s
