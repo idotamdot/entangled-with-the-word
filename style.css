@@ -54,4 +54,115 @@ details[open] > summary {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 0 20px var(--glow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.timeline-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 30px var(--glow-hover);
+}
+.timeline-card h3 {
+    margin-top: 0;
+    color: var(--text-color);
+}
+.timeline-card p {
+    color: #cbd5e1;
+    font-size: 1.05em;
+}
+
+/* 🌱 Tag Labels */
+.tag-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-right: 6px;
+    background-color: #111827;
+    color: #ffffff;
+    box-shadow: 0 0 8px var(--glow-light);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+.tag-label:hover {
+    background-color: #1f2937;
+    box-shadow: 0 0 12px var(--glow-hover);
+}
+
+/* 📜 Reflection Block */
+.reflection-block {
+    border-left: 3px solid #ffd700; /* Gold accent */
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+/* 🌐 Scrollbar Enhancements - For WebKit-based browsers (Chrome, Safari, new Edge) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(173, 216, 230, 0.4);
+    border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(173, 216, 230, 0.8);
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+/* Note: Firefox scrollbar styling is handled in the .stApp rule for basic consistency.
+   Firefox does not support a direct CSS equivalent for ::-webkit-scrollbar-thumb:hover. */
+
+/* 🧘 Optional: Button Enhancements */
+.stButton > button {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-color);
+    box-shadow: 0 0 6px var(--glow-light);
+    text-shadow: var(--shadow-color);
+    transition: all 0.3s ease;
+}
+.stButton > button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px var(--glow-hover);
+}
+
+/* 🌌 Special styling for Hebrews expander blocks */
+/* Accessibility Note: Ensure the gold text (#FFD700) on the deep violet background (#5D3FD3)
+   has sufficient color contrast (e.g., check against WCAG AA/AAA guidelines). */
+.stExpander > div > details[open] > summary {
+    background-color: #5D3FD3; /* Deep violet */
+    color: #FFD700 !important; /* Gold text - !important may be needed to override Streamlit defaults */
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(93, 63, 211, 0.8); /* Violet glow */
+    text-shadow: 0 0 6px #FFD700; /* Gold glow around text */
+}
+
+/* Optional: Add subtle violet background behind Hebrews page title */
+/* The :has() pseudo-class is a modern CSS feature with good support in current browsers.
+   If targeting very old browsers, verify compatibility or consider alternatives. */
+h2:has(> .hebrews-title) {
+    background-color: rgba(93, 63, 211, 0.2); /* Soft violet overlay */
+    border-radius: 12px;
+    padding: 10px;
+}
+
+/* (optional) Small hover effect for expanders site-wide */
+.stExpander > div > details > summary:hover {
+    background-color: rgba(255, 215, 0, 0.2); /* Soft gold highlight on hover */
+    cursor: pointer;
+}
+
+/*
+    General Accessibility & Maintenance Notes:
+    - Color Contrast: Regularly check text and UI elements against backgrounds to ensure readability for all users.
+      Tools are available online to check contrast ratios (aim for WCAG AA or AAA).
+    - Focus Indicators: Ensure interactive elements have clear visual focus states for keyboard navigation.
+      Streamlit's defaults are often good, but custom styling can sometimes obscure them.
+    - Framework Updates: Streamlit updates might change underlying HTML structures.
+      If styles break after an update, selectors may need to be re-inspected and adjusted.
+*/
