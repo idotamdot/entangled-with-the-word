@@ -829,3 +829,7 @@ df.to_csv("approved_parables.csv", index=False)
 
 
 
+
+
+
+
