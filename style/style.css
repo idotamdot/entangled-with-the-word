@@ -167,18 +167,7 @@ h2:has(> .hebrews-title) {
       If styles break after an update, selectors may need to be re-inspected and adjusted.
 */
 
-# ✨ Background Watermark Style
-st.markdown(f"""
-<style>
-.stApp {{
-    background: url('images/entangled_identity_watermark.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}}
-</style>
-""", unsafe_allow_html=True)
+
 
 
 /* 🌌 Animated Starfield Background – Hebrews Only */
