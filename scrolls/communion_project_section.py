@@ -2,7 +2,7 @@
 # Communion Project Section
 # -------------------------------
 
-if page == "Communion Project (Coming Soon)":
+
     st.markdown("""
     ---
     ## 🌟 Communion: A Living Gospel
