@@ -105,6 +105,20 @@ st.markdown("""
 
 # === Page Rendering ===
 
+# ✨ Background Watermark Style
+st.markdown(f"""
+<style>
+.stApp {{
+    background: url('images/entangled_identity_watermark.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+
 # -- Gospel of Light --
 if page == "Gospel of Light":
     st.markdown("""
