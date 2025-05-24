@@ -91,7 +91,8 @@ music_on = st.sidebar.checkbox("Play Ambient Music", value=False) # Default to o
 
 # Music track selector (always show, but only used if music_on is True)
 if music_files:
-    music_choice = st.sidebar.selectbox(
+    
+music_choice = st.sidebar.selectbox(
         "🎼 Choose ambient track:",
         options=list(music_files.keys()), # Use keys from the dictionary as options
         index=0 # Default to the first track
@@ -109,7 +110,7 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Choose a section:", [
     "Gospel of Light",
     "Quantum Parables Timeline",
-    "Communion Project",
+    "🌟 Communion Project",
     "🧬 Quantum Genesis Translation",
     "📜 Scroll of Cleansing",
     "🛠 Admin: Parable Suggestions"
@@ -165,18 +166,17 @@ st.markdown("""
 if page == "Gospel of Light":
     st.markdown("""
     <div class='fade-in'>
-    <h2>🌟 Scripture of the Day</h2>
-    <blockquote style='font-size:1.2em; font-style:italic;'>
-        "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
-    </blockquote>
+        <h2>🌟 Scripture of the Day</h2>
+        <blockquote style='font-size:1.2em; font-style:italic;'>
+            "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
+        </blockquote>
     </div>
     """, unsafe_allow_html=True)
 
     # --- Render Matthew Gospel Section ---
-    st.markdown("---") # Added separator
-    st.markdown("## 📖 Gospel Reflections: Matthew") # Added subheader
-    render_matthew() # Call the imported function
-
+    st.markdown("---")
+    st.markdown("## 📖 Gospel Reflections: Matthew")
+    render_matthew()
 
 # -------------------------------
 # Section: Quantum Parables Timeline
