@@ -91,15 +91,15 @@ music_on = st.sidebar.checkbox("Play Ambient Music", value=False) # Default to o
 
 # Music track selector (always show, but only used if music_on is True)
 if music_files:
-    
-music_choice = st.sidebar.selectbox(
+    music_choice = st.sidebar.selectbox(
         "🎼 Choose ambient track:",
-        options=list(music_files.keys()), # Use keys from the dictionary as options
-        index=0 # Default to the first track
+        options=list(music_files.keys()),
+        index=0
     )
 else:
     music_choice = None
     st.sidebar.info("No music tracks defined.")
+
 
 
 # -------------------------------
