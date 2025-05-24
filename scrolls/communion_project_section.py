@@ -1,8 +1,10 @@
-# -------------------------------
-# Communion Project Section
-# -------------------------------
+import streamlit as st
+import pandas as pd
+import datetime
+import os
 
 
+def render_communion_scroll():
     st.markdown("""
     ---
     ## 🌟 Communion: A Living Gospel
@@ -10,72 +12,128 @@
     ---
     """, unsafe_allow_html=True)
 
+    # --- Submit Reflection ---
     st.markdown("### 💬 Share your reflection:")
-    user_reflection = st.text_area("Enter a poetic thought, question, or spiritual insight:", key="communion_entry")
+    with st.form("communion_form", clear_on_submit=True):
+        user_reflection = st.text_area("Enter a poetic thought, question, or spiritual insight:", key="communion_entry", height=150)
+        submit_reflection = st.form_submit_button("🙏 Submit Reflection")
 
-    if st.button("🙏 Submit Reflection"):
-        if user_reflection.strip():
+        if submit_reflection and user_reflection and user_reflection.strip():
             timestamp = datetime.datetime.now().isoformat()
-            df = pd.DataFrame([[timestamp, user_reflection]], columns=["timestamp", "entry"])
+            df_new = pd.DataFrame([[timestamp, user_reflection.strip()]], columns=["timestamp", "entry"])
+            communion_file = "data/communion_reflections.csv"
             try:
-                existing = pd.read_csv("communion_reflections.csv")
-                df = pd.concat([existing, df], ignore_index=True)
-            except FileNotFoundError:
-                pass
-            df.to_csv("communion_reflections.csv", index=False)
-            st.success("Your presence has been recorded in the scroll.")
+                file_exists = os.path.exists(communion_file)
+                df_new.to_csv(communion_file, mode='a', header=not file_exists, index=False)
+                st.success("Your presence has been recorded in the scroll.")
+            except Exception as e:
+                st.error(f"Error saving reflection: {e}")
+        elif submit_reflection:
+            st.warning("Please enter a reflection before submitting.")
 
     st.markdown("---")
     st.markdown("### 📜 The Table of Light")
 
+    communion_file = "data/communion_reflections.csv"
+    candle_file = "data/communion_candles.csv"
+
     try:
-        entries = pd.read_csv("communion_reflections.csv")
-        entries['timestamp'] = pd.to_datetime(entries['timestamp'])
-        today = datetime.date.today()
-        entries_today = entries[entries['timestamp'].dt.date == today]
-        entries['candles'] = 0
-
-        candle_file = "communion_candles.csv"
-        if os.path.exists(candle_file):
-            candles_df = pd.read_csv(candle_file)
-            for _, c in candles_df.iterrows():
-                if c['index'] < len(entries):
-                    entries.loc[c['index'], 'candles'] = c['count']
+        if not os.path.exists(communion_file):
+            st.info("No reflections found yet. Be the first to submit one above!")
+            entries = pd.DataFrame(columns=["timestamp", "entry"])
         else:
-            candles_df = pd.DataFrame(columns=["index", "count"])
+            entries = pd.read_csv(communion_file)
 
-        entries = entries.sort_values(by='candles', ascending=False).reset_index(drop=True)
+        if not entries.empty:
+            entries['timestamp'] = pd.to_datetime(entries['timestamp'])
+            entries = entries.reset_index(drop=True)
+            entries['id'] = entries.index
 
-        st.markdown("### ✨ Top 3 Highlights of the Day")
-        top3 = entries_today.sort_values(by='candles', ascending=False).head(3)
-        if top3.empty:
-            st.markdown("""
-                <div class='fade-in' style='font-style: italic; text-align: center; padding: 1em;'>
-                    No reflections yet today. Be the first to light the scroll.
-                </div>
-            """, unsafe_allow_html=True)
-        else:
-            for i, row in top3.iterrows():
-                st.markdown(f"<div class='reflection-block'><strong>🕯 {row['candles']}</strong><br><em>{row['timestamp'][:16]}</em><br>{row['entry']}</div>", unsafe_allow_html=True)
-
-        st.markdown("### 🔥 Most Lit Reflections")
-        for i, row in entries.iterrows():
-            count = candles_df[candles_df["index"] == i]["count"].values[0] if i in candles_df["index"].values else 0
-
-            col1, col2 = st.columns([8, 1])
-            with col1:
-                st.markdown(f"🕯 *{row['timestamp'][:16]}*")
-                st.markdown(f"> {row['entry']}")
-            with col2:
-                if st.button(f"🕯 {count}", key=f"candle_{i}"):
-                    if i in candles_df["index"].values:
-                        candles_df.loc[candles_df["index"] == i, "count"] += 1
+            if os.path.exists(candle_file):
+                try:
+                    candles_df = pd.read_csv(candle_file)
+                    if not candles_df.empty:
+                        candles_df['entry_index'] = candles_df['entry_index'].astype(int)
+                        candles_df['count'] = candles_df['count'].astype(int)
                     else:
-                        candles_df = pd.concat([candles_df, pd.DataFrame([[i, 1]], columns=["index", "count"])], ignore_index=True)
-                    candles_df.to_csv(candle_file, index=False)
-                    st.experimental_rerun()
+                        candles_df = pd.DataFrame(columns=["entry_index", "count"])
+                except pd.errors.EmptyDataError:
+                    candles_df = pd.DataFrame(columns=["entry_index", "count"])
+                except Exception as e:
+                    st.warning(f"Could not load candle data: {e}")
+                    candles_df = pd.DataFrame(columns=["entry_index", "count"])
+            else:
+                candles_df = pd.DataFrame(columns=["entry_index", "count"])
 
-        st.markdown("---")
+            candles_df = candles_df.rename(columns={'entry_index': 'id'})
+            entries = pd.merge(entries, candles_df, on='id', how='left')
+            entries['count'] = entries['count'].fillna(0).astype(int)
 
-    except FileNotFoundError:
-        st.info("No reflections have been added yet.")
+            st.markdown("### ✨ Top 3 Highlights of the Day")
+            today = datetime.date.today()
+            entries_today = entries[entries['timestamp'].dt.date == today].copy()
+            top3 = entries_today.sort_values(by='count', ascending=False).head(3)
+
+            if top3.empty:
+                st.markdown("""
+                    <div class='fade-in' style='font-style: italic; text-align: center; padding: 1em;'>
+                        No reflections yet today. Be the first to light the scroll.
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                for _, row in top3.iterrows():
+                    st.markdown(f"""
+                        <div class='reflection-block' style='border-left-color: #8be9fd;'>
+                        <strong>🕯️ {row['count']}</strong> | <em style='font-size:0.9em; color: #aaa;'>{row['timestamp'].strftime('%Y-%m-%d %H:%M')}</em><br>
+                        {row['entry']}
+                        </div>
+                    """, unsafe_allow_html=True)
+
+            st.markdown("---")
+            st.markdown("### 🔥 All Reflections (Sorted by Light)")
+
+            entries_sorted = entries.sort_values(by='count', ascending=False)
+
+            for _, row in entries_sorted.iterrows():
+                entry_index = row['id']
+                count = row['count']
+                timestamp_str = row['timestamp'].strftime('%Y-%m-%d %H:%M')
+                entry_text = row['entry']
+
+                col1, col2 = st.columns([9, 1])
+                with col1:
+                    st.markdown(f"<em style='font-size:0.9em; color: #aaa;'>{timestamp_str}</em>", unsafe_allow_html=True)
+                    st.markdown(f"> {entry_text}")
+                with col2:
+                    if st.button(f"🕯️ {count}", key=f"candle_{entry_index}", help="Add light to this reflection"):
+                        if os.path.exists(candle_file):
+                            try:
+                                current_df = pd.read_csv(candle_file)
+                                if not current_df.empty:
+                                    current_df['entry_index'] = current_df['entry_index'].astype(int)
+                                    current_df['count'] = current_df['count'].astype(int)
+                                else:
+                                    current_df = pd.DataFrame(columns=["entry_index", "count"])
+                            except pd.errors.EmptyDataError:
+                                current_df = pd.DataFrame(columns=["entry_index", "count"])
+                        else:
+                            current_df = pd.DataFrame(columns=["entry_index", "count"])
+
+                        if entry_index in current_df["entry_index"].values:
+                            current_df.loc[current_df["entry_index"] == entry_index, "count"] += 1
+                        else:
+                            new_row = pd.DataFrame([[entry_index, 1]], columns=["entry_index", "count"])
+                            current_df = pd.concat([current_df, new_row], ignore_index=True)
+
+                        try:
+                            current_df.to_csv(candle_file, index=False)
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Failed to save candle count: {e}")
+
+                st.markdown("---")
+
+    except pd.errors.EmptyDataError:
+        st.info("The reflections file appears to be empty.")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
