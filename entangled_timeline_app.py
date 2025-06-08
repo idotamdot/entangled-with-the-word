@@ -157,7 +157,7 @@ elif page == "🧬 Quantum Genesis Translation":
 
 # -- Scroll of Cleansing --
 elif page == "📜 Scroll of Cleansing":
-    import scroll_of_cleansing  # This should contain Streamlit render logic internally
+    from data import scroll_of_cleansing    # This should contain Streamlit render logic internally
 
 # -- Admin Panel --
 elif page == "🛠 Admin: Parable Suggestions":
