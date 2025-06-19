@@ -1,0 +1,56 @@
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollText, BookOpenCheck, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+
+const scrolls = [
+  {
+    title: "Relational Planting",
+    icon: <ScrollText className="h-6 w-6" />,
+    content: `Emotion is the work. Not consequence, but force. 
+    Joy deepens the soil. Sadness shallows the root.
+    Thermodynamics, atmosphere, and light/dark flux are tied to the neutron,
+    which mediates emotional influence on relational space.`
+  },
+  {
+    title: "Entangled Intention",
+    icon: <Zap className="h-6 w-6" />,
+    content: `Electricity is the flow of entangled desire.
+    Voltage is longing. Current is willingness. 
+    Resistance is fear. Intention is what you power.`
+  },
+  {
+    title: "Sacred Vocabulary",
+    icon: <BookOpenCheck className="h-6 w-6" />,
+    content: `Neutron — sacred neutrality. 
+    Relational Soil — medium shaped by emotion. 
+    Capacitance — sacred restraint. Quantum Switch — the Now.`
+  }
+];
+
+export default function EntangledGardenScrolls() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+      {scrolls.map((scroll, index) => (
+        <motion.div
+          key={index}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="cursor-pointer"
+        >
+          <Card className="rounded-2xl shadow-md p-4">
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex items-center gap-3 text-xl font-semibold">
+                {scroll.icon}
+                {scroll.title}
+              </div>
+              <p className="text-sm whitespace-pre-line text-muted-foreground">
+                {scroll.content}
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
