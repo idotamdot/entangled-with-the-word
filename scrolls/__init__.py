@@ -2,6 +2,8 @@
 
 from .communion_project_section import render_communion_scroll
 from .scroll_of_cleansing import render_cleansing_scroll
+from .books_of_the_bible import render_books_list
+from .parables_of_jesus import render_parables_list
 
 try:
     from .timeline_section import render_timeline

@@ -62,6 +62,8 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Choose a section:", [
     "Gospel of Light",
     "Quantum Parables Timeline",
+    "📚 Books of the Bible",
+    "📕 Parables of Jesus",
     "🌟 Communion Project",
     "🧬 Quantum Genesis Translation",
     "📜 Scroll of Cleansing",
@@ -136,6 +138,16 @@ if page == "Gospel of Light":
 elif page == "Quantum Parables Timeline":
     from scrolls.timeline_section import render_timeline
     render_timeline()
+
+# -- Books of the Bible --
+elif page == "📚 Books of the Bible":
+    from scrolls.books_of_the_bible import render_books_list
+    render_books_list()
+
+# -- Parables of Jesus --
+elif page == "📕 Parables of Jesus":
+    from scrolls.parables_of_jesus import render_parables_list
+    render_parables_list()
 
 # -- Communion Project --
 elif page == "🌟 Communion Project":
