@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import streamlit as st
 
-APPROVED_FILE = os.path.join('gospel', 'approved_parables..csv')
+APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
 
 def load_entries():

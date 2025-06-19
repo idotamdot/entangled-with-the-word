@@ -3,8 +3,8 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime
 
-SUGGEST_FILE = os.path.join('data', 'suggested_parables.csv')
-APPROVED_FILE = os.path.join('gospel', 'approved_parables..csv')
+SUGGEST_FILE = os.path.join("data", "suggested_parables.csv")
+APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
 
 def _load_df(path, columns):
