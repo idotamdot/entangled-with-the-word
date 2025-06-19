@@ -64,6 +64,7 @@ page = st.sidebar.radio("Choose a section:", [
     "Quantum Parables Timeline",
     "📚 Books of the Bible",
     "📕 Parables of Jesus",
+    "🌿 Entangled Garden",
     "🌟 Communion Project",
     "🧬 Quantum Genesis Translation",
     "📜 Scroll of Cleansing",
@@ -111,7 +112,7 @@ st.markdown("""
 st.markdown(f"""
 <style>
 .stApp {{
-    background: url('images/entangled_identity_watermark.png');
+    background: url('images/starry-sky.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -148,6 +149,11 @@ elif page == "📚 Books of the Bible":
 elif page == "📕 Parables of Jesus":
     from scrolls.parables_of_jesus import render_parables_list
     render_parables_list()
+
+# -- Entangled Garden --
+elif page == "🌿 Entangled Garden":
+    from scrolls.garden_scrolls_section import render_garden_scrolls
+    render_garden_scrolls()
 
 # -- Communion Project --
 elif page == "🌟 Communion Project":

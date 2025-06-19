@@ -11,6 +11,7 @@
 - 🧬 **Quantum Parables Timeline** – scroll through entries exploring light, consciousness, and scripture.
 - 📚 **Books of the Bible** – view every book from Genesis to Revelation.
 - 📕 **Parables of Jesus** – a complete list of Christ's parables.
+- 🌿 **Entangled Garden Scrolls** – meditations on intention and connection.
 - 📜 **Communion Project** – share reflections and light digital candles.
 - 🌌 **Visual Theme Selector** – switch between Nebula, Gold, Ocean, or Scroll aesthetics.
 - 🎶 **Ambient Music Playback** – optional meditative background tracks.
