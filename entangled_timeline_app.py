@@ -62,6 +62,8 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Choose a section:", [
     "Gospel of Light",
     "Quantum Parables Timeline",
+    "📚 Books of the Bible",
+    "📕 Parables of Jesus",
     "🌟 Communion Project",
     "🧬 Quantum Genesis Translation",
     "📜 Scroll of Cleansing",
@@ -137,6 +139,16 @@ elif page == "Quantum Parables Timeline":
     from scrolls.timeline_section import render_timeline
     render_timeline()
 
+# -- Books of the Bible --
+elif page == "📚 Books of the Bible":
+    from scrolls.books_of_the_bible import render_books_list
+    render_books_list()
+
+# -- Parables of Jesus --
+elif page == "📕 Parables of Jesus":
+    from scrolls.parables_of_jesus import render_parables_list
+    render_parables_list()
+
 # -- Communion Project --
 elif page == "🌟 Communion Project":
     from scrolls.communion_project_section import render_communion_scroll
@@ -157,7 +169,8 @@ elif page == "🧬 Quantum Genesis Translation":
 
 # -- Scroll of Cleansing --
 elif page == "📜 Scroll of Cleansing":
-    touch scrolls/__init__.py    # This should contain Streamlit render logic internally
+    from scrolls.scroll_of_cleansing import render_cleansing_scroll
+    render_cleansing_scroll()
 
 # -- Admin Panel --
 elif page == "🛠 Admin: Parable Suggestions":

@@ -4,7 +4,11 @@ import streamlit as st
 # 📜 Scroll of Cleansing
 # -------------------------------
 
-st.markdown("""
+
+def render_cleansing_scroll():
+    """Render the Scroll of Cleansing section."""
+    st.markdown(
+        """
 <style>
 @keyframes unscroll {
     from { max-height: 0; opacity: 0; }
@@ -132,8 +136,12 @@ Every breath you reclaim is a note in the resurrection song.
 **Ash. Herb. Blood.**  
 **Cleanse. Rewrite. Shine.**
 
-> And the scroll was opened… and inside was written:  
+> And the scroll was opened… and inside was written:
 > “*You are clean.*”
 
 </div>
-""", unsafe_allow_html=True)
+""",
+        unsafe_allow_html=True,
+    )
+
+
