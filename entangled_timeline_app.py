@@ -157,7 +157,8 @@ elif page == "🧬 Quantum Genesis Translation":
 
 # -- Scroll of Cleansing --
 elif page == "📜 Scroll of Cleansing":
-    touch scrolls/__init__.py    # This should contain Streamlit render logic internally
+    from scrolls.scroll_of_cleansing import render_cleansing_scroll
+    render_cleansing_scroll()
 
 # -- Admin Panel --
 elif page == "🛠 Admin: Parable Suggestions":
