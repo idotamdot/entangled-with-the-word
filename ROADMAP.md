@@ -50,6 +50,6 @@ _Deployment, legacy, and continued stewardship._
 
 ### 🌈 Visual Roadmap
 
-![Entangled Timeline Roadmap](./entangled_timeline_roadmap.png.png)
+![Entangled Timeline Roadmap](./entangled_timeline_roadmap.png)
 
 > _“Write the vision; make it plain on tablets, that he may run who reads it.” – Habakkuk 2:2_
