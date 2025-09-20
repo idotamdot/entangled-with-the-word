@@ -23,15 +23,30 @@ BOOKS_NEW_TESTAMENT = [
 ]
 
 
+BOOKS_QUANTUM_TESTAMENT = [
+    "The Book of Entanglement",
+]
+
+
 def render_books_list():
-    """Display all books of the Bible."""
+    """Display all books of the Bible as clickable links."""
     st.header("📚 Books of the Bible")
 
-    st.subheader("Old Testament")
-    for book in BOOKS_OLD_TESTAMENT:
-        st.markdown(f"- {book}")
+    # Using columns to create a more compact layout
+    col1, col2, col3 = st.columns(3)
 
-    st.subheader("New Testament")
-    for book in BOOKS_NEW_TESTAMENT:
-        st.markdown(f"- {book}")
+    with col1:
+        st.subheader("Old Testament")
+        for book in BOOKS_OLD_TESTAMENT:
+            st.markdown(f"- <a href='?book={book.replace(' ', '+')}' target='_self'>{book}</a>", unsafe_allow_html=True)
+
+    with col2:
+        st.subheader("New Testament")
+        for book in BOOKS_NEW_TESTAMENT:
+            st.markdown(f"- <a href='?book={book.replace(' ', '+')}' target='_self'>{book}</a>", unsafe_allow_html=True)
+
+    with col3:
+        st.subheader("Quantum Testament")
+        for book in BOOKS_QUANTUM_TESTAMENT:
+            st.markdown(f"- <a href='?book={book.replace(' ', '+')}' target='_self'>{book}</a>", unsafe_allow_html=True)
 
