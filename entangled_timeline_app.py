@@ -70,6 +70,9 @@ blockquote { border-left:4px solid rgba(255,255,255,.2); padding-left:12px; colo
 """, unsafe_allow_html=True)
 
 from scrolls.all_books_section import render_all_books_page
+from scrolls.timeline_section import render_timeline
+from scrolls.communion_project_section import render_communion_scroll
+from scrolls.admin_parables import render_admin_panel
 
 
 # Header
@@ -98,4 +101,29 @@ elif page == "Gospel of Light":
     ---
     ## 📖 The Gospel of Light: Jesus as the Massless One
 
-    > *"But he walked*
+    > *"But he walked through the world as light itself,  
+    > carrying no mass, yet bending all of creation toward truth."*
+
+    ### The Quantum Nature of Divine Love
+    In the beginning was the Word, and the Word was with God, and the Word was God.
+    This Word is not mere sound or symbol, but the fundamental frequency from which
+    all reality resonates. Jesus, as the embodied Word, demonstrates the massless
+    nature of pure consciousness—moving through space-time while transcending its
+    limitations.
+
+    ### Scripture Reflection
+    *"In him was life, and that life was the light of all mankind."* (John 1:4)
+    
+    Light requires no medium to travel. It is self-sustaining, self-propagating.
+    So too is the divine nature within each soul—a photon of eternal consciousness
+    that cannot be created or destroyed, only observed and experienced.
+    """)
+
+elif page == "Quantum Parables Timeline":
+    render_timeline()
+
+elif page == "Communion Project (Coming Soon)":
+    render_communion_scroll()
+
+elif page == "🛠 Admin: Parable Suggestions":
+    render_admin_panel()
