@@ -45,7 +45,7 @@ music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Choose a section:",
-    ["Gospel of Light", "Quantum Parables Timeline", "Communion Project (Coming Soon)", "🛠 Admin: Parable Suggestions"]
+    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project (Coming Soon)", "🛠 Admin: Parable Suggestions"]
 )
 
 # =============== Global CSS ===============
@@ -69,6 +69,9 @@ blockquote { border-left:4px solid rgba(255,255,255,.2); padding-left:12px; colo
 </style>
 """, unsafe_allow_html=True)
 
+from scrolls.all_books_section import render_all_books_page
+
+
 # Header
 st.markdown("""
 <div style='text-align:center;'>
@@ -77,8 +80,11 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# =============== Gospel of Light ===============
-if page == "Gospel of Light":
+
+# =============== Page Content ===============
+if page == "All Books":
+    render_all_books_page()
+elif page == "Gospel of Light":
     st.markdown("""
     <div class='fade-in'>
       <h2>🌟 Scripture of the Day</h2>
