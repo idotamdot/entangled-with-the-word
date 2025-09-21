@@ -3,3 +3,9 @@
 .env
 *.key
 *.env
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so

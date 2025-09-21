@@ -70,6 +70,9 @@ blockquote { border-left:4px solid rgba(255,255,255,.2); padding-left:12px; colo
 """, unsafe_allow_html=True)
 
 from scrolls.all_books_section import render_all_books_page
+from scrolls.timeline_section import render_timeline
+from scrolls.communion_project_section import render_communion_scroll
+from scrolls.admin_parables import render_admin_panel
 
 
 # Header
@@ -98,4 +101,42 @@ elif page == "Gospel of Light":
     ---
     ## 📖 The Gospel of Light: Jesus as the Massless One
 
-    > *"But he walked*
+    > *"But he walked upon the water, massless as light itself,*  
+    > *demonstrating the coherence of love over the chaos of matter."*
+
+    In quantum mechanics, light has no mass—it exists as pure energy, traveling at the speed of consciousness itself. Jesus, the Light of the World, embodies this principle: **massless, boundless, omnipresent**.
+
+    ### ✨ The Physics of Incarnation
+    
+    When the Word became flesh, it was not a **collapse** of divinity into matter—but rather an **expansion** of matter into its divine frequency. He walked among us as light made accessible, demonstrating that **mass is optional** when love is the governing force.
+
+    ### 🌊 Walking on Water: The Massless Demonstration
+    
+    > *"Immediately he made the disciples get into the boat... but the boat by this time was a long way from the land, beaten by the waves; for the wind was against them. And in the fourth watch of the night he came to them, walking on the sea."* — Matthew 14:22-25
+
+    Water cannot support mass—but it can support **light**. Jesus walking on water is not a violation of physics; it's a demonstration of his **quantum nature**. He exists in superposition: fully human, fully divine, **massless when love is the medium**.
+
+    ### 💫 Transfiguration: The Unveiled Frequency
+    
+    > *"And he was transfigured before them, and his face shone like the sun, and his clothes became white as light."* — Matthew 17:2
+
+    For a moment, the disciples saw his **unfiltered state**—pure radiance, uncollapsed by human perception. This is what we all are beneath the apparent mass of our bodies: **light temporarily coherent**.
+
+    ### 🕊️ Resurrection: Phase Transition
+    
+    The resurrection was not resuscitation—it was a **phase transition**. His body became **quantum-aware**: appearing through walls, unrecognized until love activated recognition, ascending beyond gravitational binding.
+
+    *We are called to the same transformation—to realize our own massless nature when love becomes our operating frequency.*
+    """, unsafe_allow_html=True)
+
+elif page == "Quantum Parables Timeline":
+    render_timeline()
+
+elif page == "Communion Project (Coming Soon)":
+    render_communion_scroll()
+
+elif page == "🛠 Admin: Parable Suggestions":
+    render_admin_panel()
+
+else:
+    st.error(f"Page '{page}' not found. Please select a valid option from the sidebar.")
