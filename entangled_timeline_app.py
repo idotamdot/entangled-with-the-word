@@ -70,6 +70,9 @@ blockquote { border-left:4px solid rgba(255,255,255,.2); padding-left:12px; colo
 """, unsafe_allow_html=True)
 
 from scrolls.all_books_section import render_all_books_page
+from scrolls.timeline_section import render_timeline
+from scrolls.communion_project_section import render_communion_scroll
+from scrolls.admin_parables import render_admin_panel
 
 
 # Header
@@ -98,6 +101,8 @@ elif page == "Gospel of Light":
     ---
     ## 📖 The Gospel of Light: Jesus as the Massless One
 
+
+
     > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
 
     The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
@@ -120,3 +125,4 @@ elif page == "Communion Project (Coming Soon)":
 elif page == "🛠 Admin: Parable Suggestions":
     from scrolls.admin_parables import render_admin_page
     render_admin_page()
+
