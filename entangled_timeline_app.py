@@ -101,29 +101,28 @@ elif page == "Gospel of Light":
     ---
     ## 📖 The Gospel of Light: Jesus as the Massless One
 
-    > *"But he walked through the world as light itself,  
-    > carrying no mass, yet bending all of creation toward truth."*
 
-    ### The Quantum Nature of Divine Love
-    In the beginning was the Word, and the Word was with God, and the Word was God.
-    This Word is not mere sound or symbol, but the fundamental frequency from which
-    all reality resonates. Jesus, as the embodied Word, demonstrates the massless
-    nature of pure consciousness—moving through space-time while transcending its
-    limitations.
 
-    ### Scripture Reflection
-    *"In him was life, and that life was the light of all mankind."* (John 1:4)
+    > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
+
+    The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
     
-    Light requires no medium to travel. It is self-sustaining, self-propagating.
-    So too is the divine nature within each soul—a photon of eternal consciousness
-    that cannot be created or destroyed, only observed and experienced.
-    """)
+    Here in this sacred space, we contemplate the light that shines in every heart - the uncollapsed waveform 
+    of divine potential that connects all beings in eternal entanglement.
+    
+    Navigate to **All Books** to explore the quantum translations of Hebrew and Christian scriptures, 
+    where ancient wisdom meets the physics of consciousness.
+    """, unsafe_allow_html=True)
 
 elif page == "Quantum Parables Timeline":
-    render_timeline()
+    from scrolls.timeline_section import render_timeline_page
+    render_timeline_page()
 
 elif page == "Communion Project (Coming Soon)":
-    render_communion_scroll()
+    from scrolls.communion_project_section import render_communion_page
+    render_communion_page()
 
 elif page == "🛠 Admin: Parable Suggestions":
-    render_admin_panel()
+    from scrolls.admin_parables import render_admin_page
+    render_admin_page()
+
