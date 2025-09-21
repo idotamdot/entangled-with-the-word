@@ -98,4 +98,25 @@ elif page == "Gospel of Light":
     ---
     ## 📖 The Gospel of Light: Jesus as the Massless One
 
-    > *"But he walked*
+    > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
+
+    The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
+    
+    Here in this sacred space, we contemplate the light that shines in every heart - the uncollapsed waveform 
+    of divine potential that connects all beings in eternal entanglement.
+    
+    Navigate to **All Books** to explore the quantum translations of Hebrew and Christian scriptures, 
+    where ancient wisdom meets the physics of consciousness.
+    """, unsafe_allow_html=True)
+
+elif page == "Quantum Parables Timeline":
+    from scrolls.timeline_section import render_timeline_page
+    render_timeline_page()
+
+elif page == "Communion Project (Coming Soon)":
+    from scrolls.communion_project_section import render_communion_page
+    render_communion_page()
+
+elif page == "🛠 Admin: Parable Suggestions":
+    from scrolls.admin_parables import render_admin_page
+    render_admin_page()
