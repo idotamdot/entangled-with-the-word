@@ -45,7 +45,7 @@ music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Choose a section:",
-    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project (Coming Soon)", "🛠 Admin: Parable Suggestions"]
+    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project", "🛠 Admin: Parable Suggestions"]
 )
 
 # =============== Global CSS ===============
@@ -121,7 +121,7 @@ elif page == "Gospel of Light":
 elif page == "Quantum Parables Timeline":
     render_timeline()
 
-elif page == "Communion Project (Coming Soon)":
+elif page == "Communion Project":
     render_communion_scroll()
 
 elif page == "🛠 Admin: Parable Suggestions":
