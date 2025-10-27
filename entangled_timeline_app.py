@@ -45,7 +45,7 @@ music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Choose a section:",
-    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project (Coming Soon)", "🛠 Admin: Parable Suggestions"]
+    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project", "🛠 Admin: Parable Suggestions"]
 )
 
 # =============== Global CSS ===============
@@ -85,7 +85,11 @@ st.markdown("""
 
 
 # =============== Page Content ===============
-if page == "All Books":
+# Check if a specific book is requested via URL parameter
+book_name_param = st.query_params.get("book")
+if book_name_param:
+    render_all_books_page()
+elif page == "All Books":
     render_all_books_page()
 elif page == "Gospel of Light":
     st.markdown("""
@@ -115,14 +119,11 @@ elif page == "Gospel of Light":
     """, unsafe_allow_html=True)
 
 elif page == "Quantum Parables Timeline":
-    from scrolls.timeline_section import render_timeline_page
-    render_timeline_page()
+    render_timeline()
 
-elif page == "Communion Project (Coming Soon)":
-    from scrolls.communion_project_section import render_communion_page
-    render_communion_page()
+elif page == "Communion Project":
+    render_communion_scroll()
 
 elif page == "🛠 Admin: Parable Suggestions":
-    from scrolls.admin_parables import render_admin_page
-    render_admin_page()
+    render_admin_panel()
 
