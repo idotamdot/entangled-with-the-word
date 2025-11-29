@@ -5,6 +5,7 @@ from .scroll_of_cleansing import render_cleansing_scroll
 from .books_of_the_bible import render_books_list
 from .parables_of_jesus import render_parables_list
 from .garden_scrolls_section import render_garden_scrolls
+from .categories import PROJECT_CATEGORIES
 
 try:
     from .timeline_section import render_timeline

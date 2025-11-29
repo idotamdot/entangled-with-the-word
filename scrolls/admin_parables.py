@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import streamlit as st
 from datetime import datetime
+from scrolls.categories import PROJECT_CATEGORIES
 
 SUGGEST_FILE = os.path.join("data", "suggested_parables.csv")
 APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
@@ -51,7 +52,7 @@ def render_admin_panel():
     st.subheader('Add New Suggestion')
     with st.form('new_suggestion', clear_on_submit=True):
         text = st.text_area('Suggestion')
-        tag = st.text_input('Tag', value='Timeline')
+        tag = st.selectbox('Category', options=PROJECT_CATEGORIES)
         if st.form_submit_button('Submit') and text.strip():
             new_row = pd.DataFrame([[datetime.now().isoformat(), text.strip(), tag]],
                                    columns=['timestamp', 'suggestion', 'tag'])

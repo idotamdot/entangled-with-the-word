@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import streamlit as st
+from scrolls.categories import PROJECT_CATEGORIES
 
 APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
@@ -24,6 +25,18 @@ def render_timeline():
     df = load_entries()
     if df.empty:
         st.info("No parables have been approved yet.")
+        return
+
+    # Category filter
+    all_tags = ["All"] + PROJECT_CATEGORIES
+    selected_category = st.selectbox("Filter by category:", options=all_tags)
+
+    # Filter dataframe if a specific category is selected
+    if selected_category != "All":
+        df = df[df['tag'] == selected_category]
+
+    if df.empty:
+        st.info(f"No parables found for category: {selected_category}")
         return
 
     for _, row in df.iterrows():
