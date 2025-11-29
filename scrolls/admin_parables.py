@@ -52,7 +52,7 @@ def render_admin_panel():
     st.subheader('Add New Suggestion')
     with st.form('new_suggestion', clear_on_submit=True):
         text = st.text_area('Suggestion')
-        tag = st.selectbox('Category', options=PROJECT_CATEGORIES)
+        tag = st.selectbox('Category', options=PROJECT_CATEGORIES, index=PROJECT_CATEGORIES.index('#Timeline'))
         if st.form_submit_button('Submit') and text.strip():
             new_row = pd.DataFrame([[datetime.now().isoformat(), text.strip(), tag]],
                                    columns=['timestamp', 'suggestion', 'tag'])
