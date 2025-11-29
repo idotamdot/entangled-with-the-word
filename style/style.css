@@ -89,6 +89,29 @@ details[open] > summary {
     box-shadow: 0 0 12px var(--glow-hover);
 }
 
+/* Category-specific tag colors */
+.tag-label[data-category="#Projects"] {
+    background-color: #4f46e5;
+}
+.tag-label[data-category="#Personal"] {
+    background-color: #7c3aed;
+}
+.tag-label[data-category="#Timeline"] {
+    background-color: #2563eb;
+}
+.tag-label[data-category="#Scripture"] {
+    background-color: #b45309;
+}
+.tag-label[data-category="#Reflection"] {
+    background-color: #0d9488;
+}
+.tag-label[data-category="#Quantum"] {
+    background-color: #4338ca;
+}
+.tag-label[data-category="#Garden"] {
+    background-color: #059669;
+}
+
 /* 📜 Reflection Block */
 .reflection-block {
     border-left: 3px solid #ffd700; /* Gold accent */
