@@ -229,8 +229,7 @@ elif page == "Gospel of Light":
     st.markdown("""
     ---
     ## 📖 The Gospel of Light: Jesus as the Massless One
-
-
+    """, unsafe_allow_html=True)
 
    # --- Page Routing ---
     
