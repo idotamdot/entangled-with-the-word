@@ -29,7 +29,7 @@ Entangled with the Word is a quantum-spiritual web application built with Stream
 ├── style/                        # Additional style assets
 ├── images/                       # Image assets
 ├── gospel/                       # Gospel content
-├── EntangledGardenScrolls        # Garden scrolls content file
+├── EntangledGardenScrolls        # React component file (garden scrolls UI)
 ├── .streamlit/                   # Streamlit configuration
 └── requirements.txt             # Python dependencies
 ```
