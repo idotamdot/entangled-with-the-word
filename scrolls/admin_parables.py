@@ -41,11 +41,11 @@ def render_admin_panel():
                 _save_df(approved, APPROVED_FILE)
                 suggestions = suggestions.drop(i)
                 _save_df(suggestions, SUGGEST_FILE)
-                st.experimental_rerun()
+                st.rerun()
             if col2.button('Delete', key=f'del_{i}'):
                 suggestions = suggestions.drop(i)
                 _save_df(suggestions, SUGGEST_FILE)
-                st.experimental_rerun()
+                st.rerun()
 
     st.markdown('---')
     st.subheader('Add New Suggestion')
