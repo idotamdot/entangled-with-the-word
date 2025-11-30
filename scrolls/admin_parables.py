@@ -46,9 +46,9 @@ def render_admin_panel():
             st.markdown(row.get('suggestion',''))
             
             # Display importance and energy score indicators
-            importance = int(row.get('importance', 3))
-            energy = int(row.get('energy_score', 5))
-            st.markdown(f"⭐ **Importance:** {'🔥' * importance} ({importance}/5) | ⚡ **Energy:** {'💫' * (energy // 2)} ({energy}/10)")
+            importance = int(row.get('importance', 3)) if pd.notna(row.get('importance')) else 3
+            energy = int(row.get('energy_score', 5)) if pd.notna(row.get('energy_score')) else 5
+            st.markdown(f"⭐ **Importance:** {'🔥' * importance} ({importance}/5) | ⚡ **Energy:** {'💫' * ((energy + 1) // 2)} ({energy}/10)")
             
             col1, col2 = st.columns(2)
             if col1.button('Approve', key=f'app_{i}'):

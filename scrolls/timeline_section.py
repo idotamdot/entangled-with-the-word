@@ -61,8 +61,8 @@ def render_timeline():
     for _, row in df.iterrows():
         date_str = row['timestamp'].strftime('%Y-%m-%d') if not pd.isna(row['timestamp']) else ''
         tag = row.get('tag', '')
-        importance = int(row.get('importance', 3))
-        energy = int(row.get('energy_score', 5))
+        importance = int(row.get('importance', 3)) if pd.notna(row.get('importance')) else 3
+        energy = int(row.get('energy_score', 5)) if pd.notna(row.get('energy_score')) else 5
         
         with st.container():
             st.markdown(
