@@ -34,6 +34,7 @@ def _load_tasks() -> pd.DataFrame:
 def _save_tasks(df: pd.DataFrame) -> None:
     """Save tasks to CSV file."""
     try:
+        os.makedirs(os.path.dirname(TASK_FILE), exist_ok=True)
         df.to_csv(TASK_FILE, index=False)
     except Exception as e:
         st.error(f"Failed to save tasks: {e}")
@@ -104,7 +105,7 @@ def render_task_list():
     else:
         # Calculate task statistics
         total_tasks = len(tasks)
-        completed_tasks = len(tasks[tasks['completed'] == True])
+        completed_tasks = len(tasks[tasks['completed']])
         pending_tasks = total_tasks - completed_tasks
 
         # Display statistics
@@ -121,7 +122,7 @@ def render_task_list():
 
         # --- Pending Tasks ---
         st.markdown("### 🔥 Pending Tasks")
-        pending_df = tasks[tasks['completed'] == False].copy()
+        pending_df = tasks[~tasks['completed']].copy()
 
         if pending_df.empty:
             st.markdown("""
@@ -162,7 +163,7 @@ def render_task_list():
 
         # --- Completed Tasks ---
         st.markdown("### ✨ Completed Tasks")
-        completed_df = tasks[tasks['completed'] == True].copy()
+        completed_df = tasks[tasks['completed']].copy()
 
         if completed_df.empty:
             st.markdown("""
@@ -197,7 +198,7 @@ def render_task_list():
         st.markdown("---")
         if not completed_df.empty:
             if st.button("🧹 Clear All Completed Tasks", help="Remove all completed tasks"):
-                tasks = tasks[tasks['completed'] == False]
+                tasks = tasks[~tasks['completed']]
                 _save_tasks(tasks)
                 st.success("Completed tasks cleared!")
                 st.rerun()
