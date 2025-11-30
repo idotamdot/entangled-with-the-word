@@ -1,26 +1,25 @@
-# Authentication Configuration Template
-# Copy this file to auth_config.yaml and update with your own credentials
-#
-# To generate password hashes, use:
-# python -c "import bcrypt; print(bcrypt.hashpw('YOUR_PASSWORD'.encode(), bcrypt.gensalt()).decode())"
+# Authentication Configuration Example
+# Copy this file to config/auth_config.yaml and update with your credentials
+# IMPORTANT: Never commit actual credentials to the repository!
 
 credentials:
   usernames:
     admin:
-      email: admin@yourdomain.com
-      name: Administrator
-      # Default password is 'changeme' - CHANGE THIS IN PRODUCTION!
-      password: $2b$12$m4lFtI2czPEOGxNg47yYK.4WRcN1or/czlZzP5/nHqsO/hG6dvEdO
-      role: admin
-    user:
-      email: user@yourdomain.com
-      name: Regular User
-      # Default password is 'changeme' - CHANGE THIS IN PRODUCTION!
-      password: $2b$12$m4lFtI2czPEOGxNg47yYK.4WRcN1or/czlZzP5/nHqsO/hG6dvEdO
-      role: user
+      email: admin@example.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Admin User
+      # To generate a password hash, use:
+      # import streamlit_authenticator as stauth
+      # hash = stauth.Hasher(['your_password']).generate()[0]
+      password: $2b$12$EXAMPLE_HASH_REPLACE_THIS  # Replace with actual bcrypt hash
 
 cookie:
   expiry_days: 30
-  # Change this key to a random secure string in production!
-  key: your_random_secret_key_here
+  key: CHANGE_THIS_TO_A_RANDOM_STRING  # Use a secure random key in production
   name: entangled_auth_cookie
+
+pre-authorized:
+  emails:
+    # Add email addresses that are pre-authorized to register
+    # - user@example.com

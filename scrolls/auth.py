@@ -1,57 +1,58 @@
 """
-Authentication module for Entangled with the Word application.
-Provides user login, logout, and role-based access control.
+Authentication module for Entangled with the Word.
+Provides login, logout, and session handling functionality using streamlit-authenticator.
 """
-
 import os
 import yaml
 import streamlit as st
 import streamlit_authenticator as stauth
-from typing import Optional, Tuple
-
-# Path to the authentication configuration file
-AUTH_CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 
-                                 "config", "auth_config.yaml")
+from yaml.loader import SafeLoader
 
 
-def load_auth_config() -> dict:
-    """
-    Load authentication configuration from YAML file.
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', 'config', 'auth_config.yaml')
+
+
+def load_auth_config():
+    """Load authentication configuration from YAML file or Streamlit secrets."""
+    # First, try to load from Streamlit secrets (for production deployment)
+    try:
+        if hasattr(st, 'secrets') and st.secrets:
+            secrets_dict = dict(st.secrets)
+            if 'auth' in secrets_dict:
+                return dict(st.secrets['auth'])
+    except Exception:
+        pass  # Secrets not available, fall back to file-based config
     
-    Returns:
-        dict: Authentication configuration dictionary
-    """
-    if not os.path.exists(AUTH_CONFIG_PATH):
-        st.error("Authentication config not found.")
-        st.info("Please copy config/auth_config.yaml.example to config/auth_config.yaml and update credentials.")
-        return {}
+    # Fall back to local config file (for development)
+    if os.path.exists(CONFIG_PATH):
+        with open(CONFIG_PATH, encoding='utf-8') as file:
+            return yaml.load(file, Loader=SafeLoader)
     
-    with open(AUTH_CONFIG_PATH, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
+    # Return default config if nothing else is available
+    return {
+        'credentials': {
+            'usernames': {}
+        },
+        'cookie': {
+            'expiry_days': 30,
+            'key': 'entangled_auth_key',
+            'name': 'entangled_auth_cookie'
+        },
+        'pre-authorized': {
+            'emails': []
+        }
+    }
 
 
-def save_auth_config(config: dict) -> None:
-    """
-    Save authentication configuration to YAML file.
-    
-    Args:
-        config: Authentication configuration dictionary
-    """
-    with open(AUTH_CONFIG_PATH, 'w') as file:
+def save_auth_config(config):
+    """Save authentication configuration to YAML file."""
+    with open(CONFIG_PATH, 'w', encoding='utf-8') as file:
         yaml.dump(config, file, default_flow_style=False)
 
 
-def get_authenticator() -> Optional[stauth.Authenticate]:
-    """
-    Create and return a Streamlit Authenticator instance.
-    
-    Returns:
-        stauth.Authenticate: Authenticator instance or None if config not found
-    """
+def get_authenticator():
+    """Initialize and return the authenticator instance."""
     config = load_auth_config()
-    if not config:
-        return None
     
     authenticator = stauth.Authenticate(
         config['credentials'],
@@ -59,136 +60,76 @@ def get_authenticator() -> Optional[stauth.Authenticate]:
         config['cookie']['key'],
         config['cookie']['expiry_days']
     )
-    return authenticator
-
-
-def get_user_role(username: str) -> str:
-    """
-    Get the role of a user.
     
-    Args:
-        username: The username to look up
-        
-    Returns:
-        str: User role ('admin', 'user', etc.) or 'user' if not found
-    """
-    config = load_auth_config()
-    if not config or 'credentials' not in config:
-        return 'user'
-    
-    users = config['credentials'].get('usernames', {})
-    user_info = users.get(username, {})
-    return user_info.get('role', 'user')
+    return authenticator, config
 
 
-def is_admin(username: str) -> bool:
-    """
-    Check if a user has admin privileges.
-    
-    Args:
-        username: The username to check
-        
-    Returns:
-        bool: True if user is admin, False otherwise
-    """
-    return get_user_role(username) == 'admin'
-
-
-def render_login_form() -> Tuple[Optional[str], bool, Optional[str]]:
-    """
-    Render the login form in the sidebar.
-    
-    The streamlit-authenticator login() method returns a tuple (name, auth_status, username)
-    on first call, but returns None on subsequent reruns, using session state instead.
-    
-    Returns:
-        Tuple containing (name, authentication_status, username)
-    """
-    authenticator = get_authenticator()
-    if authenticator is None:
-        return None, False, None
+def render_login():
+    """Render the login form and handle authentication."""
+    authenticator, config = get_authenticator()
     
     try:
-        # Call login() which renders the form and handles authentication
-        result = authenticator.login(location='sidebar')
-        
-        # Store authenticator in session state for logout functionality
-        st.session_state['authenticator'] = authenticator
-        
-        # streamlit-authenticator stores auth state in session_state
-        # After login/logout, values are available in session_state
-        name = st.session_state.get("name")
-        authentication_status = st.session_state.get("authentication_status")
-        username = st.session_state.get("username")
-        
-        return name, authentication_status, username
+        authenticator.login()
     except Exception as e:
-        st.sidebar.error(f"Authentication error: {e}")
-        return None, False, None
-
-
-def render_logout_button() -> None:
-    """
-    Render the logout button in the sidebar.
-    """
-    authenticator = st.session_state.get('authenticator')
-    if authenticator:
-        authenticator.logout(button_name='Logout', location='sidebar')
-
-
-def render_user_info() -> None:
-    """
-    Display current user information in the sidebar.
-    """
+        st.error(f"Authentication error: {e}")
+        return None, None
+    
     if st.session_state.get("authentication_status"):
-        name = st.session_state.get("name", "User")
-        username = st.session_state.get("username", "")
-        role = get_user_role(username)
-        
-        st.sidebar.markdown("---")
-        st.sidebar.markdown(f"👤 **{name}**")
-        st.sidebar.markdown(f"🔑 Role: `{role}`")
+        return st.session_state.get("name"), st.session_state.get("username")
+    elif st.session_state.get("authentication_status") is False:
+        st.error("Username/password is incorrect")
+        return None, None
+    else:
+        st.warning("Please enter your username and password")
+        return None, None
 
 
-def require_auth(page_func):
+def render_logout():
+    """Render the logout button in the sidebar."""
+    authenticator, _ = get_authenticator()
+    authenticator.logout('Logout', 'sidebar')
+
+
+def is_authenticated():
+    """Check if the current user is authenticated."""
+    return st.session_state.get("authentication_status", False)
+
+
+def get_current_user():
+    """Get the current authenticated user's information."""
+    if is_authenticated():
+        return {
+            'name': st.session_state.get("name"),
+            'username': st.session_state.get("username")
+        }
+    return None
+
+
+def require_authentication(admin_only=False):
     """
-    Decorator to require authentication for a page.
+    Decorator-style function to protect pages that require authentication.
     
     Args:
-        page_func: The page function to wrap
-        
-    Returns:
-        Wrapped function that checks authentication before executing
-    """
-    def wrapper(*args, **kwargs):
-        if not st.session_state.get("authentication_status"):
-            st.warning("⚠️ Please log in to access this page.")
-            st.info("Use the login form in the sidebar to authenticate.")
-            return
-        return page_func(*args, **kwargs)
-    return wrapper
-
-
-def require_admin(page_func):
-    """
-    Decorator to require admin privileges for a page.
+        admin_only: If True, only allow admin users
     
-    Args:
-        page_func: The page function to wrap
-        
     Returns:
-        Wrapped function that checks admin status before executing
+        True if authenticated, False otherwise
+    
+    Note:
+        To add more admin users, modify the admin check below to use a
+        roles field in the config or maintain a list of admin usernames.
     """
-    def wrapper(*args, **kwargs):
-        if not st.session_state.get("authentication_status"):
-            st.warning("⚠️ Please log in to access this page.")
-            st.info("Use the login form in the sidebar to authenticate.")
-            return
-        
-        username = st.session_state.get("username", "")
-        if not is_admin(username):
-            st.error("🚫 Access Denied: Admin privileges required.")
-            return
-        
-        return page_func(*args, **kwargs)
-    return wrapper
+    if not is_authenticated():
+        st.warning("🔒 Please log in to access this page.")
+        render_login()
+        return False
+    
+    if admin_only:
+        username = st.session_state.get("username")
+        # Currently only 'admin' user has admin privileges
+        # To extend, add a 'roles' field to user config in auth_config.yaml
+        if username != "admin":
+            st.error("🚫 This page requires admin privileges.")
+            return False
+    
+    return True

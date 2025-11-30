@@ -1,5 +1,5 @@
 streamlit
 openai
 pandas
-streamlit-authenticator
-pyyaml
+streamlit-authenticator>=0.4.2
+pyyaml>=5.3.1

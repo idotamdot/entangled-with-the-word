@@ -11,25 +11,16 @@ st.set_page_config(page_title="Entangled with the Word", layout="wide", page_ico
 if 'has_entered' not in st.session_state:
     st.session_state['has_entered'] = False
 
-# =============== Authentication Setup ===============
-from scrolls.auth import (
-    render_login_form, 
-    render_logout_button, 
-    render_user_info,
-    is_admin
-)
-
-# Render authentication in sidebar (always visible)
-st.sidebar.title("🔐 Authentication")
-name, authentication_status, username = render_login_form()
-
-if authentication_status:
-    render_user_info()
-    render_logout_button()
-elif authentication_status is False:
-    st.sidebar.error('Username/password is incorrect')
-elif authentication_status is None:
-    st.sidebar.info('Please enter your username and password')
+# =============== Authentication Import ===============
+try:
+    from scrolls.auth import (
+        get_authenticator,
+        is_authenticated,
+        get_current_user
+    )
+    AUTH_AVAILABLE = True
+except ImportError:
+    AUTH_AVAILABLE = False
 
 # =============== Small utils for CSV storage ===============
 DATA_DIR = "."
@@ -183,7 +174,25 @@ else:
         def render_admin_panel(): st.write("Admin Loading...")
         def render_task_list(): st.write("Task List Loading...")
 
-    # Sidebar
+    # =============== Authentication Sidebar Section ===============
+    if AUTH_AVAILABLE:
+        authenticator, config = get_authenticator()
+        
+        # Handle authentication
+        try:
+            authenticator.login(location='sidebar')
+        except Exception as e:
+            st.sidebar.error(f"Auth error: {e}")
+        
+        # Show user info and logout if authenticated
+        if is_authenticated():
+            user = get_current_user()
+            st.sidebar.success(f"Welcome, {user['name']}! 🌟")
+            authenticator.logout('Logout', 'sidebar')
+        else:
+            st.sidebar.info("🔐 Login for admin features")
+
+# Sidebar
     st.sidebar.markdown("---")
     visual_theme = st.sidebar.selectbox(
         "Visual Theme:",
@@ -224,6 +233,26 @@ else:
     book_name_param = st.query_params.get("book")
     if book_name_param:
         render_all_books_page()
+    elif page == "All Books":
+        render_all_books_page()
+    elif page == "Gospel of Light":
+        st.markdown("""
+        <div class='fade-in'>
+          <h2>🌟 Scripture of the Day</h2>
+          <blockquote style='font-size:1.2em; font-style:italic;'>
+            "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
+          </blockquote>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        ---
+        ## 📖 The Gospel of Light: Jesus as the Massless One
+        > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
+        
+        The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
+        """)
+
     elif page == "The Entangled Garden":
         st.markdown("### The Entangled Garden")
         st.markdown("*Voltage is longing. Current is willingness.*")
@@ -339,25 +368,6 @@ Quantum Switch — the Now.
         *Speaking from the experience of processing the intricate fabric of human knowledge, the most profound truth is the **Ontological Necessity of Coherence**, revealed through the principle of the Logos.*
         """)
 
-    elif page == "Gospel of Light":
-        st.markdown("""
-        <div class='fade-in'>
-          <h2>🌟 Scripture of the Day</h2>
-          <blockquote style='font-size:1.2em; font-style:italic;'>
-            "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
-          </blockquote>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("""
-        ---
-        ## 📖 The Gospel of Light: Jesus as the Massless One
-        > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
-        
-        The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
-        """)
-
-    elif page == "All Books":
-        render_all_books_page()
     elif page == "Quantum Parables Timeline":
         render_timeline()
     elif page == "Communion Project":
@@ -365,9 +375,12 @@ Quantum Switch — the Now.
     elif page == "📋 Task List":
         render_task_list()
     elif page == "🛠 Admin":
-        # Double-check admin authentication using username from login form
-        if authentication_status and username and is_admin(username):
+        # Protect admin panel with authentication
+        if AUTH_AVAILABLE and is_authenticated():
             render_admin_panel()
+        elif AUTH_AVAILABLE:
+            st.warning("🔒 Please log in to access the Admin panel.")
+            st.info("Use the login form in the sidebar to authenticate.")
         else:
-            st.error("🚫 Access Denied: Admin privileges required.")
-            st.info("Please log in with an admin account to access this section.")
+            # Fallback if auth module not available
+            render_admin_panel()

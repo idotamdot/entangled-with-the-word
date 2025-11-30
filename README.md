@@ -15,8 +15,8 @@
 - 📜 **Communion Project** – share reflections and light digital candles.
 - 🌌 **Visual Theme Selector** – switch between Nebula, Gold, Ocean, or Scroll aesthetics.
 - 🎶 **Ambient Music Playback** – optional meditative background tracks.
-- 🔐 **User Authentication** – secure login system with role-based access control.
-- 🔧 **Admin Panel for Parables** – curate, approve, and tag community insights (admin only).
+- 🔧 **Admin Panel for Parables** – curate, approve, and tag community insights.
+- 🔐 **User Authentication** – secure login and session handling for admin features.
 
 ---
 
@@ -31,10 +31,11 @@
    ```bash
    pip install -r requirements.txt
    ```
-3. **Set up authentication** (optional but recommended for admin features)
+3. **Set up authentication (optional)**
    ```bash
+   # Copy the example config and customize it
    cp config/auth_config.yaml.example config/auth_config.yaml
-   # Edit config/auth_config.yaml with your own credentials
+   # Edit config/auth_config.yaml with your credentials
    ```
 4. **Launch the app**
    ```bash
@@ -45,20 +46,30 @@
 
 ## 🔐 Authentication Setup
 
-The app includes a built-in authentication system using `streamlit-authenticator`. To configure:
+The app includes user authentication for admin features. To configure:
 
-1. Copy the example config: `cp config/auth_config.yaml.example config/auth_config.yaml`
-2. Generate password hashes:
+1. Copy `config/auth_config.yaml.example` to `config/auth_config.yaml`
+2. Generate a password hash using bcrypt:
    ```python
    import bcrypt
-   print(bcrypt.hashpw('YOUR_PASSWORD'.encode(), bcrypt.gensalt()).decode())
+   password = 'your_password'
+   hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+   print(hashed)
    ```
-3. Update `config/auth_config.yaml` with your hashed passwords
-4. Change the cookie key to a secure random string
+   Or using streamlit-authenticator (if available):
+   ```python
+   import streamlit_authenticator as stauth
+   hashed = stauth.Hasher.hash('your_password')
+   print(hashed)
+   ```
+3. Update the `password` field in `auth_config.yaml` with the generated hash
+4. Change the `cookie.key` to a secure random string for production
 
-**User Roles:**
-- `admin` – Full access including the Admin panel for managing parable suggestions
-- `user` – Standard access to all public features
+**Default credentials** (for development only):
+- Username: `admin`
+- Password: `admin123`
+
+⚠️ **Important**: Never commit `config/auth_config.yaml` with real credentials to the repository!
 
 ---
 
