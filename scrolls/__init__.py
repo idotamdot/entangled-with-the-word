@@ -20,3 +20,21 @@ except Exception:
     def render_admin_panel():
         import streamlit as st
         st.warning("Admin panel module not available.")
+
+try:
+    from .task_parser import (
+        parse_task,
+        parse_tags,
+        parse_due_date,
+        parse_and_save_task,
+        save_task,
+        get_task,
+        get_all_tasks,
+        get_tasks_by_tag,
+        mark_task_completed,
+        delete_task,
+        init_database,
+        ParsedTask,
+    )
+except Exception:
+    pass  # Task parser module may not be available
