@@ -1,12 +1,10 @@
-import os
-import pandas as pd
 import streamlit as st
-from datetime import datetime
 from scrolls.categories import PROJECT_CATEGORIES
+from backend import ParablesAPI
 
-SUGGEST_FILE = os.path.join("data", "suggested_parables.csv")
-APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
+# Initialize API
+_parables_api = ParablesAPI()
 # Define column schema with importance and energy_score
 SUGGESTION_COLUMNS = ['timestamp', 'suggestion', 'tag', 'importance', 'energy_score']
 APPROVED_COLUMNS = ['timestamp', 'suggestion', 'tag', 'importance', 'energy_score']
@@ -35,7 +33,7 @@ def _save_df(df, path):
 def render_admin_panel():
     """Simple moderation panel for parable suggestions."""
     st.header("🛠 Parable Suggestions")
-    suggestions = _load_df(SUGGEST_FILE, SUGGESTION_COLUMNS)
+    suggestions = _parables_api.get_suggestions()
 
     if suggestions.empty:
         st.info("No suggestions pending.")
@@ -52,6 +50,10 @@ def render_admin_panel():
             
             col1, col2 = st.columns(2)
             if col1.button('Approve', key=f'app_{i}'):
+                if _parables_api.approve_suggestion(i):
+                    st.rerun()
+                else:
+                    st.error("Failed to approve suggestion.")
                 approved = _load_df(APPROVED_FILE, APPROVED_COLUMNS)
                 approved = pd.concat([approved, pd.DataFrame([row])], ignore_index=True)
                 _save_df(approved, APPROVED_FILE)
@@ -59,9 +61,10 @@ def render_admin_panel():
                 _save_df(suggestions, SUGGEST_FILE)
                 st.rerun()
             if col2.button('Delete', key=f'del_{i}'):
-                suggestions = suggestions.drop(i)
-                _save_df(suggestions, SUGGEST_FILE)
-                st.rerun()
+                if _parables_api.delete_suggestion(i):
+                    st.rerun()
+                else:
+                    st.error("Failed to delete suggestion.")
 
     st.markdown('---')
     st.subheader('Add New Suggestion')
@@ -80,6 +83,10 @@ def render_admin_panel():
                                      help='How much energy/effort does this require? 1=Minimal, 10=Maximum')
         
         if st.form_submit_button('Submit') and text.strip():
+            if _parables_api.submit_suggestion(text, tag):
+                st.success('Suggestion added.')
+            else:
+                st.error('Failed to add suggestion.')
             new_row = pd.DataFrame([[datetime.now().isoformat(), text.strip(), tag, importance, energy_score]],
                                    columns=SUGGESTION_COLUMNS)
             suggestions = pd.concat([suggestions, new_row], ignore_index=True)

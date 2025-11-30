@@ -1,10 +1,11 @@
-import os
-import pandas as pd
 import streamlit as st
+import pandas as pd
 from scrolls.categories import PROJECT_CATEGORIES
+from backend import ParablesAPI
 
-APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
+# Initialize API
+_parables_api = ParablesAPI()
 # Define column schema with importance and energy_score
 APPROVED_COLUMNS = ['timestamp', 'suggestion', 'tag', 'importance', 'energy_score']
 
@@ -30,15 +31,14 @@ def load_entries():
 def render_timeline():
     """Display approved parables as a timeline."""
     st.header("🧬 Quantum Parables Timeline")
-    df = load_entries()
-    if df.empty:
-        st.info("No parables have been approved yet.")
-        return
-
+    
     # Category filter
     all_tags = ["All"] + PROJECT_CATEGORIES
     selected_category = st.selectbox("Filter by category:", options=all_tags)
 
+    # Get filtered parables using API
+    df = _parables_api.get_approved_by_category(selected_category)
+    
     # Sort options including importance and energy
     sort_option = st.selectbox("Sort by:", options=["Date", "Importance (High to Low)", "Energy (High to Low)"])
 
@@ -47,7 +47,10 @@ def render_timeline():
         df = df[df['tag'] == selected_category]
 
     if df.empty:
-        st.info(f"No parables found for category: {selected_category}")
+        if selected_category != "All":
+            st.info(f"No parables found for category: {selected_category}")
+        else:
+            st.info("No parables have been approved yet.")
         return
 
     # Apply sorting based on selection
@@ -59,7 +62,7 @@ def render_timeline():
         df = df.sort_values('timestamp')
 
     for _, row in df.iterrows():
-        date_str = row['timestamp'].strftime('%Y-%m-%d') if not pd.isna(row['timestamp']) else ''
+        date_str = row['timestamp'].strftime('%Y-%m-%d') if pd.notna(row['timestamp']) else ''
         tag = row.get('tag', '')
         importance = int(row.get('importance', 3)) if pd.notna(row.get('importance')) else 3
         energy = int(row.get('energy_score', 5)) if pd.notna(row.get('energy_score')) else 5
