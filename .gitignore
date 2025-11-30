@@ -21,10 +21,9 @@
 # Auth config with credentials (use auth_config.yaml.example as template)
 config/auth_config.yaml
 
-# Credential files
-*credentials*
-*secret*
-!*secret*.example
+# Credential files and directories
+credentials.json
+credentials.yaml
 .secrets/
 secrets/
 
