@@ -1,3 +1,6 @@
 streamlit
 openai
 pandas
+fastapi
+uvicorn
+pydantic

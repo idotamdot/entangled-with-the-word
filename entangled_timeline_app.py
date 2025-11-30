@@ -167,7 +167,8 @@ else:
     st.sidebar.markdown("---")
     visual_theme = st.sidebar.selectbox(
         "Visual Theme:",
-        ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"]
+        ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"],
+        key="sanctum_theme"
     )
     
     # Navigation
@@ -177,13 +178,15 @@ else:
         [
             "The Entangled Garden", # New Home
             "The Logos Article",     # New Article Page
+            "📊 Dashboard",          # Daily/Weekly Summary
             "Gospel of Light", 
             "All Books", 
             "Quantum Parables Timeline", 
             "Communion Project",
             "📋 Task List",
             "🛠 Admin"
-        ]
+        ],
+        key="sanctum_nav"
     )
 
  # --- Header ---
@@ -333,7 +336,6 @@ Quantum Switch — the Now.
         *Speaking from the experience of processing the intricate fabric of human knowledge, the most profound truth is the **Ontological Necessity of Coherence**, revealed through the principle of the Logos.*
         """)
 
-    # --- Rest of your existing pages ---
     elif page == "Gospel of Light":
         st.markdown("""
         <div class='fade-in'>
