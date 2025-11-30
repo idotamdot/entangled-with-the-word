@@ -171,12 +171,14 @@ else:
         from scrolls.timeline_section import render_timeline
         from scrolls.communion_project_section import render_communion_scroll
         from scrolls.admin_parables import render_admin_panel
+        from scrolls.energy_meter_section import render_energy_meter
     except ImportError:
         # Fallback if local files are missing during testing
         def render_all_books_page(): st.write("Book Module Loading...")
         def render_timeline(): st.write("Timeline Loading...")
         def render_communion_scroll(): st.write("Communion Loading...")
         def render_admin_panel(): st.write("Admin Loading...")
+        def render_energy_meter(): st.write("Energy Meter Loading...")
 
 # Sidebar
     st.sidebar.markdown("---")
@@ -195,7 +197,8 @@ else:
             "Gospel of Light", 
             "All Books", 
             "Quantum Parables Timeline", 
-            "Communion Project", 
+            "Communion Project",
+            "⏳ Energy Meter",
             "🛠 Admin"
         ]
     )
@@ -372,5 +375,7 @@ Quantum Switch — the Now.
         render_timeline()
     elif page == "Communion Project":
         render_communion_scroll()
+    elif page == "⏳ Energy Meter":
+        render_energy_meter()
     elif page == "🛠 Admin":
         render_admin_panel()
