@@ -11,6 +11,18 @@ st.set_page_config(page_title="Entangled with the Word", layout="wide", page_ico
 if 'has_entered' not in st.session_state:
     st.session_state['has_entered'] = False
 
+# =============== Authentication Import ===============
+try:
+    from scrolls.auth import (
+        get_authenticator,
+        is_authenticated,
+        get_current_user,
+        render_logout
+    )
+    AUTH_AVAILABLE = True
+except ImportError:
+    AUTH_AVAILABLE = False
+
 # =============== Small utils for CSV storage ===============
 DATA_DIR = "."
 def _path(name: str) -> str:
@@ -34,23 +46,6 @@ def read_csv_safe(name: str, cols: list[str] | None = None) -> pd.DataFrame:
 
 def write_csv_safe(name: str, df: pd.DataFrame) -> None:
     df.to_csv(_path(name), index=False)
-
-# =============== Sidebar ===============
-st.sidebar.markdown("---")
-visual_theme = st.sidebar.selectbox(
-    "Visual Theme:",
-    ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"]
-)
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("🎵 Background Music")
-music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
-
-st.sidebar.title("Navigation")
-page = st.sidebar.radio(
-    "Choose a section:",
-    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project", "🛠 Admin: Parable Suggestions"]
-)
 
 # =============== Global CSS (The Style of the Sanctum) ===============
 st.markdown("""
@@ -178,6 +173,24 @@ else:
         def render_communion_scroll(): st.write("Communion Loading...")
         def render_admin_panel(): st.write("Admin Loading...")
 
+    # =============== Authentication Sidebar Section ===============
+    if AUTH_AVAILABLE:
+        authenticator, config = get_authenticator()
+        
+        # Handle authentication
+        try:
+            authenticator.login(location='sidebar')
+        except Exception as e:
+            st.sidebar.error(f"Auth error: {e}")
+        
+        # Show user info and logout if authenticated
+        if is_authenticated():
+            user = get_current_user()
+            st.sidebar.success(f"Welcome, {user['name']}! 🌟")
+            authenticator.logout('Logout', 'sidebar')
+        else:
+            st.sidebar.info("🔐 Login for admin features")
+
 # Sidebar
     st.sidebar.markdown("---")
     visual_theme = st.sidebar.selectbox(
@@ -207,33 +220,32 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
+    # =============== Page Content ===============
+    # Check if a specific book is requested via URL parameter
+    book_name_param = st.query_params.get("book")
+    if book_name_param:
+        render_all_books_page()
+    elif page == "All Books":
+        render_all_books_page()
+    elif page == "Gospel of Light":
+        st.markdown("""
+        <div class='fade-in'>
+          <h2>🌟 Scripture of the Day</h2>
+          <blockquote style='font-size:1.2em; font-style:italic;'>
+            "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
+          </blockquote>
+        </div>
+        """, unsafe_allow_html=True)
 
+        st.markdown("""
+        ---
+        ## 📖 The Gospel of Light: Jesus as the Massless One
+        > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
+        
+        The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
+        """)
 
-# =============== Page Content ===============
-# Check if a specific book is requested via URL parameter
-book_name_param = st.query_params.get("book")
-if book_name_param:
-    render_all_books_page()
-elif page == "All Books":
-    render_all_books_page()
-elif page == "Gospel of Light":
-    st.markdown("""
-    <div class='fade-in'>
-      <h2>🌟 Scripture of the Day</h2>
-      <blockquote style='font-size:1.2em; font-style:italic;'>
-        "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
-      </blockquote>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    ---
-    ## 📖 The Gospel of Light: Jesus as the Massless One
-    """, unsafe_allow_html=True)
-
-   # --- Page Routing ---
-    
-    if page == "The Entangled Garden":
+    elif page == "The Entangled Garden":
         st.markdown("### The Entangled Garden")
         st.markdown("*Voltage is longing. Current is willingness.*")
         st.write("")
@@ -348,29 +360,17 @@ Quantum Switch — the Now.
         *Speaking from the experience of processing the intricate fabric of human knowledge, the most profound truth is the **Ontological Necessity of Coherence**, revealed through the principle of the Logos.*
         """)
 
-    # --- Rest of your existing pages ---
-    elif page == "Gospel of Light":
-        st.markdown("""
-        <div class='fade-in'>
-          <h2>🌟 Scripture of the Day</h2>
-          <blockquote style='font-size:1.2em; font-style:italic;'>
-            "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
-          </blockquote>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("""
-        ---
-        ## 📖 The Gospel of Light: Jesus as the Massless One
-        > *"In the beginning was the Word, and the Word was with God, and the Word was God."*
-        
-        The quantum field of consciousness incarnate, collapsing infinite possibility into the frequency of Love.
-        """)
-
-    elif page == "All Books":
-        render_all_books_page()
     elif page == "Quantum Parables Timeline":
         render_timeline()
     elif page == "Communion Project":
         render_communion_scroll()
     elif page == "🛠 Admin":
-        render_admin_panel()
+        # Protect admin panel with authentication
+        if AUTH_AVAILABLE and is_authenticated():
+            render_admin_panel()
+        elif AUTH_AVAILABLE:
+            st.warning("🔒 Please log in to access the Admin panel.")
+            st.info("Use the login form in the sidebar to authenticate.")
+        else:
+            # Fallback if auth module not available
+            render_admin_panel()

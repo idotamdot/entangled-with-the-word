@@ -4,6 +4,9 @@
 *.key
 *.env
 
+# Auth config with credentials (use auth_config.yaml.example as template)
+config/auth_config.yaml
+
 # Python cache files
 __pycache__/
 *.pyc
