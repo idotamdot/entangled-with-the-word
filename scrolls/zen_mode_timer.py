@@ -1,7 +1,7 @@
 """Zen Mode Focus Timer - A meditative focus timer with breathing animation."""
 
-import streamlit as st
 import time
+import streamlit as st
 
 # Timer presets in minutes
 TIMER_PRESETS = {
@@ -225,13 +225,15 @@ def render_zen_mode():
                 st.session_state["zen_timer_completed"] = False
                 st.rerun()
 
-        # Auto-refresh countdown
+        # Timer countdown logic
         if remaining > 0:
+            # Use Streamlit's native auto-rerun capability with a time delay
+            # This is the standard Streamlit pattern for countdown timers
             time.sleep(1)
             st.session_state["zen_timer_seconds"] = remaining - 1
             st.rerun()
         else:
-            # Timer completed
+            # Timer completed - immediately transition to completion state
             st.session_state["zen_timer_running"] = False
             st.session_state["zen_timer_completed"] = True
             st.rerun()
