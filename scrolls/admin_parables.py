@@ -1,4 +1,5 @@
 import streamlit as st
+from datetime import datetime, timedelta
 from scrolls.categories import PROJECT_CATEGORIES
 from backend import ParablesAPI
 
@@ -30,41 +31,70 @@ def _save_df(df, path):
     df.to_csv(path, index=False)
 
 
+def _filter_by_date_range(df, start_date, end_date):
+    """Filter dataframe by date range.
+    
+    Returns a filtered copy of the dataframe with rows within the date range.
+    Preserves the original index for reliable row identification.
+    """
+    if df.empty or 'timestamp' not in df.columns:
+        return df
+    result = df.copy()
+    result['timestamp'] = pd.to_datetime(result['timestamp'], errors='coerce')
+    # Convert dates to datetime for comparison
+    start_dt = pd.to_datetime(start_date)
+    end_dt = pd.to_datetime(end_date) + timedelta(days=1) - timedelta(seconds=1)
+    return result[(result['timestamp'] >= start_dt) & (result['timestamp'] <= end_dt)]
+
+
 def render_admin_panel():
     """Simple moderation panel for parable suggestions."""
     st.header("🛠 Parable Suggestions")
     suggestions = _parables_api.get_suggestions()
 
+    # Date range filter for admin panel
+    st.markdown("##### 📅 Filter by Due Date Range")
+    col1, col2 = st.columns(2)
+    
+    today = datetime.now().date()
+    default_start = today - timedelta(days=365)
+    
+    with col1:
+        start_date = st.date_input("Start Date", value=default_start, key="admin_start_date")
+    with col2:
+        end_date = st.date_input("End Date", value=today, key="admin_end_date")
+    
+    if start_date > end_date:
+        st.warning("Start date must be before or equal to end date.")
+        return
+
     if suggestions.empty:
         st.info("No suggestions pending.")
     else:
-        suggestions = suggestions.reset_index(drop=True)
-        for i, row in suggestions.iterrows():
-            st.markdown(f"**{row.get('timestamp','')}** - {row.get('tag','')}")
-            st.markdown(row.get('suggestion',''))
-            
-            # Display importance and energy score indicators
-            importance = int(row.get('importance', 3)) if pd.notna(row.get('importance')) else 3
-            energy = int(row.get('energy_score', 5)) if pd.notna(row.get('energy_score')) else 5
-            st.markdown(f"⭐ **Importance:** {'🔥' * importance} ({importance}/5) | ⚡ **Energy:** {'💫' * ((energy + 1) // 2)} ({energy}/10)")
-            
-            col1, col2 = st.columns(2)
-            if col1.button('Approve', key=f'app_{i}'):
-                if _parables_api.approve_suggestion(i):
+        # Apply date filter (preserves original index)
+        filtered_suggestions = _filter_by_date_range(suggestions, start_date, end_date)
+        
+        if filtered_suggestions.empty:
+            st.info("No suggestions found in the selected date range.")
+        else:
+            # Store original indices before resetting for iteration
+            for orig_idx in filtered_suggestions.index:
+                row = filtered_suggestions.loc[orig_idx]
+                st.markdown(f"**{row.get('timestamp','')}** - {row.get('tag','')}")
+                st.markdown(row.get('suggestion',''))
+                col1, col2 = st.columns(2)
+                # Use original index for unique key and operations
+                if col1.button('Approve', key=f'app_{orig_idx}'):
+                    approved = _load_df(APPROVED_FILE, ['timestamp', 'suggestion', 'tag'])
+                    approved = pd.concat([approved, pd.DataFrame([row])], ignore_index=True)
+                    _save_df(approved, APPROVED_FILE)
+                    suggestions = suggestions.drop(orig_idx)
+                    _save_df(suggestions, SUGGEST_FILE)
                     st.rerun()
-                else:
-                    st.error("Failed to approve suggestion.")
-                approved = _load_df(APPROVED_FILE, APPROVED_COLUMNS)
-                approved = pd.concat([approved, pd.DataFrame([row])], ignore_index=True)
-                _save_df(approved, APPROVED_FILE)
-                suggestions = suggestions.drop(i)
-                _save_df(suggestions, SUGGEST_FILE)
-                st.rerun()
-            if col2.button('Delete', key=f'del_{i}'):
-                if _parables_api.delete_suggestion(i):
+                if col2.button('Delete', key=f'del_{orig_idx}'):
+                    suggestions = suggestions.drop(orig_idx)
+                    _save_df(suggestions, SUGGEST_FILE)
                     st.rerun()
-                else:
-                    st.error("Failed to delete suggestion.")
 
     st.markdown('---')
     st.subheader('Add New Suggestion')
