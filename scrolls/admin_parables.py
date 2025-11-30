@@ -24,15 +24,19 @@ def _save_df(df, path):
 
 
 def _filter_by_date_range(df, start_date, end_date):
-    """Filter dataframe by date range."""
+    """Filter dataframe by date range.
+    
+    Returns a filtered copy of the dataframe with rows within the date range.
+    Preserves the original index for reliable row identification.
+    """
     if df.empty or 'timestamp' not in df.columns:
         return df
-    df = df.copy()
-    df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+    result = df.copy()
+    result['timestamp'] = pd.to_datetime(result['timestamp'], errors='coerce')
     # Convert dates to datetime for comparison
     start_dt = pd.to_datetime(start_date)
     end_dt = pd.to_datetime(end_date) + timedelta(days=1) - timedelta(seconds=1)
-    return df[(df['timestamp'] >= start_dt) & (df['timestamp'] <= end_dt)]
+    return result[(result['timestamp'] >= start_dt) & (result['timestamp'] <= end_dt)]
 
 
 def render_admin_panel():
@@ -59,27 +63,27 @@ def render_admin_panel():
     if suggestions.empty:
         st.info("No suggestions pending.")
     else:
-        # Apply date filter
+        # Apply date filter (preserves original index)
         filtered_suggestions = _filter_by_date_range(suggestions, start_date, end_date)
         
         if filtered_suggestions.empty:
             st.info("No suggestions found in the selected date range.")
         else:
-            filtered_suggestions = filtered_suggestions.reset_index(drop=True)
-            for i, row in filtered_suggestions.iterrows():
+            # Store original indices before resetting for iteration
+            for orig_idx in filtered_suggestions.index:
+                row = filtered_suggestions.loc[orig_idx]
                 st.markdown(f"**{row.get('timestamp','')}** - {row.get('tag','')}")
                 st.markdown(row.get('suggestion',''))
                 col1, col2 = st.columns(2)
-                # Use original index for operations
-                orig_idx = suggestions[suggestions['suggestion'] == row['suggestion']].index[0]
-                if col1.button('Approve', key=f'app_{i}'):
+                # Use original index for unique key and operations
+                if col1.button('Approve', key=f'app_{orig_idx}'):
                     approved = _load_df(APPROVED_FILE, ['timestamp', 'suggestion', 'tag'])
                     approved = pd.concat([approved, pd.DataFrame([row])], ignore_index=True)
                     _save_df(approved, APPROVED_FILE)
                     suggestions = suggestions.drop(orig_idx)
                     _save_df(suggestions, SUGGEST_FILE)
                     st.rerun()
-                if col2.button('Delete', key=f'del_{i}'):
+                if col2.button('Delete', key=f'del_{orig_idx}'):
                     suggestions = suggestions.drop(orig_idx)
                     _save_df(suggestions, SUGGEST_FILE)
                     st.rerun()
