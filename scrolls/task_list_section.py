@@ -26,6 +26,7 @@ def _load_tasks() -> pd.DataFrame:
 
 def _save_tasks(df: pd.DataFrame) -> None:
     """Save tasks to CSV file."""
+    os.makedirs(os.path.dirname(TASKS_FILE), exist_ok=True)
     df.to_csv(TASKS_FILE, index=False)
 
 
@@ -100,9 +101,9 @@ def render_task_list():
     if filter_category != "All":
         filtered_df = filtered_df[filtered_df["category"] == filter_category]
     if filter_status == "Pending":
-        filtered_df = filtered_df[filtered_df["completed"] == False]
+        filtered_df = filtered_df[~filtered_df["completed"]]
     elif filter_status == "Completed":
-        filtered_df = filtered_df[filtered_df["completed"] == True]
+        filtered_df = filtered_df[filtered_df["completed"]]
 
     st.markdown("---")
 
@@ -114,7 +115,7 @@ def render_task_list():
     else:
         # Display task counts
         total = len(tasks_df)
-        completed = len(tasks_df[tasks_df["completed"] == True])
+        completed = len(tasks_df[tasks_df["completed"]])
         pending = total - completed
 
         col_stats1, col_stats2, col_stats3 = st.columns(3)
