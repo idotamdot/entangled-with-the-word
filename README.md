@@ -56,6 +56,12 @@ The app includes user authentication for admin features. To configure:
    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
    print(hashed)
    ```
+   Or using streamlit-authenticator (if available):
+   ```python
+   import streamlit_authenticator as stauth
+   hashed = stauth.Hasher.hash('your_password')
+   print(hashed)
+   ```
 3. Update the `password` field in `auth_config.yaml` with the generated hash
 4. Change the `cookie.key` to a secure random string for production
 

@@ -16,8 +16,7 @@ try:
     from scrolls.auth import (
         get_authenticator,
         is_authenticated,
-        get_current_user,
-        render_logout
+        get_current_user
     )
     AUTH_AVAILABLE = True
 except ImportError:

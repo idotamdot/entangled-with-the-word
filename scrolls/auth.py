@@ -114,6 +114,10 @@ def require_authentication(admin_only=False):
     
     Returns:
         True if authenticated, False otherwise
+    
+    Note:
+        To add more admin users, modify the admin check below to use a
+        roles field in the config or maintain a list of admin usernames.
     """
     if not is_authenticated():
         st.warning("🔒 Please log in to access this page.")
@@ -122,6 +126,8 @@ def require_authentication(admin_only=False):
     
     if admin_only:
         username = st.session_state.get("username")
+        # Currently only 'admin' user has admin privileges
+        # To extend, add a 'roles' field to user config in auth_config.yaml
         if username != "admin":
             st.error("🚫 This page requires admin privileges.")
             return False
