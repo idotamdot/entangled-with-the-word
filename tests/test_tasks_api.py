@@ -1,6 +1,4 @@
 """Tests for the task history API endpoint."""
-import os
-import tempfile
 import pytest
 from fastapi.testclient import TestClient
 

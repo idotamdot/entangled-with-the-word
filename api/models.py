@@ -37,7 +37,7 @@ def load_tasks() -> pd.DataFrame:
             if col not in df.columns:
                 df[col] = None if col != "status" else "pending"
         return df[TASKS_COLUMNS]
-    except Exception:
+    except (pd.errors.EmptyDataError, pd.errors.ParserError, FileNotFoundError):
         return pd.DataFrame(columns=TASKS_COLUMNS)
 
 
@@ -69,7 +69,13 @@ def create_task(
 ) -> dict:
     """Create a new task and save it."""
     df = load_tasks()
-    new_id = 1 if df.empty else int(df["id"].max()) + 1
+    if df.empty:
+        new_id = 1
+    else:
+        # Safely convert ID column to numeric and get max
+        numeric_ids = pd.to_numeric(df["id"], errors="coerce")
+        max_id = numeric_ids.max()
+        new_id = 1 if pd.isna(max_id) else int(max_id) + 1
     new_task = {
         "id": new_id,
         "title": title,
