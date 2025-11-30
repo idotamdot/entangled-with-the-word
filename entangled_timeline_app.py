@@ -197,6 +197,7 @@ else:
         [
             "The Entangled Garden", # New Home
             "The Logos Article",     # New Article Page
+            "📊 Dashboard",          # Daily/Weekly Summary
             "Gospel of Light", 
             "All Books", 
             "Quantum Parables Timeline", 
