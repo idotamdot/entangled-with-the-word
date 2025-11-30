@@ -1,32 +1,16 @@
-import os
-import pandas as pd
 import streamlit as st
-from datetime import datetime
 from scrolls.categories import PROJECT_CATEGORIES
-
-SUGGEST_FILE = os.path.join("data", "suggested_parables.csv")
-APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
+from backend import ParablesAPI
 
 
-def _load_df(path, columns):
-    if os.path.exists(path):
-        try:
-            df = pd.read_csv(path)
-            if not df.empty:
-                return df
-        except Exception as e:
-            st.error(f"Could not load {path}: {e}")
-    return pd.DataFrame(columns=columns)
-
-
-def _save_df(df, path):
-    df.to_csv(path, index=False)
+# Initialize API
+_parables_api = ParablesAPI()
 
 
 def render_admin_panel():
     """Simple moderation panel for parable suggestions."""
     st.header("🛠 Parable Suggestions")
-    suggestions = _load_df(SUGGEST_FILE, ['timestamp', 'suggestion', 'tag'])
+    suggestions = _parables_api.get_suggestions()
 
     if suggestions.empty:
         st.info("No suggestions pending.")
@@ -37,16 +21,15 @@ def render_admin_panel():
             st.markdown(row.get('suggestion',''))
             col1, col2 = st.columns(2)
             if col1.button('Approve', key=f'app_{i}'):
-                approved = _load_df(APPROVED_FILE, ['timestamp', 'suggestion', 'tag'])
-                approved = pd.concat([approved, pd.DataFrame([row])], ignore_index=True)
-                _save_df(approved, APPROVED_FILE)
-                suggestions = suggestions.drop(i)
-                _save_df(suggestions, SUGGEST_FILE)
-                st.rerun()
+                if _parables_api.approve_suggestion(i):
+                    st.rerun()
+                else:
+                    st.error("Failed to approve suggestion.")
             if col2.button('Delete', key=f'del_{i}'):
-                suggestions = suggestions.drop(i)
-                _save_df(suggestions, SUGGEST_FILE)
-                st.rerun()
+                if _parables_api.delete_suggestion(i):
+                    st.rerun()
+                else:
+                    st.error("Failed to delete suggestion.")
 
     st.markdown('---')
     st.subheader('Add New Suggestion')
@@ -54,9 +37,8 @@ def render_admin_panel():
         text = st.text_area('Suggestion')
         tag = st.selectbox('Category', options=PROJECT_CATEGORIES, index=PROJECT_CATEGORIES.index('#Timeline'))
         if st.form_submit_button('Submit') and text.strip():
-            new_row = pd.DataFrame([[datetime.now().isoformat(), text.strip(), tag]],
-                                   columns=['timestamp', 'suggestion', 'tag'])
-            suggestions = pd.concat([suggestions, new_row], ignore_index=True)
-            _save_df(suggestions, SUGGEST_FILE)
-            st.success('Suggestion added.')
+            if _parables_api.submit_suggestion(text, tag):
+                st.success('Suggestion added.')
+            else:
+                st.error('Failed to add suggestion.')
 

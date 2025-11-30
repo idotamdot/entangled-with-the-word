@@ -1,46 +1,32 @@
-import os
-import pandas as pd
 import streamlit as st
 from scrolls.categories import PROJECT_CATEGORIES
+from backend import ParablesAPI
 
-APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
-
-def load_entries():
-    if os.path.exists(APPROVED_FILE):
-        try:
-            df = pd.read_csv(APPROVED_FILE)
-            if not df.empty:
-                df['timestamp'] = pd.to_datetime(df['timestamp'])
-                df = df.sort_values('timestamp')
-            return df
-        except Exception as e:
-            st.error(f"Failed to load timeline: {e}")
-    return pd.DataFrame(columns=['timestamp', 'suggestion', 'tag'])
+# Initialize API
+_parables_api = ParablesAPI()
 
 
 def render_timeline():
     """Display approved parables as a timeline."""
     st.header("🧬 Quantum Parables Timeline")
-    df = load_entries()
-    if df.empty:
-        st.info("No parables have been approved yet.")
-        return
-
+    
     # Category filter
     all_tags = ["All"] + PROJECT_CATEGORIES
     selected_category = st.selectbox("Filter by category:", options=all_tags)
 
-    # Filter dataframe if a specific category is selected
-    if selected_category != "All":
-        df = df[df['tag'] == selected_category]
-
+    # Get filtered parables using API
+    df = _parables_api.get_approved_by_category(selected_category)
+    
     if df.empty:
-        st.info(f"No parables found for category: {selected_category}")
+        if selected_category != "All":
+            st.info(f"No parables found for category: {selected_category}")
+        else:
+            st.info("No parables have been approved yet.")
         return
 
     for _, row in df.iterrows():
-        date_str = row['timestamp'].strftime('%Y-%m-%d') if not pd.isna(row['timestamp']) else ''
+        date_str = row['timestamp'].strftime('%Y-%m-%d') if not hasattr(row['timestamp'], 'isna') or not row['timestamp'] is None else ''
         tag = row.get('tag', '')
         with st.container():
             st.markdown(
