@@ -225,3 +225,288 @@ h2:has(> .hebrews-title) {
         transform: translate(-500px, -500px);
     }
 }
+
+/* ============================================================
+   ✨ GLOWING EFFECT STYLES
+   Aesthetic glow animations and effects for spiritual/quantum theme
+   ============================================================ */
+
+/* --- Glow Animation Keyframes --- */
+
+/* Gentle pulse glow - subtle breathing effect */
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--glow-light, rgba(173, 216, 230, 0.5)),
+                    0 0 10px var(--glow-light, rgba(173, 216, 230, 0.3));
+    }
+    50% {
+        box-shadow: 0 0 15px var(--glow-light, rgba(173, 216, 230, 0.7)),
+                    0 0 25px var(--glow-light, rgba(173, 216, 230, 0.5)),
+                    0 0 35px var(--glow-light, rgba(173, 216, 230, 0.3));
+    }
+}
+
+/* Sacred gold glow - warm spiritual effect */
+@keyframes glow-sacred {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(255, 215, 0, 0.4),
+                    0 0 16px rgba(255, 215, 0, 0.2);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
+                    0 0 40px rgba(255, 215, 0, 0.4),
+                    0 0 60px rgba(255, 215, 0, 0.2);
+        filter: brightness(1.1);
+    }
+}
+
+/* Ethereal violet glow - mystical effect */
+@keyframes glow-ethereal {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(138, 43, 226, 0.4),
+                    0 0 20px rgba(138, 43, 226, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(138, 43, 226, 0.6),
+                    0 0 45px rgba(138, 43, 226, 0.4),
+                    0 0 65px rgba(138, 43, 226, 0.2);
+    }
+}
+
+/* Text glow animation */
+@keyframes text-glow {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.5),
+                     0 0 8px var(--glow-light, rgba(173, 216, 230, 0.4));
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.8),
+                     0 0 16px var(--glow-light, rgba(173, 216, 230, 0.6)),
+                     0 0 24px var(--glow-light, rgba(173, 216, 230, 0.4));
+    }
+}
+
+/* Rainbow shimmer glow - quantum entanglement effect */
+@keyframes glow-quantum {
+    0% {
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.5),
+                    0 0 30px rgba(99, 102, 241, 0.3);
+    }
+    33% {
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.5),
+                    0 0 30px rgba(236, 72, 153, 0.3);
+    }
+    66% {
+        box-shadow: 0 0 15px rgba(14, 165, 233, 0.5),
+                    0 0 30px rgba(14, 165, 233, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.5),
+                    0 0 30px rgba(99, 102, 241, 0.3);
+    }
+}
+
+/* --- Glowing Element Classes --- */
+
+/* Basic glow class - applies subtle ambient glow */
+.glow {
+    box-shadow: 0 0 10px var(--glow-light, rgba(173, 216, 230, 0.5)),
+                0 0 20px var(--glow-light, rgba(173, 216, 230, 0.3));
+    transition: box-shadow 0.3s ease;
+}
+
+.glow:hover {
+    box-shadow: 0 0 15px var(--glow-hover, rgba(173, 216, 230, 0.8)),
+                0 0 30px var(--glow-hover, rgba(173, 216, 230, 0.5)),
+                0 0 45px var(--glow-hover, rgba(173, 216, 230, 0.3));
+}
+
+/* Animated pulse glow */
+.glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Sacred gold glow - for spiritual highlights */
+.glow-sacred {
+    animation: glow-sacred 4s ease-in-out infinite;
+}
+
+/* Ethereal violet glow - for mystical elements */
+.glow-ethereal {
+    animation: glow-ethereal 3.5s ease-in-out infinite;
+}
+
+/* Quantum shimmer glow - for entanglement themes */
+.glow-quantum {
+    animation: glow-quantum 6s ease-in-out infinite;
+}
+
+/* --- Glowing Text Classes --- */
+
+/* Glowing text effect */
+.text-glow {
+    animation: text-glow 3s ease-in-out infinite;
+}
+
+/* Static glowing text - sacred gold */
+.text-glow-gold {
+    color: #FFD700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.6),
+                 0 0 10px rgba(255, 215, 0, 0.4),
+                 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+/* Static glowing text - ethereal */
+.text-glow-ethereal {
+    color: #E0E7FF;
+    text-shadow: 0 0 5px rgba(173, 216, 230, 0.6),
+                 0 0 10px rgba(173, 216, 230, 0.4),
+                 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+/* Static glowing text - quantum indigo */
+.text-glow-quantum {
+    color: #A5B4FC;
+    text-shadow: 0 0 5px rgba(99, 102, 241, 0.6),
+                 0 0 10px rgba(99, 102, 241, 0.4),
+                 0 0 15px rgba(99, 102, 241, 0.2);
+}
+
+/* --- Glowing Border Classes --- */
+
+/* Glowing border - ambient */
+.border-glow {
+    border: 1px solid rgba(173, 216, 230, 0.5);
+    box-shadow: 0 0 8px var(--glow-light, rgba(173, 216, 230, 0.4)),
+                inset 0 0 8px var(--glow-light, rgba(173, 216, 230, 0.1));
+    transition: all 0.3s ease;
+}
+
+.border-glow:hover {
+    border-color: rgba(173, 216, 230, 0.8);
+    box-shadow: 0 0 15px var(--glow-hover, rgba(173, 216, 230, 0.6)),
+                inset 0 0 12px var(--glow-hover, rgba(173, 216, 230, 0.2));
+}
+
+/* Glowing border - sacred gold */
+.border-glow-gold {
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3),
+                inset 0 0 5px rgba(255, 215, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.border-glow-gold:hover {
+    border-color: rgba(255, 215, 0, 0.7);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+                inset 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+/* --- Glowing Icon/Badge Classes --- */
+
+/* Glowing icon container */
+.icon-glow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 15px var(--glow-light, rgba(173, 216, 230, 0.4));
+    animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Sacred badge with glow */
+.badge-glow {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    color: #E0E7FF;
+    transition: all 0.3s ease;
+}
+
+.badge-glow:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.6),
+                0 0 30px rgba(139, 92, 246, 0.4);
+    transform: scale(1.05);
+}
+
+/* --- Theme-Specific Glow Variations --- */
+
+/* Nebula theme glow (default) */
+.glow-nebula {
+    --glow-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 10px var(--glow-color),
+                0 0 20px rgba(139, 92, 246, 0.3),
+                0 0 30px rgba(168, 85, 247, 0.2);
+    animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Ocean depths theme glow */
+.glow-ocean {
+    --glow-color: rgba(14, 165, 233, 0.5);
+    box-shadow: 0 0 10px var(--glow-color),
+                0 0 20px rgba(6, 182, 212, 0.3),
+                0 0 30px rgba(34, 211, 238, 0.2);
+    animation: glow-pulse 5s ease-in-out infinite;
+}
+
+/* Night scroll theme glow */
+.glow-night {
+    --glow-color: rgba(148, 163, 184, 0.4);
+    box-shadow: 0 0 8px var(--glow-color),
+                0 0 16px rgba(100, 116, 139, 0.3),
+                0 0 24px rgba(71, 85, 105, 0.2);
+    animation: glow-pulse 6s ease-in-out infinite;
+}
+
+/* --- Utility Glow Classes --- */
+
+/* Soft ambient background glow */
+.bg-glow {
+    background: radial-gradient(ellipse at center, 
+        rgba(99, 102, 241, 0.15) 0%, 
+        rgba(0, 0, 0, 0) 70%);
+}
+
+/* Glowing divider/separator */
+.divider-glow {
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(173, 216, 230, 0.5), 
+        rgba(255, 215, 0, 0.3), 
+        rgba(173, 216, 230, 0.5), 
+        transparent);
+    box-shadow: 0 0 10px rgba(173, 216, 230, 0.4);
+    margin: 20px 0;
+}
+
+/* Focus glow for interactive elements - accessibility enhancement */
+.focus-glow:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5),
+                0 0 15px rgba(99, 102, 241, 0.4);
+}
+
+/* Subtle glow on load animation */
+@keyframes glow-appear {
+    0% {
+        opacity: 0;
+        box-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 15px var(--glow-light, rgba(173, 216, 230, 0.5));
+    }
+}
+
+.glow-appear {
+    animation: glow-appear 1.5s ease-out forwards;
+}
