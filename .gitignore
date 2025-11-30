@@ -4,6 +4,9 @@
 *.key
 *.env
 
+# User data files (generated at runtime)
+data/tasks.csv
+
 # Python cache files
 __pycache__/
 *.pyc
