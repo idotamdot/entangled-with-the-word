@@ -166,6 +166,7 @@ else:
         from scrolls.communion_project_section import render_communion_scroll
         from scrolls.admin_parables import render_admin_panel
         from scrolls.task_list_section import render_task_list
+        from scrolls.constellation_section import render_constellation
     except ImportError:
         # Fallback if local files are missing during testing
         def render_all_books_page(): st.write("Book Module Loading...")
@@ -173,6 +174,7 @@ else:
         def render_communion_scroll(): st.write("Communion Loading...")
         def render_admin_panel(): st.write("Admin Loading...")
         def render_task_list(): st.write("Task List Loading...")
+        def render_constellation(): st.write("Constellation Loading...")
 
     # =============== Authentication Sidebar Section ===============
     if AUTH_AVAILABLE:
@@ -207,13 +209,15 @@ else:
         "Gospel of Light", 
         "All Books", 
         "Quantum Parables Timeline", 
-        "Communion Project"
+        "Communion Project",
+        "🌌 Constellation View"
     ]
     
     # Only show Admin option if user is authenticated and has admin role
-    # Use username from login form return for consistency
-    if authentication_status and username and is_admin(username):
-        nav_options.append("🛠 Admin")
+    if AUTH_AVAILABLE and is_authenticated():
+        user = get_current_user()
+        if user and user.get('username') == 'admin':
+            nav_options.append("🛠 Admin")
     
     st.sidebar.title("Navigation")
     page = st.sidebar.radio(
@@ -372,6 +376,8 @@ Quantum Switch — the Now.
         render_timeline()
     elif page == "Communion Project":
         render_communion_scroll()
+    elif page == "🌌 Constellation View":
+        render_constellation()
     elif page == "📋 Task List":
         render_task_list()
     elif page == "🛠 Admin":
