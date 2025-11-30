@@ -17,6 +17,9 @@ from scrolls.categories import PROJECT_CATEGORIES
 DB_DIR = "data"
 DB_FILE = os.path.join(DB_DIR, "tasks.db")
 
+# Track whether database has been initialized
+_db_initialized = False
+
 
 @dataclass
 class ParsedTask:
@@ -68,7 +71,8 @@ def parse_due_date(text: str) -> Optional[datetime]:
     
     Returns datetime object or None if no due date found.
     """
-    # Pattern for due: prefix followed by date specification
+    # Pattern matches: due: followed by non-whitespace, optionally followed by
+    # a space and another word (to capture "next week" style patterns)
     due_pattern = r'due:(\S+(?:\s+\w+)?)'
     match = re.search(due_pattern, text, re.IGNORECASE)
     
@@ -112,9 +116,9 @@ def extract_description(text: str) -> str:
     """
     # Remove hashtags
     description = re.sub(r'#\w+', '', text)
-    # Remove due: specifications (including "next week" pattern)
-    description = re.sub(r'due:next\s+week', '', description, flags=re.IGNORECASE)
-    description = re.sub(r'due:\S+', '', description, flags=re.IGNORECASE)
+    # Remove due: specifications using the same pattern as parse_due_date
+    # This ensures consistency between parsing and extraction
+    description = re.sub(r'due:\S+(?:\s+week)?', '', description, flags=re.IGNORECASE)
     # Clean up extra whitespace
     description = ' '.join(description.split())
     return description.strip()
@@ -143,6 +147,14 @@ def parse_task(text: str) -> ParsedTask:
 
 
 # ============ Database Functions ============
+
+def _ensure_db_initialized() -> None:
+    """Ensure database is initialized (called once per process)."""
+    global _db_initialized
+    if not _db_initialized:
+        init_database()
+        _db_initialized = True
+
 
 def init_database() -> None:
     """Initialize the SQLite database and create tables if they don't exist."""
@@ -195,7 +207,7 @@ def save_task(parsed_task: ParsedTask) -> int:
     Returns:
         The ID of the newly created task
     """
-    init_database()
+    _ensure_db_initialized()
     
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
@@ -231,7 +243,7 @@ def get_task(task_id: int) -> Optional[dict]:
     Returns:
         Dictionary with task data or None if not found
     """
-    init_database()
+    _ensure_db_initialized()
     
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
@@ -264,7 +276,7 @@ def get_all_tasks(include_completed: bool = True) -> list[dict]:
     Returns:
         List of task dictionaries
     """
-    init_database()
+    _ensure_db_initialized()
     
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
@@ -298,7 +310,7 @@ def get_tasks_by_tag(tag: str) -> list[dict]:
     Returns:
         List of task dictionaries
     """
-    init_database()
+    _ensure_db_initialized()
     
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
@@ -331,7 +343,7 @@ def mark_task_completed(task_id: int, completed: bool = True) -> bool:
     Returns:
         True if task was found and updated, False otherwise
     """
-    init_database()
+    _ensure_db_initialized()
     
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
@@ -354,7 +366,7 @@ def delete_task(task_id: int) -> bool:
     Returns:
         True if task was deleted, False otherwise
     """
-    init_database()
+    _ensure_db_initialized()
     
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
