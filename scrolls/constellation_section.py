@@ -6,6 +6,11 @@ Visualizes relationships between spiritual and quantum concepts as a glowing con
 import streamlit as st
 
 
+# Configuration constants
+CONSTELLATION_CONTAINER_HEIGHT = 500  # Height of the constellation container in pixels
+CONSTELLATION_IFRAME_HEIGHT = 620  # Height of the iframe (container + padding)
+BACKGROUND_STARS_COUNT = 50  # Number of twinkling background stars
+
 # Constellation nodes representing key concepts from the project
 CONSTELLATION_NODES = [
     {"id": "logos", "label": "The Logos", "x": 50, "y": 20, "size": 12, "color": "#FFD700"},
@@ -57,7 +62,7 @@ def _generate_constellation_html() -> str:
         .constellation-container {{
             position: relative;
             width: 100%;
-            height: 500px;
+            height: {CONSTELLATION_CONTAINER_HEIGHT}px;
             background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f23 50%, #000000 100%);
             border-radius: 20px;
             overflow: hidden;
@@ -165,7 +170,7 @@ def _generate_constellation_html() -> str:
             const containerRect = container.getBoundingClientRect();
 
             // Add background stars
-            for (let i = 0; i < 50; i++) {{
+            for (let i = 0; i < {BACKGROUND_STARS_COUNT}; i++) {{
                 const star = document.createElement('div');
                 star.className = 'bg-star';
                 star.style.left = Math.random() * 100 + '%';
@@ -235,7 +240,7 @@ def render_constellation():
     """)
 
     # Render the interactive constellation
-    st.components.v1.html(_generate_constellation_html(), height=620, scrolling=False)
+    st.components.v1.html(_generate_constellation_html(), height=CONSTELLATION_IFRAME_HEIGHT, scrolling=False)
 
     # Legend section
     st.markdown("---")
