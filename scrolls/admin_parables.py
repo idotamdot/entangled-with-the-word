@@ -1,11 +1,14 @@
-import os
-import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
 from scrolls.categories import PROJECT_CATEGORIES
+from backend import ParablesAPI
 
-SUGGEST_FILE = os.path.join("data", "suggested_parables.csv")
-APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
+
+# Initialize API
+_parables_api = ParablesAPI()
+# Define column schema with importance and energy_score
+SUGGESTION_COLUMNS = ['timestamp', 'suggestion', 'tag', 'importance', 'energy_score']
+APPROVED_COLUMNS = ['timestamp', 'suggestion', 'tag', 'importance', 'energy_score']
 
 
 def _load_df(path, columns):
@@ -13,6 +16,11 @@ def _load_df(path, columns):
         try:
             df = pd.read_csv(path)
             if not df.empty:
+                # Ensure new columns exist with defaults
+                if 'importance' not in df.columns:
+                    df['importance'] = 3
+                if 'energy_score' not in df.columns:
+                    df['energy_score'] = 5
                 return df
         except Exception as e:
             st.error(f"Could not load {path}: {e}")
@@ -42,7 +50,7 @@ def _filter_by_date_range(df, start_date, end_date):
 def render_admin_panel():
     """Simple moderation panel for parable suggestions."""
     st.header("🛠 Parable Suggestions")
-    suggestions = _load_df(SUGGEST_FILE, ['timestamp', 'suggestion', 'tag'])
+    suggestions = _parables_api.get_suggestions()
 
     # Date range filter for admin panel
     st.markdown("##### 📅 Filter by Due Date Range")
@@ -93,9 +101,24 @@ def render_admin_panel():
     with st.form('new_suggestion', clear_on_submit=True):
         text = st.text_area('Suggestion')
         tag = st.selectbox('Category', options=PROJECT_CATEGORIES, index=PROJECT_CATEGORIES.index('#Timeline'))
+        
+        # Add importance and energy score inputs
+        st.markdown("#### 💡 Task Importance & Energy")
+        col_imp, col_eng = st.columns(2)
+        with col_imp:
+            importance = st.slider('⭐ Importance (1-5)', min_value=1, max_value=5, value=3, 
+                                   help='How important is this task? 1=Low, 5=Critical')
+        with col_eng:
+            energy_score = st.slider('⚡ Energy Score (1-10)', min_value=1, max_value=10, value=5,
+                                     help='How much energy/effort does this require? 1=Minimal, 10=Maximum')
+        
         if st.form_submit_button('Submit') and text.strip():
-            new_row = pd.DataFrame([[datetime.now().isoformat(), text.strip(), tag]],
-                                   columns=['timestamp', 'suggestion', 'tag'])
+            if _parables_api.submit_suggestion(text, tag):
+                st.success('Suggestion added.')
+            else:
+                st.error('Failed to add suggestion.')
+            new_row = pd.DataFrame([[datetime.now().isoformat(), text.strip(), tag, importance, energy_score]],
+                                   columns=SUGGESTION_COLUMNS)
             suggestions = pd.concat([suggestions, new_row], ignore_index=True)
             _save_df(suggestions, SUGGEST_FILE)
             st.success('Suggestion added.')
