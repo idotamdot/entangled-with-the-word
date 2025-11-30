@@ -9,13 +9,14 @@ credentials:
     admin:
       email: admin@yourdomain.com
       name: Administrator
-      # Default password is 'admin123' - CHANGE THIS IN PRODUCTION!
-      password: $2b$12$REPLACE_WITH_YOUR_HASHED_PASSWORD
+      # Default password is 'changeme' - CHANGE THIS IN PRODUCTION!
+      password: $2b$12$m4lFtI2czPEOGxNg47yYK.4WRcN1or/czlZzP5/nHqsO/hG6dvEdO
       role: admin
     user:
       email: user@yourdomain.com
       name: Regular User
-      password: $2b$12$REPLACE_WITH_YOUR_HASHED_PASSWORD
+      # Default password is 'changeme' - CHANGE THIS IN PRODUCTION!
+      password: $2b$12$m4lFtI2czPEOGxNg47yYK.4WRcN1or/czlZzP5/nHqsO/hG6dvEdO
       role: user
 
 cookie:

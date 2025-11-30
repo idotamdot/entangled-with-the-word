@@ -199,8 +199,8 @@ else:
     ]
     
     # Only show Admin option if user is authenticated and has admin role
-    current_username = st.session_state.get("username", "")
-    if authentication_status and is_admin(current_username):
+    # Use username from login form return for consistency
+    if authentication_status and username and is_admin(username):
         nav_options.append("🛠 Admin")
     
     st.sidebar.title("Navigation")
@@ -360,8 +360,8 @@ Quantum Switch — the Now.
     elif page == "Communion Project":
         render_communion_scroll()
     elif page == "🛠 Admin":
-        # Double-check admin authentication
-        if authentication_status and is_admin(current_username):
+        # Double-check admin authentication using username from login form
+        if authentication_status and username and is_admin(username):
             render_admin_panel()
         else:
             st.error("🚫 Access Denied: Admin privileges required.")

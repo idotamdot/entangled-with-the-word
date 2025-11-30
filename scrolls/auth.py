@@ -22,7 +22,7 @@ def load_auth_config() -> dict:
         dict: Authentication configuration dictionary
     """
     if not os.path.exists(AUTH_CONFIG_PATH):
-        st.error(f"Authentication config not found at {AUTH_CONFIG_PATH}")
+        st.error("Authentication config not found.")
         st.info("Please copy config/auth_config.yaml.example to config/auth_config.yaml and update credentials.")
         return {}
     
@@ -98,6 +98,9 @@ def render_login_form() -> Tuple[Optional[str], bool, Optional[str]]:
     """
     Render the login form in the sidebar.
     
+    The streamlit-authenticator login() method returns a tuple (name, auth_status, username)
+    on first call, but returns None on subsequent reruns, using session state instead.
+    
     Returns:
         Tuple containing (name, authentication_status, username)
     """
@@ -106,16 +109,17 @@ def render_login_form() -> Tuple[Optional[str], bool, Optional[str]]:
         return None, False, None
     
     try:
+        # Call login() which renders the form and handles authentication
         result = authenticator.login(location='sidebar')
-        if result is not None:
-            name, authentication_status, username = result
-        else:
-            name = st.session_state.get("name")
-            authentication_status = st.session_state.get("authentication_status")
-            username = st.session_state.get("username")
         
         # Store authenticator in session state for logout functionality
         st.session_state['authenticator'] = authenticator
+        
+        # streamlit-authenticator stores auth state in session_state
+        # After login/logout, values are available in session_state
+        name = st.session_state.get("name")
+        authentication_status = st.session_state.get("authentication_status")
+        username = st.session_state.get("username")
         
         return name, authentication_status, username
     except Exception as e:
