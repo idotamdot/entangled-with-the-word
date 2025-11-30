@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timedelta
 import pandas as pd
 import streamlit as st
 from scrolls.categories import PROJECT_CATEGORIES
@@ -19,6 +20,16 @@ def load_entries():
     return pd.DataFrame(columns=['timestamp', 'suggestion', 'tag'])
 
 
+def filter_by_date_range(df, start_date, end_date):
+    """Filter dataframe by date range."""
+    if df.empty:
+        return df
+    # Convert dates to datetime for comparison
+    start_dt = pd.to_datetime(start_date)
+    end_dt = pd.to_datetime(end_date) + timedelta(days=1) - timedelta(seconds=1)
+    return df[(df['timestamp'] >= start_dt) & (df['timestamp'] <= end_dt)]
+
+
 def render_timeline():
     """Display approved parables as a timeline."""
     st.header("🧬 Quantum Parables Timeline")
@@ -31,12 +42,33 @@ def render_timeline():
     all_tags = ["All"] + PROJECT_CATEGORIES
     selected_category = st.selectbox("Filter by category:", options=all_tags)
 
+    # Date range filter
+    st.markdown("##### 📅 Filter by Date Range")
+    col1, col2 = st.columns(2)
+    
+    # Set default date range
+    today = datetime.now().date()
+    default_start = today - timedelta(days=365)  # Default to last year
+    
+    with col1:
+        start_date = st.date_input("Start Date", value=default_start, key="timeline_start_date")
+    with col2:
+        end_date = st.date_input("End Date", value=today, key="timeline_end_date")
+    
+    # Validate date range
+    if start_date > end_date:
+        st.warning("Start date must be before or equal to end date.")
+        return
+
     # Filter dataframe if a specific category is selected
     if selected_category != "All":
         df = df[df['tag'] == selected_category]
 
+    # Apply date range filter
+    df = filter_by_date_range(df, start_date, end_date)
+
     if df.empty:
-        st.info(f"No parables found for category: {selected_category}")
+        st.info(f"No parables found for the selected filters.")
         return
 
     for _, row in df.iterrows():
