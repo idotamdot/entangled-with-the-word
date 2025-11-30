@@ -165,12 +165,14 @@ else:
         from scrolls.timeline_section import render_timeline
         from scrolls.communion_project_section import render_communion_scroll
         from scrolls.admin_parables import render_admin_panel
+        from scrolls.task_list_section import render_task_list
     except ImportError:
         # Fallback if local files are missing during testing
         def render_all_books_page(): st.write("Book Module Loading...")
         def render_timeline(): st.write("Timeline Loading...")
         def render_communion_scroll(): st.write("Communion Loading...")
         def render_admin_panel(): st.write("Admin Loading...")
+        def render_task_list(): st.write("Task List Loading...")
 
     # =============== Authentication Sidebar Section ===============
     if AUTH_AVAILABLE:
@@ -194,25 +196,32 @@ else:
     st.sidebar.markdown("---")
     visual_theme = st.sidebar.selectbox(
         "Visual Theme:",
-        ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"]
+        ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"],
+        key="sanctum_theme"
     )
     
-    # Navigation
+    # Navigation - Build menu dynamically based on user role
+    nav_options = [
+        "The Entangled Garden",
+        "The Logos Article",
+        "Gospel of Light", 
+        "All Books", 
+        "Quantum Parables Timeline", 
+        "Communion Project"
+    ]
+    
+    # Only show Admin option if user is authenticated and has admin role
+    # Use username from login form return for consistency
+    if authentication_status and username and is_admin(username):
+        nav_options.append("🛠 Admin")
+    
     st.sidebar.title("Navigation")
     page = st.sidebar.radio(
         "Choose a section:",
-        [
-            "The Entangled Garden", # New Home
-            "The Logos Article",     # New Article Page
-            "Gospel of Light", 
-            "All Books", 
-            "Quantum Parables Timeline", 
-            "Communion Project", 
-            "🛠 Admin"
-        ]
+        nav_options
     )
 
- # --- Header ---
+    # --- Header ---
     st.markdown("""
     <div style='text-align:center;' class='fade-in'>
       <h1 style='font-size:3em;'>✨ Entangled with the Word ✨</h1>
@@ -363,6 +372,8 @@ Quantum Switch — the Now.
         render_timeline()
     elif page == "Communion Project":
         render_communion_scroll()
+    elif page == "📋 Task List":
+        render_task_list()
     elif page == "🛠 Admin":
         # Protect admin panel with authentication
         if AUTH_AVAILABLE and is_authenticated():
