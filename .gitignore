@@ -26,3 +26,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# SQLite database files
+*.db
+data/*.db
