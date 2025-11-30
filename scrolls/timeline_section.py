@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from scrolls.categories import PROJECT_CATEGORIES
 from backend import ParablesAPI
 
@@ -26,7 +27,7 @@ def render_timeline():
         return
 
     for _, row in df.iterrows():
-        date_str = row['timestamp'].strftime('%Y-%m-%d') if not hasattr(row['timestamp'], 'isna') or not row['timestamp'] is None else ''
+        date_str = row['timestamp'].strftime('%Y-%m-%d') if pd.notna(row['timestamp']) else ''
         tag = row.get('tag', '')
         with st.container():
             st.markdown(

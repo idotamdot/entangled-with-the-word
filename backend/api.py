@@ -11,9 +11,10 @@ import pandas as pd
 class DataStore:
     """Base class for CSV-based data storage."""
     
-    def __init__(self, filepath: str, columns: list[str]):
+    def __init__(self, filepath: str, columns: list[str], numeric_columns: list[str] = None):
         self.filepath = filepath
         self.columns = columns
+        self.numeric_columns = numeric_columns or []
         self._ensure_directory()
     
     def _ensure_directory(self) -> None:
@@ -31,7 +32,7 @@ class DataStore:
             # Ensure all expected columns exist
             for col in self.columns:
                 if col not in df.columns:
-                    df[col] = "" if col not in ["count", "candles"] else 0
+                    df[col] = 0 if col in self.numeric_columns else ""
             return df
         except (pd.errors.EmptyDataError, Exception):
             return pd.DataFrame(columns=self.columns)
@@ -138,7 +139,11 @@ class CommunionAPI:
     
     def __init__(self):
         self.reflections_store = DataStore(self.REFLECTIONS_FILE, self.REFLECTION_COLUMNS)
-        self.candles_store = DataStore(self.CANDLES_FILE, self.CANDLE_COLUMNS)
+        self.candles_store = DataStore(
+            self.CANDLES_FILE, 
+            self.CANDLE_COLUMNS, 
+            numeric_columns=["entry_index", "count"]
+        )
     
     def get_reflections(self) -> pd.DataFrame:
         """Get all reflections with candle counts."""
@@ -203,8 +208,11 @@ class CommunionAPI:
 class OpenAIService:
     """Service for AI-enhanced features using OpenAI."""
     
-    def __init__(self, api_key: Optional[str] = None):
+    DEFAULT_MODEL = "gpt-3.5-turbo"
+    
+    def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.model = model or os.getenv("OPENAI_MODEL", self.DEFAULT_MODEL)
         self._client = None
     
     @property
@@ -230,7 +238,7 @@ class OpenAIService:
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=self.model,
                 messages=[
                     {
                         "role": "system",
@@ -255,7 +263,7 @@ class OpenAIService:
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=self.model,
                 messages=[
                     {
                         "role": "system",
