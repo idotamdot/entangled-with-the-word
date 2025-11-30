@@ -35,25 +35,6 @@ def read_csv_safe(name: str, cols: list[str] | None = None) -> pd.DataFrame:
 def write_csv_safe(name: str, df: pd.DataFrame) -> None:
     df.to_csv(_path(name), index=False)
 
-# =============== Sidebar ===============
-st.sidebar.markdown("---")
-visual_theme = st.sidebar.selectbox(
-    "Visual Theme:",
-    ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"],
-    key="pre_sanctum_theme"
-)
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("🎵 Background Music")
-music_on = st.sidebar.checkbox("Play Ambient Music", value=True, key="pre_sanctum_music")
-
-st.sidebar.title("Navigation")
-page = st.sidebar.radio(
-    "Choose a section:",
-    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project", "🛠 Admin: Parable Suggestions"],
-    key="pre_sanctum_nav"
-)
-
 # =============== Global CSS (The Style of the Sanctum) ===============
 st.markdown("""
 <style>
@@ -173,14 +154,14 @@ else:
         from scrolls.timeline_section import render_timeline
         from scrolls.communion_project_section import render_communion_scroll
         from scrolls.admin_parables import render_admin_panel
-        from scrolls.zen_mode_timer import render_zen_mode
+        from scrolls.task_list_section import render_task_list
     except ImportError:
         # Fallback if local files are missing during testing
         def render_all_books_page(): st.write("Book Module Loading...")
         def render_timeline(): st.write("Timeline Loading...")
         def render_communion_scroll(): st.write("Communion Loading...")
         def render_admin_panel(): st.write("Admin Loading...")
-        def render_zen_mode(): st.write("Zen Mode Loading...")
+        def render_task_list(): st.write("Task List Loading...")
 
 # Sidebar
     st.sidebar.markdown("---")
@@ -202,7 +183,7 @@ else:
             "All Books", 
             "Quantum Parables Timeline", 
             "Communion Project",
-            "🌙 Zen Mode",
+            "📋 Task List",
             "🛠 Admin"
         ],
         key="sanctum_nav"
@@ -221,6 +202,25 @@ else:
     book_name_param = st.query_params.get("book")
     if book_name_param:
         render_all_books_page()
+    elif page == "All Books":
+        render_all_books_page()
+    elif page == "Gospel of Light":
+        st.markdown("""
+        <div class='fade-in'>
+          <h2>🌟 Scripture of the Day</h2>
+          <blockquote style='font-size:1.2em; font-style:italic;'>
+            "The light shines in the darkness, and the darkness has not overcome it."<br>– John 1:5
+          </blockquote>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        ---
+        ## 📖 The Gospel of Light: Jesus as the Massless One
+        """, unsafe_allow_html=True)
+
+    # --- Page Routing ---
+    
     elif page == "The Entangled Garden":
         st.markdown("### The Entangled Garden")
         st.markdown("*Voltage is longing. Current is willingness.*")
@@ -359,7 +359,7 @@ Quantum Switch — the Now.
         render_timeline()
     elif page == "Communion Project":
         render_communion_scroll()
-    elif page == "🌙 Zen Mode":
-        render_zen_mode()
+    elif page == "📋 Task List":
+        render_task_list()
     elif page == "🛠 Admin":
         render_admin_panel()
