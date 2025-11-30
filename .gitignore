@@ -1,18 +1,46 @@
-# Hide all sensitive config files
-.streamlit/secrets.toml
+# ========================
+# SENSITIVE DATA & SECRETS
+# ========================
+
+# Environment files
 .env
-*.key
+.env.*
 *.env
+!.env.example
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# API keys and certificates
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
 
 # Auth config with credentials (use auth_config.yaml.example as template)
 config/auth_config.yaml
 
-# Python cache files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# Credential files
+*credentials*
+*secret*
+!*secret*.example
+.secrets/
+secrets/
 
+# ========================
+# PYTHON
+# ========================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -26,10 +54,101 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# SQLite database files
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ========================
+# DATABASE FILES
+# ========================
+
 *.db
+*.sqlite
+*.sqlite3
 data/*.db
+
+# ========================
+# IDE & EDITORS
+# ========================
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# JetBrains IDEs
+.idea/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ========================
+# LOGS & TEMPORARY FILES
+# ========================
+
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ========================
+# NODE (if used)
+# ========================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
