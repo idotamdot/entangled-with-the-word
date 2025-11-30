@@ -1,6 +1,5 @@
 streamlit
 openai
 pandas
-fastapi
-uvicorn
-pydantic
+streamlit-authenticator
+pyyaml

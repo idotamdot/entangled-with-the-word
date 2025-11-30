@@ -4,8 +4,8 @@
 *.key
 *.env
 
-# User data files (generated at runtime)
-data/tasks.csv
+# Auth config with real credentials (use auth_config.yaml.example as template)
+config/auth_config.yaml
 
 # Python cache files
 __pycache__/
