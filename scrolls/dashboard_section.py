@@ -86,16 +86,26 @@ def _render_daily_summary(
     """Render daily summary statistics."""
     st.markdown("### ✨ Today's Spiritual Activity")
 
-    # Filter data for today
+    # Filter data for today and keep original indices
     if not reflections.empty:
-        today_reflections = reflections[reflections["timestamp"].dt.date == today]
+        reflections_with_idx = reflections.copy()
+        reflections_with_idx["original_idx"] = reflections_with_idx.index
+        today_reflections = reflections_with_idx[
+            reflections_with_idx["timestamp"].dt.date == today
+        ]
         reflection_count = len(today_reflections)
+        today_indices = set(today_reflections["original_idx"].tolist())
     else:
         today_reflections = pd.DataFrame()
         reflection_count = 0
+        today_indices = set()
 
-    # Calculate total candles lit today
-    total_candles = candles["count"].sum() if not candles.empty else 0
+    # Calculate total candles lit for today's reflections only
+    if not candles.empty and today_indices:
+        today_candles = candles[candles["entry_index"].isin(today_indices)]
+        total_candles = today_candles["count"].sum()
+    else:
+        total_candles = 0
 
     # Parables added today
     if not parables.empty:
@@ -116,9 +126,9 @@ def _render_daily_summary(
 
     with col2:
         st.metric(
-            label="🕯️ Total Candles Lit",
+            label="🕯️ Candles Lit Today",
             value=total_candles,
-            help="Total candles lit across all reflections",
+            help="Candles lit on today's reflections",
         )
 
     with col3:
@@ -136,14 +146,11 @@ def _render_daily_summary(
     if today_reflections.empty:
         st.info("No reflections shared today yet. Be the first to light the scroll!")
     else:
-        # Merge with candles to get counts
-        today_reflections = today_reflections.reset_index(drop=True)
-        today_reflections["id"] = today_reflections.index
-
+        # Merge with candles using original index to match entry_index in candles
         if not candles.empty:
-            candles_renamed = candles.rename(columns={"entry_index": "id"})
+            candles_renamed = candles.rename(columns={"entry_index": "original_idx"})
             today_reflections = pd.merge(
-                today_reflections, candles_renamed, on="id", how="left"
+                today_reflections, candles_renamed, on="original_idx", how="left"
             )
             today_reflections["count"] = today_reflections["count"].fillna(0).astype(int)
         else:
@@ -172,21 +179,29 @@ def _render_weekly_summary(
     """Render weekly summary statistics."""
     st.markdown("### 📈 This Week's Spiritual Journey")
 
-    # Filter data for the week
+    # Filter data for the week and keep original indices
     if not reflections.empty:
-        week_reflections = reflections[
-            (reflections["timestamp"].dt.date >= week_ago)
-            & (reflections["timestamp"].dt.date <= today)
+        reflections_with_idx = reflections.copy()
+        reflections_with_idx["original_idx"] = reflections_with_idx.index
+        week_reflections = reflections_with_idx[
+            (reflections_with_idx["timestamp"].dt.date >= week_ago)
+            & (reflections_with_idx["timestamp"].dt.date <= today)
         ]
         weekly_reflection_count = len(week_reflections)
+        week_indices = set(week_reflections["original_idx"].tolist())
     else:
         week_reflections = pd.DataFrame()
         weekly_reflection_count = 0
+        week_indices = set()
 
-    # Calculate total candles
-    total_candles = candles["count"].sum() if not candles.empty else 0
+    # Calculate total candles for this week's reflections only
+    if not candles.empty and week_indices:
+        week_candles = candles[candles["entry_index"].isin(week_indices)]
+        total_candles = week_candles["count"].sum()
+    else:
+        total_candles = 0
 
-    # Parables this week
+    # Parables this week (filter once and reuse)
     if not parables.empty:
         week_parables = parables[
             (parables["timestamp"].dt.date >= week_ago)
@@ -194,6 +209,7 @@ def _render_weekly_summary(
         ]
         weekly_parable_count = len(week_parables)
     else:
+        week_parables = pd.DataFrame()
         weekly_parable_count = 0
 
     # Display weekly metrics
@@ -208,9 +224,9 @@ def _render_weekly_summary(
 
     with col2:
         st.metric(
-            label="🕯️ Total Candles Lit",
+            label="🕯️ Candles Lit This Week",
             value=total_candles,
-            help="Total candles lit across all reflections",
+            help="Candles lit on this week's reflections",
         )
 
     with col3:
@@ -248,19 +264,12 @@ def _render_weekly_summary(
 
     st.markdown("---")
 
-    # Category breakdown for parables
+    # Category breakdown for parables (reuse week_parables from above)
     st.markdown("### 🏷️ Parable Categories This Week")
 
-    if not parables.empty and "tag" in parables.columns:
-        week_parables = parables[
-            (parables["timestamp"].dt.date >= week_ago)
-            & (parables["timestamp"].dt.date <= today)
-        ]
-        if not week_parables.empty:
-            category_counts = week_parables["tag"].value_counts()
-            for tag, count in category_counts.items():
-                st.markdown(f"**{tag}**: {count} parable(s)")
-        else:
-            st.info("No parables approved this week.")
+    if not week_parables.empty and "tag" in week_parables.columns:
+        category_counts = week_parables["tag"].value_counts()
+        for tag, count in category_counts.items():
+            st.markdown(f"**{tag}**: {count} parable(s)")
     else:
-        st.info("No parable data available.")
+        st.info("No parables approved this week.")
