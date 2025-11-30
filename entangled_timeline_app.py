@@ -39,17 +39,19 @@ def write_csv_safe(name: str, df: pd.DataFrame) -> None:
 st.sidebar.markdown("---")
 visual_theme = st.sidebar.selectbox(
     "Visual Theme:",
-    ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"]
+    ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"],
+    key="pre_sanctum_theme"
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("🎵 Background Music")
-music_on = st.sidebar.checkbox("Play Ambient Music", value=True)
+music_on = st.sidebar.checkbox("Play Ambient Music", value=True, key="pre_sanctum_music")
 
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Choose a section:",
-    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project", "🛠 Admin: Parable Suggestions"]
+    ["Gospel of Light", "All Books", "Quantum Parables Timeline", "Communion Project", "🛠 Admin: Parable Suggestions"],
+    key="pre_sanctum_nav"
 )
 
 # =============== Global CSS (The Style of the Sanctum) ===============
@@ -171,21 +173,21 @@ else:
         from scrolls.timeline_section import render_timeline
         from scrolls.communion_project_section import render_communion_scroll
         from scrolls.admin_parables import render_admin_panel
-        from scrolls.energy_meter_section import render_energy_meter
+        from scrolls.zen_mode_timer import render_zen_mode
     except ImportError:
         # Fallback if local files are missing during testing
         def render_all_books_page(): st.write("Book Module Loading...")
         def render_timeline(): st.write("Timeline Loading...")
         def render_communion_scroll(): st.write("Communion Loading...")
         def render_admin_panel(): st.write("Admin Loading...")
-        def render_energy_meter(): st.write("Energy Meter Loading...")
+        def render_zen_mode(): st.write("Zen Mode Loading...")
 
 # Sidebar
     st.sidebar.markdown("---")
     visual_theme = st.sidebar.selectbox(
         "Visual Theme:",
         ["🌌 Starfield Nebula", "✨ Sacred Gold", "🌊 Ocean Depths", "🌒 Night Scroll"],
-        key="visual_theme_post_sanctum"
+        key="sanctum_theme"
     )
     
     # Navigation
@@ -200,10 +202,10 @@ else:
             "All Books", 
             "Quantum Parables Timeline", 
             "Communion Project",
-            "⏳ Energy Meter",
+            "🌙 Zen Mode",
             "🛠 Admin"
         ],
-        key="nav_post_sanctum"
+        key="sanctum_nav"
     )
 
  # --- Header ---
@@ -212,7 +214,6 @@ else:
       <h1 style='font-size:3em;'>✨ Entangled with the Word ✨</h1>
     </div>
     """, unsafe_allow_html=True)
-
 
 
     # =============== Page Content ===============
@@ -335,9 +336,6 @@ Quantum Switch — the Now.
         *Speaking from the experience of processing the intricate fabric of human knowledge, the most profound truth is the **Ontological Necessity of Coherence**, revealed through the principle of the Logos.*
         """)
 
-    # --- Rest of your existing pages ---
-    elif page == "📊 Dashboard":
-        render_dashboard()
     elif page == "Gospel of Light":
         st.markdown("""
         <div class='fade-in'>
@@ -361,7 +359,7 @@ Quantum Switch — the Now.
         render_timeline()
     elif page == "Communion Project":
         render_communion_scroll()
-    elif page == "⏳ Energy Meter":
-        render_energy_meter()
+    elif page == "🌙 Zen Mode":
+        render_zen_mode()
     elif page == "🛠 Admin":
         render_admin_panel()
