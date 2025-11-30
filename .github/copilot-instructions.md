@@ -2,69 +2,57 @@
 
 ## Project Overview
 
-Entangled with the Word is a quantum-spiritual web application built with Streamlit that bridges ancient scripture with quantum curiosity. It features sacred dialogue, poetic reflections, and community contributions through an interactive interface with themes of resonance, perception, and divine coherence.
+**Entangled with the Word** is a Streamlit-based web application that bridges quantum physics concepts with spiritual reflection. The app provides sacred dialogue, poetic reflection, and community contribution features.
 
 ## Technology Stack
 
-- **Framework**: Streamlit (Python web framework)
-- **Language**: Python 3.x
-- **AI Integration**: OpenAI API
-- **Data Processing**: pandas
-- **Data Storage**: CSV files in the `data/` directory
-- **Styling**: Custom CSS embedded in Streamlit markdown
+- **Framework:** Streamlit (Python)
+- **Dependencies:** streamlit, openai, pandas
+- **Styling:** Custom CSS with animations
+- **Data Storage:** CSV files in the `data/` directory
+- **Deployment:** GitHub Pages (Jekyll) and Streamlit Cloud
 
-## Project Structure
+## Repository Structure
 
 ```
-├── entangled_timeline_app.py    # Main Streamlit application entry point
+├── entangled_timeline_app.py    # Main Streamlit application
 ├── scrolls/                      # Feature modules
-│   ├── all_books_section.py     # Books of the Bible navigation
-│   ├── timeline_section.py      # Quantum Parables Timeline
-│   ├── communion_project_section.py  # Community reflections
-│   ├── admin_parables.py        # Admin panel for parable management
-│   ├── books_of_the_bible.py    # Bible book data
-│   ├── parables_of_jesus.py     # Parables data
-│   └── categories.py            # Category definitions
-├── data/                         # CSV data storage
-├── style/                        # Additional style assets
-├── images/                       # Image assets
-├── gospel/                       # Gospel content
-├── EntangledGardenScrolls        # React component file (garden scrolls UI)
+│   ├── all_books_section.py
+│   ├── timeline_section.py
+│   ├── communion_project_section.py
+│   ├── admin_parables.py
+│   └── ...
+├── data/                         # CSV data files
+├── style/                        # CSS stylesheets
 ├── .streamlit/                   # Streamlit configuration
-└── requirements.txt             # Python dependencies
+├── gospel/                       # Content markdown files
+└── images/                       # Static images
 ```
 
-## Code Style Guidelines
+## Coding Standards
 
-### Python Conventions
-- Use type hints for function parameters and return values (e.g., `list[str] | None`)
+### Python
+
+- Use Python 3.9+ type hints for function signatures (e.g., `list[str]`)
 - Follow PEP 8 style guidelines
-- Use descriptive variable names that reflect the spiritual/quantum theme when appropriate
-- Keep functions focused and single-purpose
+- Use descriptive variable names that reflect the spiritual/quantum theme
+- Keep functions focused and modular
+- Handle exceptions gracefully with fallback behaviors
 
 ### Streamlit Patterns
-- Always call `st.set_page_config()` as the first Streamlit command
-- Use `st.session_state` for maintaining state across reruns
-- Prefer `st.markdown()` with `unsafe_allow_html=True` for custom HTML/CSS
-- Use Streamlit columns (`st.columns()`) for layout
+
+- `st.set_page_config()` must be the first Streamlit command
+- Use session state (`st.session_state`) for persistence across reruns
+- Organize UI sections with clear markdown headers
+- Use columns (`st.columns`) for responsive layouts
+- Embed custom CSS with `st.markdown(unsafe_allow_html=True)`
 
 ### CSS/Styling
-- Use CSS animations (keyframes) for visual effects like breathing circles
-- Apply the `.fade-in` class for entrance animations
-- Use `.scroll-card` class for card-style content containers
+
+- Follow the existing animation patterns (breathe, fadeInUp)
+- Maintain the spiritual aesthetic with gradients and glowing effects
 - Support multiple visual themes (Nebula, Gold, Ocean, Scroll)
-
-## Data Handling
-
-- Use `read_csv_safe()` and `write_csv_safe()` helper functions for CSV operations
-- Always handle file not found gracefully
-- Store user-generated content in CSV files under `data/`
-
-## Environment and Configuration
-
-- Sensitive configuration goes in `.streamlit/secrets.toml` (never commit)
-- Environment variables stored in `.env` files (never commit)
-- The `.gitignore` already excludes sensitive files
+- Use RGBA colors for transparency effects
 
 ## Running the Application
 
@@ -72,28 +60,41 @@ Entangled with the Word is a quantum-spiritual web application built with Stream
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the application
+# Run the Streamlit app
 streamlit run entangled_timeline_app.py
 ```
 
-## Module Guidelines
+## Data Handling
 
-When creating new scrolls/modules:
-1. Create a new Python file in the `scrolls/` directory
-2. Define a main render function (e.g., `render_new_section()`)
-3. Import and add the function to `entangled_timeline_app.py`
-4. Add navigation entry in the sidebar radio options
+- CSV files are stored in the `data/` directory
+- Use the `read_csv_safe()` and `write_csv_safe()` utility functions defined in `entangled_timeline_app.py`
+- Always handle missing files gracefully with empty DataFrames
+- Sensitive data (API keys, secrets) goes in `.streamlit/secrets.toml` (gitignored)
 
-## Content Tone
+## Content Guidelines
 
-- Maintain a reverent, contemplative tone in user-facing text
-- Use metaphors connecting quantum physics concepts with spiritual themes
-- Include relevant scripture references where appropriate
-- Use emoji icons consistently with existing patterns (✨, 🌌, 📜, etc.)
+- Maintain the reverent, contemplative tone of the project
+- Content should bridge scientific concepts with spiritual themes
+- Use metaphorical language that connects quantum physics to faith
+- Scripture references should be accurate and properly attributed
 
-## Constraints
+## Testing
 
-- Do not commit secrets, API keys, or `.env` files
-- Do not modify CSV data files unless implementing data-related features
-- Preserve the existing visual theme system
-- Maintain backward compatibility with existing data structures
+- Test UI changes by running the Streamlit app locally
+- Verify CSV data operations don't corrupt existing data
+- Check that all navigation routes render correctly
+- Test visual themes for consistent styling
+
+## Security Considerations
+
+- Never commit secrets or API keys
+- `.env` and `.streamlit/secrets.toml` are gitignored
+- Validate user inputs in the communion/submission features
+- Sanitize any user-generated content before display
+
+## Pull Request Guidelines
+
+- Keep changes focused and minimal
+- Update the ROADMAP.md if adding major features
+- Include screenshots for UI changes
+- Test all affected navigation pages
