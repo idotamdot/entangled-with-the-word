@@ -210,10 +210,7 @@ else:
         "Communion Project"
     ]
     
-    # Only show Admin option if user is authenticated and has admin role
-    # Use username from login form return for consistency
-    if authentication_status and username and is_admin(username):
-        nav_options.append("🛠 Admin")
+    
     
     st.sidebar.title("Navigation")
     page = st.sidebar.radio(
