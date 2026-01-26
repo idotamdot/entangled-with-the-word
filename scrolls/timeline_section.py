@@ -2,7 +2,6 @@ import os
 from datetime import datetime, timedelta
 import pandas as pd
 import streamlit as st
-import pandas as pd
 from scrolls.categories import PROJECT_CATEGORIES
 from backend import ParablesAPI
 
@@ -11,9 +10,12 @@ from backend import ParablesAPI
 _parables_api = ParablesAPI()
 # Define column schema with importance and energy_score
 APPROVED_COLUMNS = ['timestamp', 'suggestion', 'tag', 'importance', 'energy_score']
+# Define file path for approved parables
+APPROVED_FILE = os.path.join("gospel", "approved_parables.csv")
 
 
 def load_entries():
+    """Load approved parables from CSV file."""
     if os.path.exists(APPROVED_FILE):
         try:
             df = pd.read_csv(APPROVED_FILE)
@@ -45,9 +47,19 @@ def render_timeline():
     """Display approved parables as a timeline."""
     st.header("🧬 Quantum Parables Timeline")
     
+    # Load the data first
+    df = load_entries()
+    
     # Category filter
     all_tags = ["All"] + PROJECT_CATEGORIES
     selected_category = st.selectbox("Filter by category:", options=all_tags)
+
+    # Sorting options
+    sort_option = st.selectbox(
+        "Sort by:", 
+        options=["Date (Oldest First)", "Importance (High to Low)", "Energy (High to Low)"],
+        key="timeline_sort"
+    )
 
     # Date range filter
     st.markdown("##### 📅 Filter by Date Range")
@@ -75,7 +87,7 @@ def render_timeline():
     df = filter_by_date_range(df, start_date, end_date)
 
     if df.empty:
-        st.info(f"No parables found for the selected filters.")
+        st.info("No parables found for the selected filters.")
         return
 
     # Apply sorting based on selection
